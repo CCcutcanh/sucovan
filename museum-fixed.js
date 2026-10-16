@@ -1289,7 +1289,7 @@ const WALK_TYPES={
   battle:{label:'Phòng sa hình',icon:'🗺',center:[0,-14],color:0x17332e},
   documents:{label:'Phòng tư liệu',icon:'📜',center:[0,14],color:0x39271a}
 };
-const W={active:false,ready:false,loopRunning:false,renderer:null,scene:null,camera:null,root:null,targets:[],solids:[],rooms:[],keys:{},yaw:0,pitch:0,last:0,ray:null,centerRay:null,current:null,activeCampaign:'xiem',promptAt:0,promptText:'',statusText:'',screenCanvas:null,screenTexture:null,screenLast:0,tvScreens:[],tvVideoElements:{},tvVideoTextures:{},tvPreviewsLoaded:false,ships:[],battleRunning:false,battleStart:0,battlePhase:-1,wasLocked:false};
+const W={active:false,ready:false,loopRunning:false,renderer:null,scene:null,camera:null,root:null,targets:[],solids:[],rooms:[],keys:{},velocity:{x:0,z:0},yaw:0,pitch:0,last:0,ray:null,centerRay:null,current:null,activeCampaign:'xiem',promptAt:0,promptText:'',statusText:'',screenCanvas:null,screenTexture:null,screenLast:0,tvScreens:[],tvVideoElements:{},tvVideoTextures:{},tvPreviewsLoaded:false,ships:[],battleRunning:false,battleStart:0,battlePhase:-1,wasLocked:false};
 function walkMakeUI(){
   const old=$('#walk3d');if(old)return;
   const root=document.createElement('div');root.id='walk3d';root.hidden=true;
@@ -1368,6 +1368,7 @@ function walkMakeUI(){
     W.keys[e.key.toLowerCase()]=false;
     if(e.key.startsWith('Arrow'))W.keys[({ArrowUp:'w',ArrowDown:'s',ArrowLeft:'a',ArrowRight:'d'})[e.key]]=false;
   });
+  window.addEventListener('blur',()=>{W.keys={};W.velocity.x=0;W.velocity.z=0;});
 }
 function walkOpen(){
   if(T.on)endTour();stopNarration();
@@ -1393,7 +1394,7 @@ function walkInit(){
   try{
     const T3=window.THREE,canvas=$('#walkCanvas');
     W.renderer=new T3.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:'high-performance'});
-    W.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5));W.renderer.setSize(window.innerWidth,window.innerHeight,false);
+    W.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.25));W.renderer.setSize(window.innerWidth,window.innerHeight,false);
     W.renderer.outputColorSpace=T3.SRGBColorSpace;W.renderer.toneMapping=T3.ACESFilmicToneMapping;W.renderer.toneMappingExposure=1.14;
     W.renderer.shadowMap.enabled=true;W.renderer.shadowMap.type=T3.PCFSoftShadowMap;W.renderer.shadowMap.autoUpdate=false;W.renderer.shadowMap.needsUpdate=true;
     W.scene=new T3.Scene();W.scene.background=new T3.Color(0x100b0a);W.scene.fog=new T3.FogExp2(0x100b0a,.0082);
@@ -1407,7 +1408,7 @@ function walkInit(){
   }catch(err){console.error(err);walkTextToast('Không khởi tạo được không gian 3D trên trình duyệt này. Hãy thử Chrome hoặc Edge mới nhất.');}
 }
 function walkTextToast(msg){const p=$('#walkPrompt');if(p)p.textContent=msg;}
-function walkResize(){if(!W.renderer||!W.camera)return;const w=window.innerWidth,h=window.innerHeight;W.camera.aspect=w/h;W.camera.updateProjectionMatrix();W.renderer.setSize(w,h,false);W.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5));}
+function walkResize(){if(!W.renderer||!W.camera)return;const w=window.innerWidth,h=window.innerHeight;W.camera.aspect=w/h;W.camera.updateProjectionMatrix();W.renderer.setSize(w,h,false);W.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.25));}
 function walkApplyLook(){if(!W.camera)return;W.camera.rotation.order='YXZ';W.camera.rotation.set(W.pitch,W.yaw,0,'YXZ');}
 function walkMaterial(color,roughness=.72,metalness=.02,extra={}){return new THREE.MeshStandardMaterial(Object.assign({color,roughness,metalness},extra));}
 function walkBox(w,h,d,mat,x,y,z,opts={}){
@@ -2169,19 +2170,26 @@ function walkLocationLabel(){
 }
 function walkTeleport(id){
   if(!W.camera)return;const p={gallery:{x:-10.3,z:0,yaw:Math.PI/2},artifacts:{x:10.3,z:0,yaw:-Math.PI/2},battle:{x:-1,z:-9.3,yaw:0,pitch:-.65},documents:{x:0,z:10.3,yaw:Math.PI},hall:{x:0,z:2.5,yaw:0}}[id]||{x:0,z:2.5,yaw:0};
-  W.camera.position.set(p.x,1.8,p.z);W.yaw=p.yaw;W.pitch=p.pitch||0;walkApplyLook();W.current=null;$('#walkStatus').textContent=p.label||WALK_TYPES[id]?.label||'Sảnh trung tâm';$('#walkPrompt').textContent='Hãy quan sát xung quanh, hướng tâm ngắm vào một hiện vật rồi nhấn E.';
+  W.camera.position.set(p.x,1.8,p.z);W.velocity.x=0;W.velocity.z=0;W.yaw=p.yaw;W.pitch=p.pitch||0;walkApplyLook();W.current=null;$('#walkStatus').textContent=p.label||WALK_TYPES[id]?.label||'Sảnh trung tâm';$('#walkPrompt').textContent='Hãy quan sát xung quanh, hướng tâm ngắm vào một hiện vật rồi nhấn E.';
   if(id==='battle')walkPrimeVideoPreviews();
 }
 function walkInBounds(x,z){return W.rooms.some(r=>x>=r.minX&&x<=r.maxX&&z>=r.minZ&&z<=r.maxZ);}
 function walkCollision(x,z){const r=.32;return W.solids.some(b=>x+r>b.minX&&x-r<b.maxX&&z+r>b.minZ&&z-r<b.maxZ);}
 function walkMove(dt){
-  if(!W.active||!W.camera||!$('#walkIntro').hidden||!$('#walkDetail').hidden)return;
+  if(!W.active||!W.camera||!$('#walkIntro').hidden||!$('#walkDetail').hidden){W.velocity.x=0;W.velocity.z=0;return;}
   if(document.pointerLockElement!==$('#walkCanvas')&&(W.keys.turnL||W.keys.turnR)){W.yaw+=(W.keys.turnL?1:0)*dt*1.7-(W.keys.turnR?1:0)*dt*1.7;walkApplyLook();}
   let f=(W.keys.w||W.keys.arrowup?1:0)-(W.keys.s||W.keys.arrowdown?1:0),r=(W.keys.d||W.keys.arrowright?1:0)-(W.keys.a||W.keys.arrowleft?1:0);
-  if(!f&&!r)return;const len=Math.hypot(f,r);f/=len;r/=len;const sp=(W.keys.shift?5.2:3.5)*dt;
-  const dx=(-Math.sin(W.yaw)*f+Math.cos(W.yaw)*r)*sp,dz=(-Math.cos(W.yaw)*f-Math.sin(W.yaw)*r)*sp;
-  let nx=W.camera.position.x+dx,nz=W.camera.position.z;if(walkInBounds(nx,nz)&&!walkCollision(nx,nz))W.camera.position.x=nx;
-  nx=W.camera.position.x;nz=W.camera.position.z+dz;if(walkInBounds(nx,nz)&&!walkCollision(nx,nz))W.camera.position.z=nz;
+  const len=Math.hypot(f,r);if(len){f/=len;r/=len;}
+  const speed=W.keys.shift?6:4.1;
+  const targetX=len?(-Math.sin(W.yaw)*f+Math.cos(W.yaw)*r)*speed:0;
+  const targetZ=len?(-Math.cos(W.yaw)*f-Math.sin(W.yaw)*r)*speed:0;
+  const blend=1-Math.exp(-12*dt);
+  W.velocity.x+=(targetX-W.velocity.x)*blend;W.velocity.z+=(targetZ-W.velocity.z)*blend;
+  if(Math.abs(W.velocity.x)<.015)W.velocity.x=0;if(Math.abs(W.velocity.z)<.015)W.velocity.z=0;
+  let nx=W.camera.position.x+W.velocity.x*dt,nz=W.camera.position.z;
+  if(walkInBounds(nx,nz)&&!walkCollision(nx,nz))W.camera.position.x=nx;else W.velocity.x=0;
+  nx=W.camera.position.x;nz=W.camera.position.z+W.velocity.z*dt;
+  if(walkInBounds(nx,nz)&&!walkCollision(nx,nz))W.camera.position.z=nz;else W.velocity.z=0;
 }
 function walkFindHit(){
   if(!W.camera||!W.ray)return null;W.ray.setFromCamera(W.centerRay,W.camera);const hits=W.ray.intersectObjects(W.targets,true);
