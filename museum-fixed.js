@@ -1289,7 +1289,7 @@ const WALK_TYPES={
   battle:{label:'Phòng sa hình',icon:'🗺',center:[0,-14],color:0x17332e},
   documents:{label:'Phòng tư liệu',icon:'📜',center:[0,14],color:0x39271a}
 };
-const W={active:false,ready:false,loopRunning:false,renderer:null,scene:null,camera:null,root:null,targets:[],solids:[],rooms:[],keys:{},yaw:0,pitch:0,last:0,ray:null,centerRay:null,current:null,activeCampaign:'xiem',promptAt:0,promptText:'',statusText:'',screenCanvas:null,screenTexture:null,screenLast:0,tvScreens:[],tvVideoElements:{},tvVideoTextures:{},ships:[],battleRunning:false,battleStart:0,battlePhase:-1,wasLocked:false};
+const W={active:false,ready:false,loopRunning:false,renderer:null,scene:null,camera:null,root:null,targets:[],solids:[],rooms:[],keys:{},yaw:0,pitch:0,last:0,ray:null,centerRay:null,current:null,activeCampaign:'xiem',promptAt:0,promptText:'',statusText:'',screenCanvas:null,screenTexture:null,screenLast:0,tvScreens:[],tvVideoElements:{},tvVideoTextures:{},tvPreviewsLoaded:false,ships:[],battleRunning:false,battleStart:0,battlePhase:-1,wasLocked:false};
 function walkMakeUI(){
   const old=$('#walk3d');if(old)return;
   const root=document.createElement('div');root.id='walk3d';root.hidden=true;
@@ -1393,7 +1393,7 @@ function walkInit(){
   try{
     const T3=window.THREE,canvas=$('#walkCanvas');
     W.renderer=new T3.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:'high-performance'});
-    W.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.7));W.renderer.setSize(window.innerWidth,window.innerHeight,false);
+    W.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5));W.renderer.setSize(window.innerWidth,window.innerHeight,false);
     W.renderer.outputColorSpace=T3.SRGBColorSpace;W.renderer.toneMapping=T3.ACESFilmicToneMapping;W.renderer.toneMappingExposure=1.14;
     W.renderer.shadowMap.enabled=true;W.renderer.shadowMap.type=T3.PCFSoftShadowMap;W.renderer.shadowMap.autoUpdate=false;W.renderer.shadowMap.needsUpdate=true;
     W.scene=new T3.Scene();W.scene.background=new T3.Color(0x100b0a);W.scene.fog=new T3.FogExp2(0x100b0a,.0082);
@@ -1407,7 +1407,7 @@ function walkInit(){
   }catch(err){console.error(err);walkTextToast('Không khởi tạo được không gian 3D trên trình duyệt này. Hãy thử Chrome hoặc Edge mới nhất.');}
 }
 function walkTextToast(msg){const p=$('#walkPrompt');if(p)p.textContent=msg;}
-function walkResize(){if(!W.renderer||!W.camera)return;const w=window.innerWidth,h=window.innerHeight;W.camera.aspect=w/h;W.camera.updateProjectionMatrix();W.renderer.setSize(w,h,false);W.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.7));}
+function walkResize(){if(!W.renderer||!W.camera)return;const w=window.innerWidth,h=window.innerHeight;W.camera.aspect=w/h;W.camera.updateProjectionMatrix();W.renderer.setSize(w,h,false);W.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5));}
 function walkApplyLook(){if(!W.camera)return;W.camera.rotation.order='YXZ';W.camera.rotation.set(W.pitch,W.yaw,0,'YXZ');}
 function walkMaterial(color,roughness=.72,metalness=.02,extra={}){return new THREE.MeshStandardMaterial(Object.assign({color,roughness,metalness},extra));}
 function walkBox(w,h,d,mat,x,y,z,opts={}){
@@ -2090,7 +2090,7 @@ function walkBuildBattle(){
     walkPointLight(campaign.x,3.8,-14,0xffd18a,.85,6);
   });
   // Bốn TV treo tường: hai bên trái cho chiến dịch quân Xiêm, hai bên phải cho quân Thanh.
-  const tvFrame=walkMaterial(0x252a2e,.32,.58);W.tvScreens=[];W.tvVideoElements={};W.tvVideoTextures={};
+  const tvFrame=walkMaterial(0x252a2e,.32,.58);W.tvScreens=[];W.tvVideoElements={};W.tvVideoTextures={};W.tvPreviewsLoaded=false;
   [['xiem',-5.78,-17.2,Math.PI/2],['xiem',-5.78,-11.2,Math.PI/2],['thanh',5.78,-17.2,-Math.PI/2],['thanh',5.78,-11.2,-Math.PI/2]].forEach(([campaign,x,z,yaw],index)=>{
     const root=new THREE.Group();root.position.set(x,3.15,z);root.rotation.y=yaw;
     const frame=new THREE.Mesh(new THREE.BoxGeometry(2.0,1.25,.13),tvFrame);root.add(frame);
@@ -2106,7 +2106,7 @@ function walkTVTexture(campaign,index){
   const video=document.createElement('video');
   const file=campaign==='xiem'?'RGXM.mp4':'NH-DD.mp4';
   video.src=new URL(file,location.href).href;
-  video.muted=true;video.defaultMuted=true;video.volume=0;video.loop=true;video.playsInline=true;video.preload='auto';
+  video.muted=true;video.defaultMuted=true;video.volume=0;video.loop=true;video.playsInline=true;video.preload='none';
   video.setAttribute('muted','');video.setAttribute('playsinline','');video.setAttribute('webkit-playsinline','');
   video.style.position='fixed';video.style.width='1px';video.style.height='1px';video.style.opacity='0';video.style.pointerEvents='none';video.style.left='-10px';video.style.top='-10px';
   document.body.appendChild(video);W.tvVideoElements[campaign]=video;
@@ -2114,8 +2114,12 @@ function walkTVTexture(campaign,index){
   W.tvVideoTextures[campaign]=tex;
   video.addEventListener('loadeddata',()=>{tex.needsUpdate=true;},{once:true});
   video.addEventListener('error',()=>console.error(`Không tải được video ${file} cho TV sa hình.`,video.error),{once:true});
-  video.load();
   return tex;
+}
+function walkPrimeVideoPreviews(){
+  if(W.tvPreviewsLoaded)return;
+  W.tvPreviewsLoaded=true;
+  Object.values(W.tvVideoElements).forEach(video=>{video.preload='auto';video.load();});
 }
 function walkUpdateScreen(t){
   if(!W.screenCanvas||typeof filmFrame!=='function')return;
@@ -2166,6 +2170,7 @@ function walkLocationLabel(){
 function walkTeleport(id){
   if(!W.camera)return;const p={gallery:{x:-10.3,z:0,yaw:Math.PI/2},artifacts:{x:10.3,z:0,yaw:-Math.PI/2},battle:{x:-1,z:-9.3,yaw:0,pitch:-.65},documents:{x:0,z:10.3,yaw:Math.PI},hall:{x:0,z:2.5,yaw:0}}[id]||{x:0,z:2.5,yaw:0};
   W.camera.position.set(p.x,1.8,p.z);W.yaw=p.yaw;W.pitch=p.pitch||0;walkApplyLook();W.current=null;$('#walkStatus').textContent=p.label||WALK_TYPES[id]?.label||'Sảnh trung tâm';$('#walkPrompt').textContent='Hãy quan sát xung quanh, hướng tâm ngắm vào một hiện vật rồi nhấn E.';
+  if(id==='battle')walkPrimeVideoPreviews();
 }
 function walkInBounds(x,z){return W.rooms.some(r=>x>=r.minX&&x<=r.maxX&&z>=r.minZ&&z<=r.maxZ);}
 function walkCollision(x,z){const r=.32;return W.solids.some(b=>x+r>b.minX&&x-r<b.maxX&&z+r>b.minZ&&z-r<b.maxZ);}
@@ -2186,6 +2191,7 @@ function walkFindHit(){
 function walkUpdatePrompt(now){
   if(!W.active||!$('#walkIntro').hidden||!$('#walkDetail').hidden)return;
   if(W.battleRunning){const status=walkLocationLabel()+' · Đang tái hiện trận đánh';if(status!==W.statusText){$('#walkStatus').textContent=status;W.statusText=status;}return;}
+  if(walkLocationLabel()===WALK_TYPES.battle.label)walkPrimeVideoPreviews();
   if(now-W.promptAt<50)return;W.promptAt=now;
   const hit=walkFindHit();W.current=hit?hit.item:null;
   const prompt=hit?'E / nhấp chuột  ·  '+hit.item.title+'  ·  '+(hit.item.isVideoScreen?'Phát video':'Mở thuyết minh'):document.pointerLockElement===$('#walkCanvas')?'Di chuyển bằng WASD · Ngắm vào vật thể để tương tác':'Nhấp vào cảnh 3D để bật điều khiển góc nhìn';
