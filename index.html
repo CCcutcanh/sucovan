@@ -8,6 +8,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,700&subset=vietnamese&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="museum-fixed.css">
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.module.js"}}
+</script>
 </head>
 <body data-view="entry">
 <script id="seed" type="application/json">null</script>
@@ -79,7 +82,31 @@
   </div>
 </div>
 
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.159.0/three.min.js"></script>
-<script defer src="museum-fixed.js"></script>
+<script type="module">
+(async()=>{
+  const showError=message=>{
+    const toast=document.querySelector('#toast');
+    toast.textContent=message;
+    toast.classList.add('show');
+  };
+  try{
+    const [THREE,{GLTFLoader}]=await Promise.all([
+      import('three'),
+      import('https://cdn.jsdelivr.net/npm/three@0.159.0/examples/jsm/loaders/GLTFLoader.js')
+    ]);
+    window.THREE=Object.assign({},THREE,{GLTFLoader});
+    const app=document.createElement('script');
+    app.src='museum-fixed.js';
+    app.onerror=()=>{
+      console.error('Không tải được museum-fixed.js.');
+      showError('Không tải được mã bảo tàng. Hãy kiểm tra kết nối và tải lại trang.');
+    };
+    document.body.append(app);
+  }catch(error){
+    console.error('Không tải được thư viện 3D hoặc GLTFLoader.',error);
+    showError('Không tải được thư viện 3D. Hãy kiểm tra kết nối và tải lại trang.');
+  }
+})();
+</script>
 </body>
 </html>
