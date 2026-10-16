@@ -198,7 +198,7 @@
     {
       "id": "thanh-hanh-quan",
       "type": "dohoa",
-      "title": "Hành quân thần tốc ra Bắc",
+      "title": "Lược đồ chiến thắng của nghĩa quân Tây Sơn",
       "date": "Cuối năm 1788 – đầu năm 1789",
       "origin": "Sơ đồ khái quát, không theo tỉ lệ",
       "detail": "Quang Trung lên ngôi Hoàng đế tại Phú Xuân, rồi tổ chức hành quân ra Bắc. Đạo quân tiến qua Tam Điệp và chia hướng đánh vào các đồn lũy bảo vệ Thăng Long.",
@@ -210,7 +210,7 @@
       "phases": "",
       "hotspots": "",
       "inTour": true,
-      "gallerySlot": "thanh-4",
+      "gallerySlot": "xiem-4",
       "campaign": "thanh"
     },
     {
@@ -369,7 +369,7 @@
       "phases": "",
       "hotspots": "",
       "inTour": true,
-      "gallerySlot": "xiem-4"
+      "gallerySlot": "thanh-4"
     }
   ],
   "resources": [
