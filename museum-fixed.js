@@ -1307,6 +1307,7 @@ function walkMakeUI(){
     <button class="walk-interact" id="walkInteract">✦ Tương tác</button>
     <div class="walk-overlay" id="walkIntro"><div class="walk-card"><p class="eyebrow">Không gian trưng bày tương tác</p><h2>Khám phá bảo tàng bằng góc nhìn người tham quan</h2><p>Bước qua sảnh trung tâm để tự do đi vào bốn phòng. Tranh được treo trên tường; hiện vật đặt trên bệ trưng bày; sa hình có thể tái hiện diễn biến trận đánh; phòng tư liệu có các văn bản để đọc.</p><div><span class="walk-pill">WASD / phím mũi tên</span><span class="walk-pill">Chuột để nhìn quanh</span><span class="walk-pill">E để tương tác</span></div><p class="small">Mô hình hiện vật 3D hiện là mô phỏng minh họa bằng hình khối. Giáo viên có thể thay ảnh, mô tả và thuyết minh qua mục “Quản lý” ở giao diện bảo tàng thông thường.</p><div class="walk-buttons"><button class="primary" id="walkBegin">Bắt đầu tham quan 3D</button><button id="walkBack">Quay lại giao diện danh mục</button></div></div></div>
     <aside class="walk-detail" id="walkDetail" hidden><button class="close" id="walkDetailClose" aria-label="Đóng">×</button><div id="walkDetailContent"></div></aside>
+    <div class="walk-image-zoom" id="walkImageZoom" hidden role="dialog" aria-modal="true" aria-label="Ảnh phóng to"><button class="walk-image-close" id="walkImageClose" aria-label="Đóng ảnh">×</button><div class="walk-image-content" id="walkImageContent"></div></div>
   `;
   document.body.appendChild(root);
   const btn=document.createElement('button');btn.id='enter3D';btn.className='btn primary';btn.textContent='🚶 Khám phá không gian 3D';
@@ -1320,6 +1321,8 @@ function walkMakeUI(){
   $('#walkBegin').onclick=()=>{if(!W.ready){walkInit();}if(W.ready){$('#walkIntro').hidden=true;$('#walkDetail').hidden=true;walkRequestLock();}};
   $('#walkDetailClose').onclick=walkCloseDetail;
   $('#walkInteract').onclick=walkInteract;
+  $('#walkImageClose').onclick=walkCloseGalleryImage;
+  $('#walkImageZoom').addEventListener('click',e=>{if(e.target.id==='walkImageZoom')walkCloseGalleryImage()});
   root.querySelectorAll('[data-wroom]').forEach(b=>b.addEventListener('click',()=>walkTeleport(b.dataset.wroom)));
   root.querySelectorAll('[data-hold]').forEach(b=>{
     const k=b.dataset.hold;const on=e=>{e.preventDefault();W.keys[k]=true};const off=e=>{e.preventDefault();W.keys[k]=false};
@@ -1359,7 +1362,8 @@ function walkMakeUI(){
     }
     if(e.key.toLowerCase()==='e'&&$('#walkIntro').hidden&&$('#walkDetail').hidden)walkInteract();
     if(e.key==='Escape'){
-      if(!$('#walkDetail').hidden)walkCloseDetail();
+      if(!$('#walkImageZoom').hidden)walkCloseGalleryImage();
+      else if(!$('#walkDetail').hidden)walkCloseDetail();
       else if(!$('#walkIntro').hidden)walkLeave();
     }
     if(e.key==='Tab'&&$('#walkIntro').hidden){e.preventDefault();$('#walkIntro').hidden=false;if(document.pointerLockElement===$('#walkCanvas'))document.exitPointerLock?.()}
@@ -1381,6 +1385,7 @@ function walkOpen(){
 }
 function walkLeave(){
   if(!$('#walkDetail').hidden)walkCloseDetail();
+  if(!$('#walkImageZoom').hidden)walkCloseGalleryImage();
   if(document.pointerLockElement===$('#walkCanvas'))document.exitPointerLock?.();
   W.active=false;W.battleRunning=false;W.keys={};$('#walk3d').hidden=true;$('#walkIntro').hidden=true;$('#walkDetail').hidden=true;
   document.body.dataset.view=cur.view||'entry';
@@ -1618,8 +1623,8 @@ function walkBuildGallery(){
     const slot=GALLERY_SLOTS.find(candidate=>candidate.id===it.gallerySlot);
     walkCreatePicture(it,slot.position,slot.yaw,2.25,1.68);
   });
-  walkSign('KHÁNG CHIẾN CHỐNG XIÊM','RẠCH GẦM – XOÀI MÚT',-19.65,4.2,-2.8,Math.PI/2,'#4a1718');
-  walkSign('KHÁNG CHIẾN CHỐNG THANH','NGỌC HỒI – ĐỐNG ĐA',-19.65,4.2,2.8,Math.PI/2,'#273c32');
+  walkSign('KHÁNG CHIẾN CHỐNG XIÊM','RẠCH GẦM – XOÀI MÚT',-14,4.2,-5.8,2*Math.PI,'#4a1718');
+  walkSign('KHÁNG CHIẾN CHỐNG THANH','NGỌC HỒI – ĐỐNG ĐA',-14,4.2,5.8,Math.PI,'#273c32');
 }
 function walkPedestal(x,z,label){
   const stone=walkMaterial(0xaaa18c,.5,.24),gold=walkMaterial(0xb88b43,.35,.5),black=walkMaterial(0x3b2921,.58,.22);
@@ -2176,7 +2181,7 @@ function walkTeleport(id){
 function walkInBounds(x,z){return W.rooms.some(r=>x>=r.minX&&x<=r.maxX&&z>=r.minZ&&z<=r.maxZ);}
 function walkCollision(x,z){const r=.32;return W.solids.some(b=>x+r>b.minX&&x-r<b.maxX&&z+r>b.minZ&&z-r<b.maxZ);}
 function walkMove(dt){
-  if(!W.active||!W.camera||!$('#walkIntro').hidden||!$('#walkDetail').hidden){W.velocity.x=0;W.velocity.z=0;return;}
+  if(!W.active||!W.camera||!$('#walkIntro').hidden||!$('#walkDetail').hidden||!$('#walkImageZoom').hidden){W.velocity.x=0;W.velocity.z=0;return;}
   if(document.pointerLockElement!==$('#walkCanvas')&&(W.keys.turnL||W.keys.turnR)){W.yaw+=(W.keys.turnL?1:0)*dt*1.7-(W.keys.turnR?1:0)*dt*1.7;walkApplyLook();}
   let f=(W.keys.w||W.keys.arrowup?1:0)-(W.keys.s||W.keys.arrowdown?1:0),r=(W.keys.d||W.keys.arrowright?1:0)-(W.keys.a||W.keys.arrowleft?1:0);
   const len=Math.hypot(f,r);if(len){f/=len;r/=len;}
@@ -2208,10 +2213,22 @@ function walkUpdatePrompt(now){
   if(status!==W.statusText){$('#walkStatus').textContent=status;W.statusText=status;}
 }
 function walkInteract(){
-  if(!W.active||!$('#walkIntro').hidden||!$('#walkDetail').hidden)return;
+  if(!W.active||!$('#walkIntro').hidden||!$('#walkDetail').hidden||!$('#walkImageZoom').hidden)return;
   const hit=walkFindHit();if(!hit){$('#walkPrompt').textContent='Hãy hướng tâm ngắm vào tranh, hiện vật, sa hình hoặc văn bản để mở nội dung.';return;}
+  if(['xiem-4','thanh-4'].includes(hit.item.gallerySlot)){walkShowGalleryImage(hit.item);return;}
   if(hit.item.isVideoScreen){walkPlayCampaignVideo(hit.item.campaign);return;}
   walkOpenItem(hit.item);
+}
+function walkShowGalleryImage(it){
+  W.keys={};W.velocity.x=0;W.velocity.z=0;
+  $('#walkImageContent').innerHTML=artHTML(it);
+  const image=$('#walkImageContent img');if(image)image.alt=it.title||'Ảnh tư liệu';
+  $('#walkImageZoom').hidden=false;
+  if(document.pointerLockElement===$('#walkCanvas'))document.exitPointerLock?.();
+}
+function walkCloseGalleryImage(){
+  $('#walkImageZoom').hidden=true;$('#walkImageContent').replaceChildren();
+  W.velocity.x=0;W.velocity.z=0;
 }
 function walkPlayCampaignVideo(campaign){
   const video=W.tvVideoElements[campaign];
