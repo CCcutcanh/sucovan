@@ -379,6 +379,13 @@
       "type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       "size": 120087,
       "path": "resources/2-v11-02-2026-sp2-thong-tin-tuyen-sinh-2026-4-docx.docx"
+    },
+    {
+      "id": "nguyen-nhan-thang-loi",
+      "name": "nguyênnhânthắnglợi.docx",
+      "type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "size": 14974,
+      "path": "resources/nguyênnhânthắnglợi.docx"
     }
   ],
   "videos": []
