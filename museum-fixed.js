@@ -1,13 +1,19 @@
 (async()=>{
 'use strict';
-let SERVER_MODE=false,SERVER_STATE=null;
-try{
-  if(location.protocol==='http:'&&(['127.0.0.1','localhost'].includes(location.hostname))){
-    SERVER_MODE=true;
-    const response=await fetch('/api/state',{cache:'no-store'});
-    if(response.ok){SERVER_STATE=await response.json();const seedNode=document.querySelector('#seed');if(seedNode)seedNode.textContent=JSON.stringify(SERVER_STATE).replace(/</g,'\\u003c');}
-  }
-}catch(e){}
+let STATIC_DATA=null,DATA_LOAD_ERROR=null,DATA_FILE_HANDLE=null;
+const seedElement=document.querySelector('#seed');
+if(seedElement&&seedElement.textContent.trim()!=='null'){
+  try{STATIC_DATA=JSON.parse(seedElement.textContent)}
+  catch(error){DATA_LOAD_ERROR=error;console.error('Không đọc được dữ liệu nhúng trong trang HTML.',error)}
+}else if(location.protocol==='http:'||location.protocol==='https:'){
+  try{
+    const response=await fetch(new URL('museum-data.json',location.href),{cache:'no-store'});
+    if(!response.ok)throw new Error(`HTTP ${response.status}`);
+    STATIC_DATA=await response.json();
+    if(!STATIC_DATA||!Array.isArray(STATIC_DATA.items))throw new Error('File JSON không có danh sách items hợp lệ.');
+    if(seedElement)seedElement.textContent=JSON.stringify(STATIC_DATA).replace(/</g,'\\u003c');
+  }catch(error){DATA_LOAD_ERROR=error;console.error('Không tải được museum-data.json.',error)}
+}
 const SRC='<!DOCTYPE html>\n'+document.documentElement.outerHTML; // bản gốc để xuất file HTML chia sẻ
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -15,6 +21,17 @@ const lines=s=>String(s||'').split(/\n+/).map(x=>x.trim()).filter(Boolean);
 const uid=()=>'i'+Math.random().toString(36).slice(2,9);
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const clone=o=>JSON.parse(JSON.stringify(o));
+function projectAssetPath(value,folder){
+  let path=String(value||'').trim().replace(/\\/g,'/').replace(/^(?:\.\/)+/,'');
+  if(!path)return '';
+  if(/^(?:[a-z][a-z0-9+.-]*:|\/|\\\\)/i.test(path)||/[?#]/.test(path)||path.split('/').some(part=>!part||part==='.'||part==='..'))throw new Error('Hãy nhập đường dẫn tương đối nằm trong thư mục dự án.');
+  if(!path.startsWith(`${folder}/`))path=`${folder}/${path}`;
+  return path;
+}
+function assetHref(path){
+  if(/^data:/i.test(String(path||'')))return path;
+  return String(path||'').split('/').map(encodeURIComponent).join('/');
+}
 
 const TYPES={
   tranh:{label:'Tranh',wing:'Phòng tranh',icon:'🖼'},
@@ -476,8 +493,7 @@ const THEMES=[
 ];
 
 /* ====================== LƯU TRỮ ====================== */
-const KEY='bao-tang-ao-v2';
-let SEED=null; try{SEED=JSON.parse($('#seed').textContent)}catch(e){}
+let SEED=STATIC_DATA;
 function norm(d){
   const base=clone(DEFAULT);
   d.meta=Object.assign({},base.meta,d.meta||{});
@@ -488,45 +504,68 @@ function norm(d){
   return d;
 }
 function load(){
-  if(SERVER_MODE&&SERVER_STATE&&Array.isArray(SERVER_STATE.items))return norm(clone(SERVER_STATE));
-  try{const r=localStorage.getItem(KEY);if(r){const d=JSON.parse(r);if(d&&Array.isArray(d.items)){
-    if(d.campaignVersion!==CAMPAIGN_VERSION&&d.items.some(item=>XIEM_IDS.has(item.id))){
-      d.items=d.items.map(item=>Object.assign({campaign:'xiem'},item));
-      const existing=new Set(d.items.map(item=>item.id));
-      d.items.push(...THANH.items.filter(item=>!existing.has(item.id)));
-      d.meta=Object.assign({},d.meta,{war:DEFAULT.meta.war,subtitle:DEFAULT.meta.subtitle,welcome:DEFAULT.meta.welcome,outro:DEFAULT.meta.outro});
-    }
-    d.campaignVersion=CAMPAIGN_VERSION;
-    return norm(d);
-  }}}catch(e){}
-  return norm(clone(SEED||DEFAULT));
-}
-let S=load(), saveT=null;
-if(SERVER_MODE&&!SERVER_STATE)save();
-function save(){
-  const serialized=JSON.stringify(S);
-  try{localStorage.setItem(KEY,serialized)}catch(e){if(!SERVER_MODE)toast('Không lưu được vào trình duyệt. Hãy xuất file sao lưu để tránh mất dữ liệu.');}
-  if(SERVER_MODE){
-    fetch('/api/state',{method:'POST',headers:{'Content-Type':'application/json; charset=utf-8'},body:serialized,cache:'no-store'})
-      .then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);SERVER_STATE=clone(S);})
-      .catch(()=>toast('Chưa ghi được dữ liệu ra file. Hãy kiểm tra quyền ghi của thư mục bảo tàng.'));
+  const d=clone(SEED||DEFAULT);
+  if(d.campaignVersion!==CAMPAIGN_VERSION&&d.items.some(item=>XIEM_IDS.has(item.id))){
+    d.items=d.items.map(item=>Object.assign({campaign:'xiem'},item));
+    const existing=new Set(d.items.map(item=>item.id));
+    d.items.push(...THANH.items.filter(item=>!existing.has(item.id)));
+    d.meta=Object.assign({},d.meta,{war:DEFAULT.meta.war,subtitle:DEFAULT.meta.subtitle,welcome:DEFAULT.meta.welcome,outro:DEFAULT.meta.outro});
   }
+  d.campaignVersion=CAMPAIGN_VERSION;
+  return norm(d);
+}
+let S=load(), saveT=null,saveChain=Promise.resolve();
+let dataDirty=false;
+function markDataDirty(){
+  dataDirty=true;
+  const status=$('#saveStatus');if(status)status.textContent='Thay đổi chưa lưu';
+}
+async function writeDataFile(handle,requestPermission=false){
+  let permission=await handle.queryPermission({mode:'readwrite'});
+  if(permission!=='granted'&&requestPermission)permission=await handle.requestPermission({mode:'readwrite'});
+  if(permission!=='granted')throw new Error('Trình duyệt chưa cấp quyền ghi file museum-data.json.');
+  const serialized=JSON.stringify(S,null,2);
+  const writable=await handle.createWritable();
+  try{await writable.write(serialized);await writable.close()}
+  catch(error){await writable.abort();throw error}
+  dataDirty=false;
+  const status=$('#saveStatus');if(status)status.textContent='Đã lưu vào museum-data.json';
+}
+function save(){
+  markDataDirty();
+  if(!DATA_FILE_HANDLE)return;
+  clearTimeout(saveT);
+  saveT=setTimeout(()=>{
+    const handle=DATA_FILE_HANDLE;
+    saveChain=saveChain.catch(()=>{}).then(()=>writeDataFile(handle)).catch(error=>{
+      console.error('Không thể tự lưu museum-data.json.',error);
+      toast(`Không tự lưu được JSON: ${error.message} Hãy bấm “Lưu ngay”.`);
+    });
+  },500);
 }
 async function saveNow(){
-  const serialized=JSON.stringify(S);
-  try{localStorage.setItem(KEY,serialized)}catch(e){}
-  if(!SERVER_MODE){
-    toast('Bản đang mở trực tiếp trong trình duyệt chỉ lưu ở trình duyệt này. Hãy mở bảo tàng bằng BatTangTaySon-Windows.bat để nút Lưu ghi vào file và chuyển máy được.');
-    return false;
-  }
+  clearTimeout(saveT);
   const button=$('#saveNow');if(button){button.disabled=true;button.textContent='Đang lưu…'}
   try{
-    const response=await fetch('/api/state',{method:'POST',headers:{'Content-Type':'application/json; charset=utf-8'},body:serialized,cache:'no-store'});
-    if(!response.ok)throw new Error('HTTP '+response.status);
-    SERVER_STATE=clone(S);
-    toast('Đã lưu thành công vào museum-data.json. Hãy sao chép toàn bộ thư mục bảo tàng để mang sang máy khác.');
+    if(DATA_FILE_HANDLE){
+      const handle=DATA_FILE_HANDLE;
+      saveChain=saveChain.catch(()=>{}).then(()=>writeDataFile(handle,true));
+      await saveChain;
+      toast('Đã lưu thành công vào museum-data.json.');
+    }else if(window.showSaveFilePicker){
+      DATA_FILE_HANDLE=await window.showSaveFilePicker({suggestedName:'museum-data.json',types:[{description:'JSON',accept:{'application/json':['.json']}}]});
+      await writeDataFile(DATA_FILE_HANDLE,true);
+      toast('Đã lưu thành công vào museum-data.json. Các lần sửa sau sẽ tự lưu vào file này.');
+    }else{
+      download('museum-data.json',JSON.stringify(S,null,2),'application/json');
+      dataDirty=false;const status=$('#saveStatus');if(status)status.textContent='Đã tải museum-data.json';
+      toast('Đã tải museum-data.json. Hãy thay file cũ trong thư mục dự án bằng file vừa tải.');
+    }
     return true;
-  }catch(e){toast('Lưu thất bại. Hãy chạy lại BatTangTaySon-Windows.bat và kiểm tra quyền ghi thư mục.');return false}
+  }catch(error){
+    if(error.name!=='AbortError'){console.error('Không lưu được museum-data.json.',error);toast(`Lưu JSON thất bại: ${error.message}`)}
+    return false;
+  }
   finally{if(button){button.disabled=false;button.textContent='💾 Lưu ngay'}}
 }
 function queueSave(){clearTimeout(saveT);saveT=setTimeout(save,350)}
@@ -537,7 +576,7 @@ function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');cl
 let UQ=0;
 const uniq=svg=>{const n=++UQ;return svg.replace(/id="([\w-]+)"/g,'id="$1_'+n+'"').replace(/url\(#([\w-]+)\)/g,'url(#$1_'+n+')')};
 const artHTML=it=>{
-  if(it.img)return `<img src="${esc(it.img)}" alt="${esc(it.title)}" draggable="false">`;
+  if(it.img)return `<img src="${esc(assetHref(it.img))}" alt="${esc(it.title)}" draggable="false">`;
   if(it.art&&ART[it.art])return uniq(ART[it.art]());
   return `<div class="noart">${TYPES[it.type]?TYPES[it.type].icon:'🏛'}</div>`;
 };
@@ -645,16 +684,11 @@ function stageHTML(it){
     case 'anh':return `<figure class="photo" id="photo"><div class="art">${artHTML(it)}</div><figcaption>${esc(it.title)}</figcaption></figure><button class="chip" id="toneBtn">Xem ảnh màu gốc</button>`;
     case 'tailieu':{
       let body=lines(it.text);if(!body.length&&!it.img)body=lines(it.detail);
-      return `<article class="paper"><span class="stamp">Tư liệu</span><h3>${esc(it.title)}</h3>${it.img?`<div class="art">${artHTML(it)}</div>`:''}${body.map((p,i)=>`<p style="animation-delay:${(.3+i*.4).toFixed(2)}s">${esc(p)}</p>`).join('')}</article>`;
+      const files=(S.resources||[]).map((file,index)=>`<div class="resource-file"><span class="resource-file-type">📄</span><span class="resource-file-name">${esc(file.name)}<small>${esc(file.type||'Tài liệu')}</small></span><button type="button" class="btn resource-download-btn" data-resource-index="${index}">⬇ Tải xuống</button></div>`).join('');
+      return `<article class="paper"><span class="stamp">Tư liệu</span><h3>${esc(it.title)}</h3>${it.img?`<div class="art">${artHTML(it)}</div>`:''}${body.map((p,i)=>`<p style="animation-delay:${(.3+i*.4).toFixed(2)}s">${esc(p)}</p>`).join('')}<section class="resource-wall"><strong>TÀI LIỆU CÓ THỂ TẢI</strong><div id="resource-file-list" class="resource-file-list">${files||'<p class="resource-empty">Chưa có tài liệu trong kho.</p>'}</div></section></article>`;
     }
     case 'daocu':return `<div class="obj" id="obj"><div class="art">${artHTML(it)}</div></div><p class="hint">Di chuyển chuột (hoặc chạm) trên màn hình để xoay nhẹ hiện vật</p>`;
     case 'phim':return `<div class="film"><div class="screen" id="screen"></div><div class="filmbar"><button class="btn primary" id="fPlay">▶ Phát phim</button><input type="range" id="fSeek" min="0" max="${FILM_N*1000-1}" value="0" aria-label="Tua phim"><span class="small" id="fTime"></span></div><div class="scenecap" id="sceneCap"></div></div>`;
-    case 'tailieu':return `<section class="resource-wall" aria-label="Hộp tải tài liệu trên tường">
-      <div class="resource-wall-header"><span class="resource-wall-icon" aria-hidden="true">📥</span><div><strong>KHO TÀI LIỆU</strong><small>TẢI XUỐNG TƯ LIỆU THAM KHẢO</small></div></div>
-      <p>Chọn tài liệu có sẵn trong danh sách hoặc thêm tệp từ thiết bị. Chấp nhận mọi định dạng tệp.</p>
-      <label class="resource-upload">＋ Thêm tài liệu từ thiết bị<input id="resource-file-input" type="file" multiple></label>
-      <div id="resource-file-list" class="resource-file-list"><p class="resource-empty">Chưa có tài liệu được thêm trong phiên này.</p></div>
-    </section>`;
     case 'sahinh':{
       const ph=lines(it.phases),hs=parseHot(it.hotspots);
       return `<div class="mapwrap">${ph.length?`<div class="phases"><button class="chip on" data-ph="0">Toàn cảnh</button>${ph.map((p,i)=>`<button class="chip" data-ph="${i+1}">${esc(p)}</button>`).join('')}</div>`:''}<div class="mapbox"><div class="art">${artHTML(it)}</div>${hs.map((h,i)=>`<button class="hs" data-i="${i}" data-ph="${h.phase}" style="left:${h.x}%;top:${h.y}%" aria-label="${esc(h.name)}">${i+1}</button>`).join('')}</div><div class="note" id="note">${NOTE_HINT}</div></div>`;
@@ -676,27 +710,13 @@ function renderRoom(it){
   if(it.type==='phim'){F.t=0;F.shown=-1;F.mode='idle';filmDraw()}
   updateSpeakBtn(false);
 }
-const RESOURCE_FILES=[];
 function bindResourceDownloads(room){
-  const input=room.querySelector('#resource-file-input');
   const list=room.querySelector('#resource-file-list');
-  if(!input||!list)return;
-  const draw=()=>{
-    if(!RESOURCE_FILES.length){list.innerHTML='<p class="resource-empty">Chưa có tài liệu được thêm trong phiên này.</p>';return;}
-    list.innerHTML=RESOURCE_FILES.map((f,i)=>`<div class="resource-file"><span class="resource-file-type">📄</span><span class="resource-file-name" title="${esc(f.name)}">${esc(f.name)}<small>${(f.size/1024).toFixed(1)} KB</small></span><button type="button" class="btn resource-download-btn" data-resource-index="${i}">⬇ Tải xuống</button></div>`).join('');
-  };
-  input.addEventListener('change',()=>{
-    [...(input.files||[])].forEach(file=>RESOURCE_FILES.push({name:file.name,file,size:file.size}));
-    draw(); input.value='';
-  });
+  if(!list)return;
   list.addEventListener('click',e=>{
     const btn=e.target.closest('[data-resource-index]');if(!btn)return;
-    const item=RESOURCE_FILES[Number(btn.dataset.resourceIndex)];if(!item)return;
-    const url=URL.createObjectURL(item.file);const a=document.createElement('a');
-    a.href=url;a.download=item.name;a.style.display='none';document.body.appendChild(a);a.click();a.remove();
-    setTimeout(()=>URL.revokeObjectURL(url),1500);
+    downloadSavedResource((S.resources||[])[Number(btn.dataset.resourceIndex)]);
   });
-  draw();
 }
 function setPhase(p){
   $$('.phases .chip').forEach(c=>c.classList.toggle('on',+c.dataset.ph===p));
@@ -990,7 +1010,7 @@ function formHTML(it){
   </div>
   ${it.type==='phim'?'<div class="help">Phim sa hình dựng sẵn. Bạn có thể sửa tên, mô tả và kịch bản: mỗi dòng kịch bản ứng với một cảnh (6 cảnh).</div>':''}<div class="fld" ${it.type==='phim'?'hidden':''}><label>Hình ảnh của hiện vật</label>
     <div class="imgrow"><div>${prev}</div>
-      <div><input type="file" id="imgFile" accept="image/*"><p class="small" style="margin:8px 0">${it.img?'Đang dùng ảnh bạn tải lên.':it.art?'Đang dùng hình minh hoạ mẫu. Tải ảnh thật lên để thay thế.':'Chưa có hình. Hãy tải ảnh lên.'}</p>${it.img?'<button class="btn sm danger" id="imgDel">Xoá ảnh đã tải</button>':''}</div>
+      <div><label for="imgPath">Tên file ảnh trong thư mục dự án</label><input type="text" id="imgPath" value="${esc(/^data:/i.test(it.img||'')?'':it.img)}" placeholder="images/ten-anh.jpg"><p class="small" style="margin:8px 0">Chép ảnh vào thư mục images rồi nhập đường dẫn tương đối, ví dụ images/rach-gam.jpg. Không tải ảnh lên trình duyệt.</p>${it.img?'<button class="btn sm danger" id="imgDel">Bỏ ảnh khỏi hiện vật</button>':''}</div>
     </div></div>
   ${isDoc?`<div class="fld"><label>Nội dung tư liệu (mỗi dòng là một đoạn, hiện trên tờ giấy tư liệu)</label><textarea data-k="text" style="min-height:140px">${esc(it.text)}</textarea></div>`:''}
   <div class="fld"><label>Mô tả chi tiết (hiện ở khung thông tin bên phải, mỗi dòng là một đoạn)</label><textarea data-k="detail">${esc(it.detail)}</textarea></div>
@@ -1031,37 +1051,58 @@ function edResources(){
   const files=S.resources||[];
   return `<div class="ed-pane" style="max-width:900px">
     <div class="card"><h3>Kho tài liệu tải xuống</h3>
-      <p class="small">Thêm tài liệu tại đây. Các tệp sẽ xuất hiện khi khách tham quan tương tác với biển “KHO TÀI LIỆU” trong phòng Tư liệu. Chấp nhận mọi định dạng tệp.</p>
-      <label class="btn primary" style="display:inline-flex;cursor:pointer;align-items:center;gap:8px">＋ Chọn tài liệu để tải lên<input type="file" id="museumResourceUpload" multiple hidden></label>
-      <p class="small">Tệp được lưu trong dữ liệu trình duyệt và nằm trong file sao lưu JSON. Nên dùng tệp dung lượng nhỏ để tránh giới hạn lưu trữ của trình duyệt.</p>
+      <p class="small">Chép tệp vào thư mục resources trong dự án, sau đó nhập đường dẫn. JSON chỉ lưu tên và đường dẫn tệp, không nhúng nội dung tệp.</p>
+      <div class="row2"><div class="fld"><label for="resourcePath">Đường dẫn tệp</label><input type="text" id="resourcePath" placeholder="resources/tu-lieu.pdf"></div><div class="fld" style="align-self:end"><button class="btn primary" id="addResourcePath">＋ Thêm đường dẫn</button></div></div>
     </div>
     <div class="card"><h3>Danh sách tài liệu (${files.length})</h3>
-      ${files.length?files.map((f,i)=>`<div class="resource-file"><span class="resource-file-type">📄</span><span class="resource-file-name" title="${esc(f.name)}">${esc(f.name)}<small>${(Number(f.size||0)/1024).toFixed(1)} KB · ${esc(f.type||'Tệp không xác định')}</small></span><button class="btn resource-download-btn" data-resource-admin-download="${i}">⬇ Tải thử</button><button class="btn danger" data-resource-admin-delete="${i}">🗑 Xoá</button></div>`).join(''):'<p class="resource-empty">Chưa có tài liệu. Hãy bấm “Chọn tài liệu để tải lên”.</p>'}
+      ${files.length?files.map((f,i)=>`<div class="resource-file"><span class="resource-file-type">📄</span><span class="resource-file-name" title="${esc(f.name)}">${esc(f.name)}<small>${esc(f.path||f.name)} · ${esc(f.type||'Tệp không xác định')}</small></span><button class="btn resource-download-btn" data-resource-admin-download="${i}">⬇ Tải thử</button><button class="btn danger" data-resource-admin-delete="${i}">🗑 Xoá</button></div>`).join(''):'<p class="resource-empty">Chưa có tài liệu. Chép tệp vào resources rồi thêm đường dẫn ở trên.</p>'}
     </div>
     <div class="card"><h3>Video cho phòng Sa hình</h3>
-      <p class="small">Hai video mặc định trên TV sa hình sẽ tự phát lặp ở chế độ tắt tiếng. Video tải thêm được lưu cùng dữ liệu bảo tàng khi chạy bằng launcher Windows; khi chuyển máy, hãy sao chép toàn bộ thư mục dự án.</p>
+      <p class="small">Chép video vào thư mục videos. Không tải video lên trình duyệt hoặc nhúng vào JSON.</p>
       <div class="row2"><div class="fld"><label>Chiến dịch hiển thị</label><select id="museumVideoCampaign"><option value="xiem">Kháng chiến chống quân Xiêm · Rạch Gầm – Xoài Mút</option><option value="thanh">Kháng chiến chống quân Thanh · Ngọc Hồi – Đống Đa</option></select></div>
-      <div class="fld"><label>Chọn video</label><input id="museumVideoUpload" type="file" accept="video/*" multiple></div></div>
+      <div class="fld"><label for="videoPath">Đường dẫn video</label><input id="videoPath" type="text" placeholder="videos/bo-sung.mp4"></div></div>
+      <button class="btn primary" id="addVideoPath">＋ Thêm đường dẫn video</button>
       <div class="small">Video đã tải lên (${(S.videos||[]).length})</div>
-      ${(S.videos||[]).length?(S.videos||[]).map((v,i)=>`<div class="resource-file"><span class="resource-file-type">🎬</span><span class="resource-file-name">${esc(v.name)}<small>${v.campaign==='thanh'?'Chiến dịch quân Thanh':'Chiến dịch quân Xiêm'} · ${(Number(v.size||0)/1024/1024).toFixed(1)} MB</small></span><button class="btn danger" data-video-delete="${i}">🗑 Xoá</button></div>`).join(''):'<p class="resource-empty">Chưa có video. Chọn chiến dịch rồi chọn tệp video để thêm.</p>'}
+      ${(S.videos||[]).length?(S.videos||[]).map((v,i)=>`<div class="resource-file"><span class="resource-file-type">🎬</span><span class="resource-file-name">${esc(v.name)}<small>${v.campaign==='thanh'?'Chiến dịch quân Thanh':'Chiến dịch quân Xiêm'} · ${esc(v.path||v.name)}</small></span><button class="btn danger" data-video-delete="${i}">🗑 Bỏ khỏi danh sách</button></div>`).join(''):'<p class="resource-empty">Chưa có video bổ sung. Hai video mặc định trong thư mục dự án luôn sẵn dùng.</p>'}
     </div>
   </div>`;
 }
-function fileAsDataURL(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(reader.error||new Error('Không đọc được tệp'));reader.readAsDataURL(file);});}
 function downloadSavedResource(resource){
-  if(!resource||!resource.dataURL)return;
-  const a=document.createElement('a');a.href=resource.dataURL;a.download=resource.name||'tai-lieu';a.style.display='none';document.body.appendChild(a);a.click();a.remove();
+  if(!resource)return;
+  const source=resource.dataURL||resource.url||(resource.path&&assetHref(resource.path));
+  if(!source){toast('Tài liệu chưa có đường dẫn tệp hợp lệ.');return}
+  const a=document.createElement('a');a.href=source;a.download=resource.name||String(resource.path||'tai-lieu').split('/').pop();a.style.display='none';document.body.appendChild(a);a.click();a.remove();
 }
 function edData(){
-  const old=(()=>{try{return !!localStorage.getItem('bao-tang-ao-v1')}catch(e){return false}})();
   return `<div class="ed-pane"><div class="datagrid">
-  <div class="help">Nhấn nút 💾 Lưu ngay ở đầu cửa sổ để ghi mọi thay đổi vào museum-data.json trong thư mục dự án. Để chuyển máy, sao chép nguyên thư mục bảo tàng sau khi lưu.</div>
+  <div class="help">Không còn lưu dữ liệu trong bộ nhớ trình duyệt. Khi chạy trên web, museum-data.json được đọc cạnh file HTML. Khi mở trực tiếp bằng file://, hãy mở JSON bằng nút bên dưới. Dùng “Lưu ngay” để chọn hoặc cập nhật file JSON; nếu trình duyệt không hỗ trợ ghi file, nút sẽ tải JSON xuống để thay vào thư mục dự án.</div>
+  <div class="card"><h3>Kết nối file dữ liệu</h3><p class="small">Chọn museum-data.json trên máy để nạp nội dung và cho phép lưu thay đổi trực tiếp vào file đó (trình duyệt Chromium mới).</p><button class="btn" id="openDataFile">📂 Mở museum-data.json để chỉnh sửa</button></div>
   <div class="card"><h3>Chủ đề mẫu</h3><p class="small">Nạp một chủ đề dựng sẵn. Nội dung hiện tại sẽ bị thay thế, hãy sao lưu trước nếu cần.</p><div style="display:flex;gap:8px;flex-wrap:wrap">${THEMES.map(th=>`<button class="btn" data-theme="${th.id}">${esc(th.name)}</button>`).join('')}</div></div>
-  <div class="card"><h3>Chia sẻ cho học sinh</h3><p class="small">Tải bộ HTML, CSS và JavaScript. Giữ cả ba file trong cùng một thư mục khi gửi cho học sinh.</p><button class="btn primary" id="exportHtml">Tải bộ file để chia sẻ</button></div>
-  <div class="card"><h3>Sao lưu dữ liệu</h3><p class="small">Xuất toàn bộ nội dung ra file .json để lưu hoặc chuyển sang máy khác, rồi nhập lại khi cần.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="exportJson">Xuất file sao lưu (.json)</button><label class="btn" style="cursor:pointer">Nhập file sao lưu<input type="file" id="importJson" accept=".json,application/json" hidden></label></div></div>
-  ${old?`<div class="card"><h3>Dữ liệu của phiên bản trước</h3><p class="small">Trình duyệt này còn dữ liệu bảo tàng từ phiên bản cũ. Bạn có thể nạp lại nếu cần.</p><button class="btn" id="loadOld">Nạp dữ liệu phiên bản trước</button></div>`:''}
+  <div class="card"><h3>Chia sẻ cho học sinh</h3><p class="small">Chép cả thư mục dự án, gồm HTML, CSS, JavaScript, museum-data.json, images, resources và video. Để chạy online, triển khai toàn bộ thư mục này lên Vercel.</p><button class="btn primary" id="exportHtml">Tải file HTML kèm CSS/JS</button></div>
+  <div class="card"><h3>Sao lưu dữ liệu</h3><p class="small">Xuất toàn bộ nội dung ra file .json để lưu hoặc chuyển sang máy khác. Khi nhập JSON, các đường dẫn media vẫn trỏ vào những file tương ứng trong thư mục dự án.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="exportJson">Xuất file sao lưu (.json)</button><label class="btn" style="cursor:pointer">Nhập file sao lưu<input type="file" id="importJson" accept=".json,application/json" hidden></label></div></div>
   <div class="card"><h3>Làm mới</h3><p class="small">Xoá sạch hiện vật để bắt đầu một bảo tàng trống cho chủ đề khác.</p><button class="btn danger" id="clearAll">Xoá hết hiện vật</button></div>
   </div></div>`;
+}
+function validMuseumData(data){
+  if(!data||typeof data!=='object'||!Array.isArray(data.items))throw new Error('File JSON phải có thuộc tính items dạng danh sách.');
+  return norm(data);
+}
+async function openDataFile(){
+  if(!window.showOpenFilePicker){$('#importJson').click();toast('Trình duyệt chưa hỗ trợ kết nối file trực tiếp. Chọn JSON để nhập, rồi dùng Lưu ngay để tải file đã sửa.');return}
+  try{
+    const [handle]=await window.showOpenFilePicker({multiple:false,types:[{description:'Dữ liệu bảo tàng JSON',accept:{'application/json':['.json']}}]});
+    const file=await handle.getFile(),data=validMuseumData(JSON.parse(await file.text()));
+    if(!confirm('Mở file này sẽ thay toàn bộ nội dung hiện tại. Tiếp tục?'))return;
+    S=data;DATA_FILE_HANDLE=handle;ed.id=S.items[0]?S.items[0].id:null;
+    let permission=await handle.queryPermission({mode:'readwrite'});
+    if(permission!=='granted')permission=await handle.requestPermission({mode:'readwrite'});
+    if(permission!=='granted')DATA_FILE_HANDLE=null;
+    dataDirty=false;
+    applyMeta();renderEd();
+    toast(permission==='granted'?'Đã mở file. Các thay đổi sẽ tự lưu vào museum-data.json.':'Đã nạp JSON ở chế độ chỉ đọc. Dùng Lưu ngay để cấp quyền ghi hoặc tải file mới.');
+  }catch(error){
+    if(error.name!=='AbortError'){console.error('Không thể mở museum-data.json.',error);toast(`Không mở được file JSON: ${error.message}`)}
+  }
 }
 const slug=s=>String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/gi,'d').replace(/[^a-z0-9]+/gi,'-').replace(/^-|-$/g,'').toLowerCase()||'bao-tang-ao';
 function download(name,text,type){
@@ -1072,21 +1113,6 @@ function download(name,text,type){
 function downloadAsset(url){
   const a=document.createElement('a');a.href=url;a.download=new URL(url).pathname.split('/').pop();
   document.body.appendChild(a);a.click();a.remove();
-}
-function readImage(file,max=1400){
-  return new Promise((res,rej)=>{
-    const fr=new FileReader();
-    fr.onload=()=>{const im=new Image();
-      im.onload=()=>{
-        const k=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');
-        c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);
-        c.getContext('2d').drawImage(im,0,0,c.width,c.height);
-        const alpha=/png|webp|gif/.test(file.type);
-        res(c.toDataURL(alpha?'image/webp':'image/jpeg',.85));
-      };
-      im.onerror=rej;im.src=fr.result};
-    fr.onerror=rej;fr.readAsDataURL(file);
-  });
 }
 const edBody=$('#edBody');
 edBody.addEventListener('input',e=>{
@@ -1105,52 +1131,49 @@ edBody.addEventListener('input',e=>{
 });
 edBody.addEventListener('change',async e=>{
   const t=e.target;
-  if(t.id==='museumResourceUpload'&&t.files&&t.files.length){
-    const files=[...t.files];let added=0;
-    try{
-      for(const file of files){
-        const dataURL=await fileAsDataURL(file);
-        S.resources=S.resources||[];
-        S.resources.push({id:uid(),name:file.name,type:file.type||'application/octet-stream',size:file.size,dataURL});added++;
-      }
-      save();renderEd();toast(`Đã thêm ${added} tài liệu vào kho tải xuống.`);
-    }catch(err){save();renderEd();toast('Không thể lưu tệp. Tệp có thể quá lớn hoặc bộ nhớ trình duyệt đã đầy. Hãy thử tệp nhỏ hơn.');}
-    return;
-  }
-  if(t.id==='museumVideoUpload'&&t.files&&t.files.length){
-    const files=[...t.files].filter(file=>file.type.startsWith('video/'));
-    const campaign=$('#museumVideoCampaign')?.value||'xiem';let added=0;
-    try{
-      S.videos=S.videos||[];
-      for(const file of files){
-        if(file.size>4*1024*1024)throw new Error('Video vượt 4 MB');
-        const dataURL=await fileAsDataURL(file);
-        S.videos.push({id:uid(),name:file.name,type:file.type,size:file.size,campaign,dataURL});added++;
-      }
-      save();renderEd();toast(`Đã thêm ${added} video cho phòng Sa hình.`);
-    }catch(err){save();renderEd();toast('Không thể lưu video. Do video lưu trong trình duyệt, hãy dùng MP4/WebM dưới 4 MB mỗi tệp.');}
-    return;
-  }
   if(t.dataset.k==='type'||t.dataset.k==='hotspots'||t.dataset.k==='phases'||t.dataset.k==='text'){renderEd()}
-  if(t.id==='imgFile'&&t.files[0]){
+  if(t.id==='imgPath'){
     const it=S.items.find(i=>i.id===ed.id);if(!it)return;
-    try{it.img=await readImage(t.files[0]);save();renderEd();toast('Đã thêm ảnh vào hiện vật.')}catch(err){toast('Không đọc được ảnh này. Hãy thử file JPG hoặc PNG khác.')}
+    try{it.img=projectAssetPath(t.value,'images');save();renderEd();toast('Đã cập nhật đường dẫn ảnh.')}
+    catch(error){toast(`Đường dẫn ảnh không hợp lệ: ${error.message}`)}
+    return;
   }
   if(t.id==='importJson'&&t.files[0]){
-    const fr=new FileReader();
-    fr.onload=()=>{
-      try{
-        const d=JSON.parse(fr.result);
-        if(!d||!Array.isArray(d.items))throw new Error('x');
-        if(!confirm('Nhập file này sẽ thay thế toàn bộ nội dung hiện tại. Tiếp tục?'))return;
-        S=norm(d);save();ed.id=S.items[0]?S.items[0].id:null;applyMeta();renderEd();toast('Đã nhập dữ liệu.');
-      }catch(err){toast('File không đúng định dạng sao lưu của bảo tàng.')}
-    };
-    fr.readAsText(t.files[0]);
+    try{
+      const d=validMuseumData(JSON.parse(await t.files[0].text()));
+      if(!confirm('Nhập file này sẽ thay thế toàn bộ nội dung hiện tại. Tiếp tục?'))return;
+      S=d;save();ed.id=S.items[0]?S.items[0].id:null;applyMeta();renderEd();toast('Đã nhập dữ liệu JSON.');
+    }catch(error){console.error('Không thể nhập file JSON.',error);toast(`File JSON không hợp lệ: ${error.message}`)}
+    finally{t.value=''}
   }
 });
 edBody.addEventListener('click',e=>{
   const t=e.target;
+  if(t.closest('#openDataFile')){openDataFile();return}
+  if(t.closest('#addResourcePath')){
+    const input=$('#resourcePath'),value=input&&input.value;
+    try{
+      const path=projectAssetPath(value,'resources');
+      if(!path)throw new Error('Nhập đường dẫn tệp trong thư mục resources.');
+      S.resources=S.resources||[];
+      if(S.resources.some(file=>file.path===path))throw new Error('Đường dẫn này đã được thêm.');
+      const name=path.split('/').pop();
+      S.resources.push({id:uid(),name,path,type:'application/octet-stream'});
+      save();renderEd();toast('Đã thêm đường dẫn tài liệu.');return;
+    }catch(error){toast(error.message);return}
+  }
+  if(t.closest('#addVideoPath')){
+    const input=$('#videoPath'),campaign=$('#museumVideoCampaign')?.value||'xiem';
+    try{
+      const path=projectAssetPath(input&&input.value,'videos');
+      if(!path)throw new Error('Nhập đường dẫn video trong thư mục videos.');
+      if(!/\.(mp4|webm|ogv|ogg)$/i.test(path))throw new Error('Video cần có đuôi .mp4, .webm, .ogv hoặc .ogg.');
+      S.videos=S.videos||[];
+      if(S.videos.some(video=>video.path===path&&video.campaign===campaign))throw new Error('Video này đã có trong chiến dịch.');
+      S.videos.push({id:uid(),name:path.split('/').pop(),path,campaign});
+      save();renderEd();toast('Đã thêm đường dẫn video.');return;
+    }catch(error){toast(error.message);return}
+  }
   const adminDownload=t.closest('[data-resource-admin-download]');
   if(adminDownload){downloadSavedResource((S.resources||[])[Number(adminDownload.dataset.resourceAdminDownload)]);return;}
   const adminDelete=t.closest('[data-resource-admin-delete]');
@@ -1189,22 +1212,18 @@ edBody.addEventListener('click',e=>{
     }
     return;
   }
-  if(t.closest('#loadOld')&&confirm('Nạp dữ liệu phiên bản trước sẽ thay thế nội dung hiện tại. Tiếp tục?')){
-    try{const d=JSON.parse(localStorage.getItem('bao-tang-ao-v1'));S=norm(d);save();ed.id=S.items[0]?S.items[0].id:null;applyMeta();renderEd();toast('Đã nạp dữ liệu phiên bản trước.')}catch(err){toast('Không đọc được dữ liệu cũ.')}
-    return;
-  }
   if(t.closest('#voiceTest')){
     try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance('Chào các em, đây là giọng đọc thuyết minh của bảo tàng ảo.');u.lang='vi-VN';u.rate=+S.settings.rate||1;const v=pickVoice();if(v){u.voice=v;u.lang=v.lang}else u.pitch=1.1;speechSynthesis.speak(u)}catch(err){toast('Trình duyệt này không hỗ trợ đọc giọng nói.')}
     return;
   }
-  if(t.closest('#exportJson'))download(slug(S.meta.war)+'-sao-luu.json',JSON.stringify(S),'application/json');
+  if(t.closest('#exportJson'))download(slug(S.meta.war)+'-sao-luu.json',JSON.stringify(S,null,2),'application/json');
   if(t.closest('#exportHtml')){
     const json=JSON.stringify(S).replace(/</g,'\\u003c');
     const re=/(<script id="seed" type="application\/json">)[\s\S]*?(<\/script>)/;
     download(slug(S.meta.war)+'.html',SRC.replace(re,(m,a,b)=>a+json+b),'text/html');
     document.querySelectorAll('link[href$="museum-fixed.css"],script[src$="museum-fixed.js"]').forEach(asset=>downloadAsset(asset.href));
     ['RGXM.mp4','NH-DD.mp4','phong-hien-vat-tay-son.png'].forEach(name=>downloadAsset(new URL(name,location.href).href));
-    toast('Đã xuất HTML và yêu cầu tải các tệp phụ trợ. Hãy cho phép tải nhiều tệp, rồi giữ HTML, CSS, JS, video và ảnh trong cùng thư mục.');
+    toast('Đã xuất HTML, CSS, JS, video và ảnh nền. Hãy giữ các file cùng thư mục và sao chép thêm images, resources, videos cùng mọi ảnh đang dùng.');
   }
   if(t.closest('#resetSample')&&confirm('Khôi phục nội dung mẫu sẽ xoá toàn bộ nội dung hiện tại. Tiếp tục?')){S=norm(clone(DEFAULT));save();ed.id=S.items[0].id;applyMeta();renderEd();toast('Đã khôi phục nội dung mẫu.')}
   if(t.closest('#clearAll')&&confirm('Xoá toàn bộ hiện vật? Hãy chắc chắn bạn đã sao lưu.')){S.items=[];ed.id=null;save();renderEd();toast('Bảo tàng đã trống. Bấm "Thêm hiện vật" để bắt đầu.')}
@@ -1213,6 +1232,8 @@ edBody.addEventListener('click',e=>{
 /* ====================== KHỞI ĐỘNG ====================== */
 try{if('speechSynthesis' in window){speechSynthesis.getVoices();speechSynthesis.addEventListener('voiceschanged',()=>{if(!$('#editor').hidden&&ed.tab==='museum')renderEd()})}}catch(e){}
 applyMeta();setTourUI();
+if(DATA_LOAD_ERROR)toast(`Không tải được museum-data.json: ${DATA_LOAD_ERROR.message}. Hãy nhập JSON trong Quản lý → Lưu và chia sẻ.`);
+else if(location.protocol==='file:'&&!STATIC_DATA)toast('Đang dùng nội dung mẫu. Mở Quản lý → Lưu và chia sẻ → Mở museum-data.json để nạp dữ liệu dự án.');
 /* ====================== THAM QUAN 3D ĐI BỘ ====================== */
 const WALK_TYPES={
   gallery:{label:'Phòng tư liệu hình ảnh',icon:'🖼',center:[-14,0],color:0x4a1718},
@@ -1514,7 +1535,12 @@ function walkTextureForItem(it){
     const maxW=890,maxH=635,ar=img.width/img.height;let w=maxW,h=maxH;
     if(ar>maxW/maxH){h=maxW/ar}else{w=maxH*ar}g.drawImage(img,(1024-w)/2,(672-h)/2+48,w,h);tex.needsUpdate=true;
   }
-  if(it.img){const img=new Image();img.onload=()=>drawImageFit(img);img.src=it.img;}
+  function drawMissingImage(){
+    g.fillStyle='#382317';g.textAlign='center';g.font='bold 34px "Be Vietnam Pro",Arial,sans-serif';
+    g.fillText(it.title||'Không tìm thấy ảnh',512,350,880);g.font='23px "Be Vietnam Pro",Arial,sans-serif';
+    g.fillText('Kiểm tra tên file trong thư mục images',512,398,880);tex.needsUpdate=true;
+  }
+  if(it.img){const img=new Image();img.onload=()=>drawImageFit(img);img.onerror=()=>{console.error(`Không tải được ảnh "${it.img}" của hiện vật "${it.title}".`);drawMissingImage()};img.src=assetHref(it.img);}
   else if(it.art&&ART[it.art]){
     const svg=ART[it.art]();const url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml;charset=utf-8'}));const img=new Image();img.onload=()=>{drawImageFit(img);URL.revokeObjectURL(url)};img.onerror=()=>URL.revokeObjectURL(url);img.src=url;
   }else{
@@ -1900,7 +1926,7 @@ function walkBuildBattle(){
   });
 }
 function walkTVTexture(campaign,index){
-  // Video H.264 được đóng gói cùng thư mục, không phụ thuộc localStorage.
+  // Video H.264 được đóng gói cùng thư mục dự án.
   // Tự phát ở chế độ tắt tiếng vì Chrome/Edge chặn autoplay có âm thanh.
   if(W.tvVideoTextures[campaign])return W.tvVideoTextures[campaign];
   const video=document.createElement('video');
@@ -2004,13 +2030,13 @@ function walkOpenItem(it){
   const intro=it.type==='tailieu'?(it.text||it.detail):(it.detail||it.text||'Chưa có nội dung thuyết minh.');
   const paragraphs=String(intro||'').split(/\n+/).map(s=>s.trim()).filter(Boolean).map(s=>`<p>${esc(s)}</p>`).join('');
   const image=(it.art||it.img)?`<div class="mini-art">${thumb(it)}</div>`:'';
-  const resourcePanel=it.isResourceCabinet?`<section class="walk-resource-list"><p>Chọn tài liệu bên dưới để tải về thiết bị.</p>${(S.resources||[]).length?(S.resources||[]).map((f,i)=>`<div class="resource-file"><span class="resource-file-type">📄</span><span class="resource-file-name">${esc(f.name)}<small>${(Number(f.size||0)/1024).toFixed(1)} KB</small></span><button class="primary" type="button" data-walk-resource-download="${i}">⬇ Tải xuống</button></div>`).join(''):'<p class="resource-empty">Hiện chưa có tài liệu. Ban quản lý có thể thêm tài liệu trong mục “Quản lý bảo tàng” → “Tải tài liệu”.</p>'}</section>`:'';
+  const resourcePanel=it.isResourceCabinet?`<section class="walk-resource-list"><p>Chọn tài liệu bên dưới để tải về thiết bị.</p>${(S.resources||[]).length?(S.resources||[]).map((f,i)=>`<div class="resource-file"><span class="resource-file-type">📄</span><span class="resource-file-name">${esc(f.name)}<small>${esc(f.path||f.name)}</small></span><button class="primary" type="button" data-walk-resource-download="${i}">⬇ Tải xuống</button></div>`).join(''):'<p class="resource-empty">Hiện chưa có tài liệu. Ban quản lý có thể thêm đường dẫn trong mục “Quản lý bảo tàng” → “Tải tài liệu”.</p>'}</section>`:'';
   const videos=it.isVideoScreen?(S.videos||[]).filter(v=>v.campaign===(it.campaign||'xiem')):[];
-  const videoPanel=it.isVideoScreen?`<section class="walk-video-list"><p>Video đã tải lên cho chiến dịch này:</p>${videos.length?videos.map((v,i)=>`<div class="resource-file"><span class="resource-file-type">🎬</span><span class="resource-file-name">${esc(v.name)}<small>${(Number(v.size||0)/1024/1024).toFixed(1)} MB</small></span><button class="primary" type="button" data-play-video="${esc(v.id)}">▶ Phát video</button></div>`).join(''):'<p class="resource-empty">Chưa có video cho chiến dịch này. Vào Quản lý bảo tàng → Tải tài liệu → Video cho phòng Sa hình để tải video lên.</p>'}<div id="walkVideoPlayer"></div></section>`:'';
+  const videoPanel=it.isVideoScreen?`<section class="walk-video-list"><p>Video cho chiến dịch này:</p>${videos.length?videos.map(v=>`<div class="resource-file"><span class="resource-file-type">🎬</span><span class="resource-file-name">${esc(v.name)}<small>${esc(v.path||v.name)}</small></span><button class="primary" type="button" data-play-video="${esc(v.id)}">▶ Phát video</button></div>`).join(''):'<p class="resource-empty">Chưa có video bổ sung. Có thể thêm đường dẫn tại Quản lý bảo tàng → Tải tài liệu.</p>'}<div id="walkVideoPlayer"></div></section>`:'';
   $('#walkDetailContent').innerHTML=`<span class="badge">${it.isVideoScreen?'📺':type.icon} ${esc(it.isVideoScreen?'TV sa hình':type.label)}</span><h2>${esc(it.title)}</h2><p class="meta">${esc([it.date,it.origin].filter(Boolean).join(' · '))}</p>${image}<div class="body">${paragraphs|| (it.isResourceCabinet||it.isVideoScreen?'': '<p>Chưa có nội dung mô tả cho hiện vật này.</p>')}</div>${resourcePanel}${videoPanel}${it.question?`<div class="question"><b>Câu hỏi suy ngẫm</b><p>${esc(it.question)}</p></div>`:''}<div class="actions">${it.isResourceCabinet||it.isVideoScreen?'': '<button class="primary" id="walkSpeak">🔊 Nghe thuyết minh</button>'}${['sahinh','phim'].includes(it.type)?'<button class="primary" id="walkReplay">▶ Tái hiện trận đánh</button>':''}<button id="walkDetailClose2">Đóng thông tin</button></div>`;
   $('#walkDetail').hidden=false;$('#walkDetailClose2').onclick=()=>{const player=$('#walkDetailContent video');if(player)player.pause();$('#walkDetail').hidden=true;};
   $('#walkDetailContent').querySelectorAll('[data-walk-resource-download]').forEach(btn=>btn.addEventListener('click',()=>downloadSavedResource((S.resources||[])[Number(btn.dataset.walkResourceDownload)])));
-  $('#walkDetailContent').querySelectorAll('[data-play-video]').forEach(btn=>btn.addEventListener('click',()=>{const v=(S.videos||[]).find(x=>x.id===btn.dataset.playVideo);if(!v)return;const host=$('#walkVideoPlayer');host.innerHTML=`<video controls autoplay playsinline style="width:100%;max-height:42vh;background:#000;border-radius:10px" src="${v.dataURL}"></video>`;const video=host.querySelector('video');const texture=new THREE.VideoTexture(video);texture.colorSpace=THREE.SRGBColorSpace;(W.tvScreens||[]).filter(screen=>screen.campaign===v.campaign).forEach(screen=>{screen.mesh.material.map=texture;screen.mesh.material.needsUpdate=true;});video.play().catch(()=>{});}));
+  $('#walkDetailContent').querySelectorAll('[data-play-video]').forEach(btn=>btn.addEventListener('click',()=>{const v=(S.videos||[]).find(x=>x.id===btn.dataset.playVideo);if(!v)return;const src=v.path?assetHref(v.path):(v.url||v.dataURL);if(!src){toast('Video này chưa có đường dẫn tệp.');return}const host=$('#walkVideoPlayer');host.innerHTML=`<video controls autoplay playsinline style="width:100%;max-height:42vh;background:#000;border-radius:10px" src="${esc(src)}"></video>`;const video=host.querySelector('video');const texture=new THREE.VideoTexture(video);texture.colorSpace=THREE.SRGBColorSpace;(W.tvScreens||[]).filter(screen=>screen.campaign===v.campaign).forEach(screen=>{screen.mesh.material.map=texture;screen.mesh.material.needsUpdate=true;});video.play().catch(error=>toast(`Không phát được video: ${error.message}`));}));
   if(document.pointerLockElement===$('#walkCanvas'))document.exitPointerLock?.();
 }
 function walkSpeak(it){
