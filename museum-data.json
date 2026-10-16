@@ -30,6 +30,7 @@
       "phases": "",
       "hotspots": "",
       "inTour": true,
+      "gallerySlot": "",
       "campaign": "xiem"
     },
     {
@@ -47,6 +48,7 @@
       "phases": "",
       "hotspots": "",
       "inTour": true,
+      "gallerySlot": "xiem-1",
       "campaign": "xiem"
     },
     {
@@ -64,6 +66,7 @@
       "phases": "",
       "hotspots": "",
       "inTour": true,
+      "gallerySlot": "xiem-2",
       "campaign": "xiem"
     },
     {
@@ -81,6 +84,7 @@
       "phases": "Bố trí trận địa\nTổng công kích",
       "hotspots": "88 | 87 | 1 | Mỹ Tho (đại bản doanh) | Nơi Nguyễn Huệ đóng đại bản doanh, ở phía hạ lưu so với khúc sông quyết chiến.\n50 | 50 | 1 | Cù lao Thới Sơn | Cù lao giữa sông, cùng các nhánh sông nhỏ quanh đó là nơi ém quân, giấu pháo và xuất phát của thuyền chiến Tây Sơn.\n30 | 12 | 1 | Hai bờ cây rậm, nhiều kênh rạch | Địa hình rậm rạp, nhiều kênh rạch giúp che giấu lực lượng mai phục và cơ động nhanh.\n15 | 15 | 2 | Rạch Gầm (khóa đuôi) | Thủy binh Tây Sơn từ đây lao ra khóa đuôi, chặn đường rút lui của đoàn thuyền Xiêm.\n85 | 15 | 2 | Xoài Mút (chặn đầu) | Thủy binh Tây Sơn từ đây lao ra chặn đầu, không cho đoàn thuyền Xiêm tiến tiếp.\n22 | 42 | 0 | Tên điểm mới | Mô tả điểm này",
       "inTour": true,
+      "gallerySlot": "",
       "campaign": "xiem"
     },
     {
@@ -98,6 +102,7 @@
       "phases": "",
       "hotspots": "",
       "inTour": true,
+      "gallerySlot": "",
       "campaign": "xiem"
     },
     {
@@ -115,6 +120,7 @@
       "phases": "",
       "hotspots": "",
       "inTour": true,
+      "gallerySlot": "xiem-3",
       "campaign": "xiem"
     },
     {
@@ -132,6 +138,7 @@
       "phases": "",
       "hotspots": "",
       "inTour": true,
+      "gallerySlot": "",
       "campaign": "xiem"
     },
     {
@@ -149,6 +156,7 @@
       "phases": "",
       "hotspots": "",
       "inTour": true,
+      "gallerySlot": "",
       "campaign": "xiem"
     },
     {
@@ -166,6 +174,7 @@
       "phases": "",
       "hotspots": "",
       "inTour": true,
+      "gallerySlot": "",
       "campaign": "xiem"
     },
     {
@@ -183,6 +192,7 @@
       "phases": "",
       "hotspots": "",
       "inTour": true,
+      "gallerySlot": "",
       "campaign": "xiem"
     },
     {
@@ -200,6 +210,7 @@
       "phases": "",
       "hotspots": "",
       "inTour": true,
+      "gallerySlot": "thanh-1",
       "campaign": "thanh"
     },
     {
@@ -217,6 +228,7 @@
       "phases": "Đêm mồng bốn Tết: tiến công đồn tiền tiêu\nRạng sáng mồng năm: đánh Ngọc Hồi và Đống Đa\nQuân Thanh rút khỏi Thăng Long",
       "hotspots": "24 | 72 | 1 | Tam Điệp | Căn cứ tập kết và xuất phát của quân Tây Sơn trước cuộc tiến công ra Bắc.\n70 | 74 | 1 | Đồn Ngọc Hồi | Cửa ngõ phía nam Thăng Long, nơi diễn ra trận đánh lớn trong ngày mồng năm Tết Kỷ Dậu.\n78 | 51 | 2 | Đống Đa | Hướng tiến công của đạo quân Đô đốc Long, đánh vào lực lượng quân Thanh ở phía tây nam thành.\n52 | 24 | 2 | Thăng Long | Quang Trung tiến vào kinh thành sau khi quân Thanh rút chạy.",
       "inTour": true,
+      "gallerySlot": "",
       "campaign": "thanh"
     },
     {
@@ -234,6 +246,7 @@
       "phases": "",
       "hotspots": "",
       "inTour": true,
+      "gallerySlot": "",
       "campaign": "thanh"
     },
     {
@@ -251,6 +264,7 @@
       "phases": "",
       "hotspots": "",
       "inTour": true,
+      "gallerySlot": "",
       "campaign": "thanh"
     },
     {
@@ -268,6 +282,7 @@
       "phases": "",
       "hotspots": "",
       "inTour": true,
+      "gallerySlot": "",
       "campaign": "thanh"
     },
     {
@@ -285,7 +300,76 @@
       "phases": "",
       "hotspots": "",
       "inTour": true,
+      "gallerySlot": "",
       "campaign": "thanh"
+    },
+    {
+      "id": "iujqnqbk",
+      "type": "tranh",
+      "title": "tranh trận thọ xương",
+      "date": "Trận Ngọc Hồi – Đống Đa (hay Chiến thắng Kỷ Dậu) là tên gọi do các nhà sử học Việt Nam dành cho loạt trận đánh chống ngoại xâm thắng lợi của nước Đại Việt thời Tây Sơn do vua Quang Trung lãnh đạo vào đầu năm Kỷ Dậu 1789, đánh tan đội quân Nhà Thanh do Tôn Sĩ Nghị chỉ huy tràn vào lãnh thổ Đại Việt do sự cầu viện của vua Lê Chiêu Thống nhà Hậu Lê (ngoài ra Nguyễn Ánh ở Nam bộ cũng hỗ trợ quân Thanh bằng cách thuyền chở lương thực tiếp tế cho đội quân này)",
+      "origin": "Trận Ngọc Hồi – Đống Đa (hay Chiến thắng Kỷ Dậu) là tên gọi do các nhà sử học Việt Nam dành cho loạt trận đánh chống ngoại xâm thắng lợi của nước Đại Việt thời Tây Sơn do vua Quang Trung lãnh đạo vào đầu năm Kỷ Dậu 1789, đánh tan đội quân Nhà Thanh do Tôn Sĩ Nghị chỉ huy tràn vào lãnh thổ Đại Việt do sự cầu viện của vua Lê Chiêu Thống nhà Hậu Lê (ngoài ra Nguyễn Ánh ở Nam bộ cũng hỗ trợ quân Thanh bằng cách thuyền chở lương thực tiếp tế cho đội quân này)",
+      "detail": "Trận Ngọc Hồi – Đống Đa (hay Chiến thắng Kỷ Dậu) là tên gọi do các nhà sử học Việt Nam dành cho loạt trận đánh chống ngoại xâm thắng lợi của nước Đại Việt thời Tây Sơn do vua Quang Trung lãnh đạo vào đầu năm Kỷ Dậu 1789, đánh tan đội quân Nhà Thanh do Tôn Sĩ Nghị chỉ huy tràn vào lãnh thổ Đại Việt do sự cầu viện của vua Lê Chiêu Thống nhà Hậu Lê (ngoài ra Nguyễn Ánh ở Nam bộ cũng hỗ trợ quân Thanh bằng cách thuyền chở lương thực tiếp tế cho đội quân này)",
+      "script": "Trận Ngọc Hồi – Đống Đa (hay Chiến thắng Kỷ Dậu) là tên gọi do các nhà sử học Việt Nam dành cho loạt trận đánh chống ngoại xâm thắng lợi của nước Đại Việt thời Tây Sơn do vua Quang Trung lãnh đạo vào đầu năm Kỷ Dậu 1789, đánh tan đội quân Nhà Thanh do Tôn Sĩ Nghị chỉ huy tràn vào lãnh thổ Đại Việt do sự cầu viện của vua Lê Chiêu Thống nhà Hậu Lê (ngoài ra Nguyễn Ánh ở Nam bộ cũng hỗ trợ quân Thanh bằng cách thuyền chở lương thực tiếp tế cho đội quân này)",
+      "question": "",
+      "img": "images/thoxuong.png",
+      "art": "",
+      "text": "",
+      "phases": "",
+      "hotspots": "",
+      "inTour": true,
+      "gallerySlot": "thanh-2"
+    },
+    {
+      "id": "i201f9ni",
+      "type": "tranh",
+      "title": "Tranh vẽ trận đống đa",
+      "date": "mùng 5 tết năm 1788",
+      "origin": "Internet",
+      "detail": "Sáng mồng 5, trước giờ tiến công, lúc trời còn tối mù mịt, quân Tây Sơn nhanh chóng vượt qua sông Tô Lịch, bí mật áp sát đồn Đống Đa, hình thành sẵn thế trận bao vây tiến công.\n\nĐạo quân của đô đốc Đông gồm kỵ binh và Tượng binh, tuy không nhiều nhưng có sức cơ động nhanh và đột phá mạnh. Quân đội cũng được trang bị nhiều hỏa hổ và đại bác đặt trên mình voi chiến. Cuộc tiến công bắt đầu vào khoảng cuối canh tư (khoảng 3 giờ sáng).\n\nBằng khí thế áp đảo quân thù, quân Tây Sơn với đội hình đã bày sẵn, xông thẳng vào đồn trại của địch. Quân ta đốt phá các doanh trại phía ngoài rồi nhanh chóng đánh thọc vào sở chỉ huy của địch. Sầm Nghi Đống cố đốc thúc quân lính chống cự nhưng không sao đương nổi sức tiến công mãnh liệt của quân Tây Sơn.\n\nChỉ trong chốc lát, số quân Thanh bị chết và bị thương đã lên đến 5.000 người (Minh đô sử, sách đã dẫn, q . 44). Sầm Nghi Đống phải bỏ các doanh trại bên ngoài, rút về bảo vệ sở chỉ huy trên Loa Sơn để chờ quân cứu viện. Cùng lúc đó, xung quanh đồn trại của địch đột nhiên xuất hiện một hàng rào lửa dày đặc. Đó là “trận rồng lửa” (hỏa long trận) của nhân dân các địa phương góp sức cùng với đội quân Tây Sơn diệt giặc. Ngô Ngọc Du là một nhà thơ đương thời đã ghi chép về hành động yêu nước và mưu trí đó của nhân dân như sau: “Quân Tây Sơn tiến công thành Thăng Long, nhân dân chín xã ở ngoại thành sôi nổi dùng rơm rạ bện thành hình rồng, tẩm dầu đốt lửa, thành trận rồng lửa” (Tài liệu của Doãn Kế Thiện do Vũ Tuấn Sán công bố trong bài Về hai cuộc hành quân của Nguyễn Huệ ra Thăng Long, Nghiên cứu lịch sử số 119, tháng 2-1969, tr. 22).\n\nQuân địch đang choáng váng vì đòn tiến công bất ngờ của quân Tây Sơn, lại khiếp đảm trước lưới lửa bao vây trùng điệp của nhân dân. Trong đêm tối, chúng chỉ còn trông thấy bốn bề lửa cháy rực trời tiếng reo hò dậy đất. Đồn trại của địch tan vỡ nhanh phóng, quân dịch “đang lúc đêm tối, tự xéo lên nhau mà chạy” (Ngụy Nguyên, Thánh vũ ký, sách đã dẫn, q. 6, tr. 37).\n\nCác mũi tiến công của quân Tây Sơn lao vào chém giết như vào chỗ  không người. Từ trên sở chỉ huy, Sầm Nghi Đống thấy rõ đã lâm vào cảnh thế cùng lực kiệt: chống đỡ không nổi, quân cứu viện không có, phá vây không được. Hắn tuyệt vọng, thắt cổ chết ngay tại sở chỉ huy. Đội thân binh trung thành của hắn cũng tự sát theo chủ tướng đến vài trăm tên (Sử quán triều Nguyễn, Việt sử thông giám cương mục, q. 47, tr.41, bản dịch đã dẫn, t. 20. tr. 62).\n\nĐồn Đống Đa bị tiêu diệt vào lúc trời chưa sáng (Theo Lê quý kỷ sự thì Sầm Nghi Đống bị “vây đánh” và đã “cố sức chiến đấu suốt ngày”. Chúng tôi chưa rõ căn cứ của tác giả nhưng điều ghi chép này mâu thuẫn với những tài liệu đáng tin cậy của ta và cũng không phù hợp với diễn biến của cuộc kháng chiến). Đạo quân của đô đốc Đông được nhân dân hết lòng ủng hộ và trực tiếp tham gia chiến đấu, đã đánh một trận tiêu diệt rất nhanh, gọn.\n\nChỉ sau mấy giờ chiến đấu, đồn trại địch bị phá tan, đại bộ phận quân địch bị tiêu diệt tại trận. Một số chạy thoát ra ngoài cũng bị quân ta “đuổi theo chém và bắt được đến quá nửa” (Lê quý kỷ sự, sách đã dẫn). Quân Tây Sơn thừa thắng tiêu diệt luôn các đồn Yên Quyết, Nam Đồng rồi nhanh chóng tràn vào cửa ô tây – nam thành Thăng Long.\n\nSau trận đánh, hàng vạn xác giặc nằm ngổn ngang khắp chiến trường từ trại Khương Thượng, Thịnh Quang đến trại Nam Đồng. Khi thu dọn chiến trường, quân dân ta đã nhặt xác giặc, xếp thành từng đống rồi đấp đất lên thành những gò đống lớn. Đó là lối chôn cất cổ truyền của nhiều nước phương Đông vừa có ý nghĩa biểu dương chiến công, để lại một di tích chiến thắng cho muôn đời con cháu, vừa nhằm cảnh cáo kẻ thù. Những đống xác giặc đó gọi là Kình nghê kinh quán, có nghĩa là gò đống lớn vùi xác quân giặc hung dữ ví như loài cá kình, cá nghê ngoài biển cả (là loại cá to hay đuổi bắt loại cá nhỏ mà ăn). Mười hai gò đống như vậy đã xuất hiện trên trận địa ngày hôm qua như những chiến tích bất diệt của dân tộc.\n\nTrong bài Loa Sơn điếu cổ, nhà thơ Ngô Ngọc Du đã ca ngợi võ công oanh liệt của quân dân ta gắn liền với những chiến tích đó: Thành Nam thập thị Kình nghê quán, Chiếu diệu anh hùng đại võ công. Nghĩa là: Phía nam thành, mười hai gò xác giặc, Rạng rỡ võ công lớn của anh hùng. Tuy vậy, mười hai gò lớn vẫn chưa vùi hết xác quân xâm lược đây đó trên cánh đống vẫn còn nhiều xác giặc chôn rải rác. Chứng cớ là năm 1851, khi đào đất để đắp đường, mở chợ ở khu vực này, người ta còn tìm thấy nhiều xương cốt và thu nhặt đem chôn vào một hố, đắp thành gò thứ 13.\n\nTrải qua năm tháng, trên các gò đống đó, cây cối mọc um tùng, nhiều nhất là cây đa. Với tên đất sẵn có, nhân dân thường gọi những gò động đó là “gò Đống Đa” và vùng có những gò đống đó là “xứ Đống Đa” (Cho đến giữa thế kỷ XIX, các gò Đống Đa vẫn còn y nguyên. Nhưng đến bản đồ Hà Nội năm Tự Đức thứ 26 (năm 1873) thì chỉ còn thấy 6 gò trong khu vực ghi là “Đống Đa xứ”. Trong khoảng đời Nguyễn và Pháp thuộc, những chiến tích lịch sử đó không được bảo vệ nên đã bị phá hoại dần. Nhiều gò bị san bằng. Hiện nay chỉ còn lại hai gò được gọi là gò Đống Đa tức gò thứ 13 lập thêm năm 185l (trên gò này có đền Trung Liệt nên còn gọi là gò Trung Liệt) và gò đống Thiêng (trong khu Thái Hà ấp, trên gò này trước đây có chùa của làng Thịnh Quang, gọi là chùa Thiêng). Phía sau chùa Bộc, giáp chùa Đồng Quang còn gò Đầu Lâu nhưng gò đã bị phá từ lâu, nhân dân chỉ còn ghi nhớ vị trí và tên gò).",
+      "script": "Sáng mồng 5, trước giờ tiến công, lúc trời còn tối mù mịt, quân Tây Sơn nhanh chóng vượt qua sông Tô Lịch, bí mật áp sát đồn Đống Đa, hình thành sẵn thế trận bao vây tiến công.\n\nĐạo quân của đô đốc Đông gồm kỵ binh và Tượng binh, tuy không nhiều nhưng có sức cơ động nhanh và đột phá mạnh. Quân đội cũng được trang bị nhiều hỏa hổ và đại bác đặt trên mình voi chiến. Cuộc tiến công bắt đầu vào khoảng cuối canh tư (khoảng 3 giờ sáng).\n\nBằng khí thế áp đảo quân thù, quân Tây Sơn với đội hình đã bày sẵn, xông thẳng vào đồn trại của địch. Quân ta đốt phá các doanh trại phía ngoài rồi nhanh chóng đánh thọc vào sở chỉ huy của địch. Sầm Nghi Đống cố đốc thúc quân lính chống cự nhưng không sao đương nổi sức tiến công mãnh liệt của quân Tây Sơn.\n\nChỉ trong chốc lát, số quân Thanh bị chết và bị thương đã lên đến 5.000 người (Minh đô sử, sách đã dẫn, q . 44). Sầm Nghi Đống phải bỏ các doanh trại bên ngoài, rút về bảo vệ sở chỉ huy trên Loa Sơn để chờ quân cứu viện. Cùng lúc đó, xung quanh đồn trại của địch đột nhiên xuất hiện một hàng rào lửa dày đặc. Đó là “trận rồng lửa” (hỏa long trận) của nhân dân các địa phương góp sức cùng với đội quân Tây Sơn diệt giặc. Ngô Ngọc Du là một nhà thơ đương thời đã ghi chép về hành động yêu nước và mưu trí đó của nhân dân như sau: “Quân Tây Sơn tiến công thành Thăng Long, nhân dân chín xã ở ngoại thành sôi nổi dùng rơm rạ bện thành hình rồng, tẩm dầu đốt lửa, thành trận rồng lửa” (Tài liệu của Doãn Kế Thiện do Vũ Tuấn Sán công bố trong bài Về hai cuộc hành quân của Nguyễn Huệ ra Thăng Long, Nghiên cứu lịch sử số 119, tháng 2-1969, tr. 22).\n\nQuân địch đang choáng váng vì đòn tiến công bất ngờ của quân Tây Sơn, lại khiếp đảm trước lưới lửa bao vây trùng điệp của nhân dân. Trong đêm tối, chúng chỉ còn trông thấy bốn bề lửa cháy rực trời tiếng reo hò dậy đất. Đồn trại của địch tan vỡ nhanh phóng, quân dịch “đang lúc đêm tối, tự xéo lên nhau mà chạy” (Ngụy Nguyên, Thánh vũ ký, sách đã dẫn, q. 6, tr. 37).\n\nCác mũi tiến công của quân Tây Sơn lao vào chém giết như vào chỗ  không người. Từ trên sở chỉ huy, Sầm Nghi Đống thấy rõ đã lâm vào cảnh thế cùng lực kiệt: chống đỡ không nổi, quân cứu viện không có, phá vây không được. Hắn tuyệt vọng, thắt cổ chết ngay tại sở chỉ huy. Đội thân binh trung thành của hắn cũng tự sát theo chủ tướng đến vài trăm tên (Sử quán triều Nguyễn, Việt sử thông giám cương mục, q. 47, tr.41, bản dịch đã dẫn, t. 20. tr. 62).\n\nĐồn Đống Đa bị tiêu diệt vào lúc trời chưa sáng (Theo Lê quý kỷ sự thì Sầm Nghi Đống bị “vây đánh” và đã “cố sức chiến đấu suốt ngày”. Chúng tôi chưa rõ căn cứ của tác giả nhưng điều ghi chép này mâu thuẫn với những tài liệu đáng tin cậy của ta và cũng không phù hợp với diễn biến của cuộc kháng chiến). Đạo quân của đô đốc Đông được nhân dân hết lòng ủng hộ và trực tiếp tham gia chiến đấu, đã đánh một trận tiêu diệt rất nhanh, gọn.\n\nChỉ sau mấy giờ chiến đấu, đồn trại địch bị phá tan, đại bộ phận quân địch bị tiêu diệt tại trận. Một số chạy thoát ra ngoài cũng bị quân ta “đuổi theo chém và bắt được đến quá nửa” (Lê quý kỷ sự, sách đã dẫn). Quân Tây Sơn thừa thắng tiêu diệt luôn các đồn Yên Quyết, Nam Đồng rồi nhanh chóng tràn vào cửa ô tây – nam thành Thăng Long.\n\nSau trận đánh, hàng vạn xác giặc nằm ngổn ngang khắp chiến trường từ trại Khương Thượng, Thịnh Quang đến trại Nam Đồng. Khi thu dọn chiến trường, quân dân ta đã nhặt xác giặc, xếp thành từng đống rồi đấp đất lên thành những gò đống lớn. Đó là lối chôn cất cổ truyền của nhiều nước phương Đông vừa có ý nghĩa biểu dương chiến công, để lại một di tích chiến thắng cho muôn đời con cháu, vừa nhằm cảnh cáo kẻ thù. Những đống xác giặc đó gọi là Kình nghê kinh quán, có nghĩa là gò đống lớn vùi xác quân giặc hung dữ ví như loài cá kình, cá nghê ngoài biển cả (là loại cá to hay đuổi bắt loại cá nhỏ mà ăn). Mười hai gò đống như vậy đã xuất hiện trên trận địa ngày hôm qua như những chiến tích bất diệt của dân tộc.\n\nTrong bài Loa Sơn điếu cổ, nhà thơ Ngô Ngọc Du đã ca ngợi võ công oanh liệt của quân dân ta gắn liền với những chiến tích đó: Thành Nam thập thị Kình nghê quán, Chiếu diệu anh hùng đại võ công. Nghĩa là: Phía nam thành, mười hai gò xác giặc, Rạng rỡ võ công lớn của anh hùng. Tuy vậy, mười hai gò lớn vẫn chưa vùi hết xác quân xâm lược đây đó trên cánh đống vẫn còn nhiều xác giặc chôn rải rác. Chứng cớ là năm 1851, khi đào đất để đắp đường, mở chợ ở khu vực này, người ta còn tìm thấy nhiều xương cốt và thu nhặt đem chôn vào một hố, đắp thành gò thứ 13.\n\nTrải qua năm tháng, trên các gò đống đó, cây cối mọc um tùng, nhiều nhất là cây đa. Với tên đất sẵn có, nhân dân thường gọi những gò động đó là “gò Đống Đa” và vùng có những gò đống đó là “xứ Đống Đa” (Cho đến giữa thế kỷ XIX, các gò Đống Đa vẫn còn y nguyên. Nhưng đến bản đồ Hà Nội năm Tự Đức thứ 26 (năm 1873) thì chỉ còn thấy 6 gò trong khu vực ghi là “Đống Đa xứ”. Trong khoảng đời Nguyễn và Pháp thuộc, những chiến tích lịch sử đó không được bảo vệ nên đã bị phá hoại dần. Nhiều gò bị san bằng. Hiện nay chỉ còn lại hai gò được gọi là gò Đống Đa tức gò thứ 13 lập thêm năm 185l (trên gò này có đền Trung Liệt nên còn gọi là gò Trung Liệt) và gò đống Thiêng (trong khu Thái Hà ấp, trên gò này trước đây có chùa của làng Thịnh Quang, gọi là chùa Thiêng). Phía sau chùa Bộc, giáp chùa Đồng Quang còn gò Đầu Lâu nhưng gò đã bị phá từ lâu, nhân dân chỉ còn ghi nhớ vị trí và tên gò).",
+      "question": "",
+      "img": "images/quantayson.png",
+      "art": "",
+      "text": "",
+      "phases": "",
+      "hotspots": "",
+      "inTour": true,
+      "gallerySlot": "thanh-3"
+    },
+    {
+      "id": "in8hwtq8",
+      "type": "tranh",
+      "title": "Tranh vẽ Nguyễn Huệ dẫn quân Bắc tiến",
+      "date": "Mùa xuân năm 1788",
+      "origin": "",
+      "detail": " Hàng vạn chiến binh áo vải cờ đào của nghĩa quân Tây Sơn đã tiến hành cuộc hành quân thần tốc ra kinh thành Thăng Long đánh tan 29 vạn quân Thanh xâm lược. ",
+      "script": " Hàng vạn chiến binh áo vải cờ đào của nghĩa quân Tây Sơn đã tiến hành cuộc hành quân thần tốc ra kinh thành Thăng Long đánh tan 29 vạn quân Thanh xâm lược. ",
+      "question": "",
+      "img": "images/ket-qua-xiem.jpg",
+      "art": "",
+      "text": "",
+      "phases": "",
+      "hotspots": "",
+      "inTour": true,
+      "gallerySlot": "thanh-4"
+    },
+    {
+      "id": "ihhlh18m",
+      "type": "tranh",
+      "title": "Tranh vẽ Nguyễn Ánh cầu viện Thái Lan",
+      "date": "tháng 3 năm Giáp Thìn 1784",
+      "origin": "Hoàng Gia Thái Lan",
+      "detail": "Trận Rạch Gầm – Xoài Mút (tiếng Thái: การรบที่ซากเกิ่ม-สว่ายมุต) là một trận chiến lớn trên sông diễn ra vào đêm 19 rạng sáng ngày 20 tháng 1 năm 1785 giữa liên quân Xiêm – Nguyễn và quân Tây Sơn tại khúc sông Rạch Gầm – Xoài Mút, khi đó thuộc dinh Trấn Định, xứ Đàng Trong; về sau đổi thành tỉnh Mỹ Tho, nay thuộc tỉnh Đồng Tháp, Việt Nam. Chỉ trong nửa ngày, quân Tây Sơn do Nguyễn Huệ chỉ huy đã dùng chiến thuật phục kích để đánh tan lực lượng quân Xiêm đông gấp đôi, bảo vệ được chủ quyền của Đại Việt tại vùng Nam Bộ trước đội quân viễn chinh Xiêm La (nay là Thái Lan) do Nguyễn Ánh cầu viện.",
+      "script": "Trận Rạch Gầm – Xoài Mút (tiếng Thái: การรบที่ซากเกิ่ม-สว่ายมุต) là một trận chiến lớn trên sông diễn ra vào đêm 19 rạng sáng ngày 20 tháng 1 năm 1785 giữa liên quân Xiêm – Nguyễn và quân Tây Sơn tại khúc sông Rạch Gầm – Xoài Mút, khi đó thuộc dinh Trấn Định, xứ Đàng Trong; về sau đổi thành tỉnh Mỹ Tho, nay thuộc tỉnh Đồng Tháp, Việt Nam. Chỉ trong nửa ngày, quân Tây Sơn do Nguyễn Huệ chỉ huy đã dùng chiến thuật phục kích để đánh tan lực lượng quân Xiêm đông gấp đôi, bảo vệ được chủ quyền của Đại Việt tại vùng Nam Bộ trước đội quân viễn chinh Xiêm La (nay là Thái Lan) do Nguyễn Ánh cầu viện.",
+      "question": "",
+      "img": "images/cauvien.png",
+      "art": "",
+      "text": "",
+      "phases": "",
+      "hotspots": "",
+      "inTour": true,
+      "gallerySlot": "xiem-4"
     }
   ],
   "resources": [
