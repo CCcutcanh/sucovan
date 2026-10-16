@@ -205,6 +205,7 @@ ART['hoa-cong']=()=>{let b='',st='';
   [[110,262],[250,270]].forEach(([x,y])=>{b+=boat(x,y,{h:'#0e1a2b',s:'#1d2c44'},{s:1.3})});
   for(let i=0;i<40;i++)st+=`<circle cx="${(i*97)%400}" cy="${(i*41)%110}" r="${(.6+(i%3)*.4).toFixed(1)}" fill="#fff" opacity=".7"/>`;
   return SV('0 0 400 300',`<defs><linearGradient id="hc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#070d1c"/><stop offset=".5" stop-color="#3a1c1a"/><stop offset=".56" stop-color="#2a1210"/><stop offset="1" stop-color="#0b1420"/></linearGradient></defs><rect width="400" height="300" fill="url(#hc)"/>${st}<ellipse cx="200" cy="168" rx="260" ry="46" fill="#ff7a1a" opacity=".28"/>${b}`)};
+ART['co-tay-son']=()=>SV('0 0 300 300',`<rect width="300" height="300" fill="#e1bb43"/><path d="M12 12h276v276H12z" fill="#fff2c6"/><path d="M26 26h248v248H26z" fill="#d71920" stroke="#f4cf57" stroke-width="8"/><circle cx="150" cy="150" r="45" fill="#f6cf4a"/><path d="M35 18v-8m34 8v-8m34 8v-8m34 8v-8m34 8v-8m34 8v-8m34 8v-8m34 8v-8M35 282v8m34-8v8m34-8v8m34-8v8m34-8v8m34-8v8m34-8v8m34-8v8" stroke="#fff2c6" stroke-width="7" stroke-linecap="round"/>`);
 ART['dai-bac']=()=>SV('0 0 300 300',`<rect x="40" y="196" width="190" height="26" rx="6" fill="#6b4a2a"/><rect x="40" y="196" width="190" height="7" fill="#85603a"/><circle cx="76" cy="236" r="16" fill="#3b2a1a"/><circle cx="76" cy="236" r="6" fill="#8a6a40"/><circle cx="196" cy="236" r="16" fill="#3b2a1a"/><circle cx="196" cy="236" r="6" fill="#8a6a40"/>
 <g transform="rotate(-9 140 176)"><rect x="52" y="152" width="190" height="42" rx="18" fill="#7a5c2e"/><rect x="52" y="152" width="190" height="12" rx="6" fill="#9b7a42" opacity=".7"/><rect x="214" y="146" width="30" height="54" rx="8" fill="#6a4e26"/><rect x="108" y="146" width="10" height="54" fill="#5a4220"/><rect x="156" y="146" width="10" height="54" fill="#5a4220"/><circle cx="68" cy="173" r="9" fill="#2a1d10"/><rect x="82" y="146" width="8" height="8" fill="#2a1d10"/></g>
 <g fill="#2b2b2b"><circle cx="252" cy="262" r="10"/><circle cx="272" cy="262" r="10"/><circle cx="262" cy="246" r="10"/></g><path d="M40 205Q16 220 28 250" stroke="#b79a62" stroke-width="3" fill="none"/>`);
@@ -433,11 +434,10 @@ Chỉ trong chưa đầy một ngày, phần lớn quân Xiêm bị tiêu diệt
  detail:`Lửa cháy sáng rực trên mặt sông. Hỏa công là cách đánh hiệu quả với những đoàn thuyền gỗ đi sát nhau trong khúc sông hẹp: một thuyền cháy có thể làm cháy lan sang nhiều thuyền khác.`,
  script:`Lửa sáng rực trên mặt sông Tiền. Hỏa công là cách đánh rất hiệu quả với những đoàn thuyền gỗ đi sát nhau.`,
  question:'Vì sao đội hình đông và dày đặc lại dễ bị thiệt hại nặng bởi hỏa công?',img:'',text:'',phases:'',hotspots:'',inTour:true},
-{id:'dai-bac',type:'daocu',art:'dai-bac',title:'Đại bác trên thuyền chiến Tây Sơn',date:'Vũ khí, thế kỷ XVIII',origin:'Hình minh họa mẫu, nên thay bằng ảnh hiện vật thật',
- detail:`Đại bác là một sức mạnh quan trọng của thủy binh Tây Sơn. Theo một số bài nghiên cứu, riêng trận đánh ở Quảng Nam giữa năm 1774, quân Tây Sơn thu được 82 khẩu đại bác của Hà Lan và Anh, cùng nhiều đạn dược.
-Trên thuyền chiến, quân Tây Sơn thường đặt nhiều đại bác.`,
- script:`Đại bác là sức mạnh quan trọng của thủy binh Tây Sơn. Riêng một trận ở Quảng Nam năm 1774, quân Tây Sơn thu được tám mươi hai khẩu đại bác, và thường đặt nhiều đại bác trên thuyền chiến.`,
- question:'Hỏa lực mạnh có ý nghĩa gì khi đánh vào một đoàn thuyền bị chặn đầu, khóa đuôi?',img:'',text:'',phases:'',hotspots:'',inTour:true},
+{id:'la-co-tay-son',type:'daocu',art:'co-tay-son',title:'Lá cờ Tây Sơn',date:'Mô hình tái dựng theo hình ảnh tham khảo',origin:'Họa tiết dựa trên hình ảnh tham khảo; chưa xác minh đây là mẫu cờ thống nhất của quân Tây Sơn',
+ detail:`Mô hình lá cờ sử dụng nền đỏ, viền vàng và hình tròn vàng ở giữa, dựa trên hình ảnh tham khảo được cung cấp. Đây là cách tái hiện trực quan cho không gian trưng bày, không khẳng định mọi đơn vị Tây Sơn đều dùng cùng một mẫu cờ.`,
+ script:`Đây là mô hình lá cờ Tây Sơn được tái dựng theo hình ảnh tham khảo: nền đỏ, viền vàng và hình tròn vàng ở giữa. Màu sắc và biểu tượng giúp lá cờ nổi bật khi trưng bày, nhưng hiện vật này là mô phỏng minh họa, không phải khẳng định về một mẫu cờ thống nhất trong toàn quân Tây Sơn.`,
+ question:'Một biểu tượng trên cờ có thể giúp tập hợp và nhận diện lực lượng như thế nào?',img:'',text:'',phases:'',hotspots:'',inTour:true},
 {id:'chien-luoc',type:'dohoa',art:'chien-luoc',title:'Chiến lược: từ thế yếu đến thế thắng',date:'Đồ họa phân tích',origin:'Tổng hợp theo sách giáo khoa Lịch sử 8 và các bài nghiên cứu',
  detail:`Nguyễn Huệ không đối đầu trực diện mà lựa chọn địa hình, nhử địch vào trận địa, chặn đầu khóa đuôi để chia cắt, rồi dùng hỏa lực và hỏa công đánh nhanh dứt điểm.
 Nhờ vậy, lợi thế số đông của địch bị biến thành bất lợi trong khúc sông hẹp.`,
@@ -1580,12 +1580,45 @@ function walkPedestal(x,z,label){
   const placard=new THREE.Mesh(new THREE.PlaneGeometry(1.35,.36),new THREE.MeshBasicMaterial({map:walkLabelTexture(label,'HIỆN VẬT MÔ PHỎNG','#2c2924'),side:THREE.DoubleSide}));placard.rotation.x=-.25;placard.position.set(x,1.65,z+.55);W.scene.add(placard);
 }
 function walkModelCannon(root){
-  const dark=walkMaterial(0x292b2a,.42,.6),wood=walkMaterial(0x6e4a2b,.72,.05),iron=walkMaterial(0x68645a,.32,.72);
-  walkBox(1.65,.2,.65,wood,0,.1,0,{parent:root});
-  [-.58,.58].forEach(x=>{const wheel=new THREE.Mesh(new THREE.TorusGeometry(.37,.065,8,24),iron);wheel.position.set(x,.34,.42);wheel.rotation.y=Math.PI/2;root.add(wheel);const hub=walkCylinder(.085,.085,.09,wood,x,.34,.42,{parent:root});hub.rotation.z=Math.PI/2;});
-  const barrel=walkCylinder(.19,.28,1.35,dark,0,.68,-.17,{parent:root});barrel.rotation.x=Math.PI/2;barrel.position.z=-.35;
-  walkCylinder(.22,.22,.15,iron,0,.69,-.98,{parent:root});
-  walkCylinder(.24,.27,.13,iron,0,.69,.1,{parent:root});
+  const rustCanvas=document.createElement('canvas');rustCanvas.width=512;rustCanvas.height=256;
+  const ctx=rustCanvas.getContext('2d'),gradient=ctx.createLinearGradient(0,0,0,256);
+  gradient.addColorStop(0,'#55473a');gradient.addColorStop(.34,'#806341');gradient.addColorStop(.62,'#493d33');gradient.addColorStop(1,'#735239');
+  ctx.fillStyle=gradient;ctx.fillRect(0,0,512,256);
+  for(let i=0;i<900;i++){
+    const x=(i*197)%512,y=(i*113)%256,r=2+(i*17)%13;
+    ctx.fillStyle=i%3===0?'rgba(157,104,55,.42)':i%3===1?'rgba(35,39,37,.42)':'rgba(194,151,93,.28)';
+    ctx.beginPath();ctx.ellipse(x,y,r,r*(.28+(i%5)*.12),(i%7)*.2,0,Math.PI*2);ctx.fill();
+  }
+  const rustTexture=new THREE.CanvasTexture(rustCanvas);rustTexture.colorSpace=THREE.SRGBColorSpace;
+  rustTexture.wrapS=rustTexture.wrapT=THREE.RepeatWrapping;rustTexture.repeat.set(2.2,1);
+  const iron=walkMaterial(0x8c795e,.94,.36,{map:rustTexture,bumpMap:rustTexture,bumpScale:.065});
+  const darkIron=walkMaterial(0x423b32,.82,.48),wood=walkMaterial(0x38271d,.74,.08);
+  const saddle=walkMaterial(0x514337,.88,.16),brass=walkMaterial(0x8a7047,.66,.42);
+  // The heavy, corroded tube rests on fixed timber saddles rather than a modern wheeled carriage.
+  walkBox(2.25,.16,.76,wood,0,.09,0,{parent:root});
+  for(const x of [-.68,.68]){
+    walkBox(.34,.38,.58,saddle,x,.34,0,{parent:root});
+    walkBox(.38,.07,.62,brass,x,.55,0,{parent:root});
+  }
+  const profile=[[0,-1.28],[.11,-1.28],[.18,-1.2],[.205,-1.04],[.18,-.88],[.17,-.65],[.175,-.25],[.185,.3],[.205,.68],[.24,.83],[.245,.98],[.22,1.05],[.165,1.02],[.15,.94],[.145,.74],[.14,-.9],[0,-.92]];
+  const barrel=new THREE.Mesh(new THREE.LatheGeometry(profile.map(([r,y])=>new THREE.Vector2(r,y)),40),iron);
+  barrel.position.set(.02,.78,0);barrel.rotation.z=-Math.PI/2;barrel.castShadow=true;barrel.receiveShadow=true;root.add(barrel);
+  for(const x of [-.92,-.72,.56,.78]){
+    const band=new THREE.Mesh(new THREE.TorusGeometry(x>.5?.205:.19,.035,10,36),darkIron);
+    band.position.set(x,.78,0);band.rotation.y=Math.PI/2;band.castShadow=true;root.add(band);
+  }
+  const muzzle=new THREE.Mesh(new THREE.CircleGeometry(.145,32),darkIron);
+  muzzle.position.set(1.025,.78,0);muzzle.rotation.y=Math.PI/2;root.add(muzzle);
+  const bore=new THREE.Mesh(new THREE.CircleGeometry(.09,32),walkMaterial(0x111312,.98,.06));
+  bore.position.set(1.027,.78,0);bore.rotation.y=Math.PI/2;root.add(bore);
+  [-1,1].forEach(side=>{
+    const trunnion=walkCylinder(.13,.13,.42,darkIron,0,.69,side*.24,{parent:root,seg:24});
+    trunnion.rotation.x=Math.PI/2;
+    const collar=walkCylinder(.17,.17,.055,brass,0,.69,side*.29,{parent:root,seg:24});
+    collar.rotation.x=Math.PI/2;
+  });
+  const cascabel=walkSphere(.14,iron,-1.16,.78,0,{x:1.15,y:.9,z:.9},root);
+  walkCylinder(.07,.07,.16,darkIron,-1.27,.78,0,{parent:root,seg:16}).rotation.z=Math.PI/2;
 }
 function walkModelBoat(root){
   const hull=walkMaterial(0x572a22,.4,.45),trim=walkMaterial(0xb48b4b,.38,.5),cloth=walkMaterial(0xf0dfb7,.88,.02,{side:THREE.DoubleSide});
@@ -1727,6 +1760,7 @@ function walkModelBicycle(root){
 function walkModelGeneric(root,it){
   const metal=walkMaterial(0x8c7958,.38,.55),dark=walkMaterial(0x3d2b1c,.6,.22);
   if(/thuyền|thuyen|tàu|tau|sông|song/i.test(it.title+' '+it.art))walkModelBoat(root);
+  else if(/co-tay-son|la-co/i.test(it.art||'')||/lá cờ|la co/i.test(it.title||''))walkModelTaySonFlag(root);
   else if(/tượng|tuong|tướng|tuong-quan|quan/i.test(it.title+' '+it.art))walkModelStatue(root);
   else if(/xe|bicycle|thồ|tho/i.test(it.title+' '+it.art))walkModelBicycle(root);
   else if(/bếp|bep/i.test(it.title+' '+it.art)){
@@ -1736,19 +1770,58 @@ function walkModelGeneric(root,it){
     walkCylinder(.06,.08,1.8,metal,0,1,0,{parent:root});walkBox(.5,.08,.12,dark,0,.35,0,{parent:root});
   }else walkModelCannon(root);
 }
+function walkModelTaySonFlag(root){
+  const pole=walkMaterial(0x49301d,.66,.16),brass=walkMaterial(0xb28a45,.42,.58);
+  walkCylinder(.055,.075,3.05,pole,0,1.52,0,{parent:root,seg:20});
+  walkCylinder(.09,.07,.12,brass,0,.13,0,{parent:root,seg:20});
+  walkSphere(.105,brass,0,3.1,0,{x:1,y:1.2,z:1},root);
+  for(const y of [.32,2.78])walkCylinder(.073,.073,.06,brass,0,y,0,{parent:root,seg:20});
+  const flagCanvas=document.createElement('canvas');flagCanvas.width=512;flagCanvas.height=320;
+  const g=flagCanvas.getContext('2d');g.fillStyle='#e1bb43';g.fillRect(0,0,512,320);
+  g.fillStyle='#fff2c6';
+  for(let x=8;x<504;x+=28){
+    for(const y of [8,312]){g.beginPath();g.ellipse(x,y,12,10,0,0,Math.PI*2);g.fill();}
+  }
+  for(let y=20;y<300;y+=28){
+    for(const x of [8,504]){g.beginPath();g.ellipse(x,y,10,12,0,0,Math.PI*2);g.fill();}
+  }
+  g.fillStyle='#d71920';g.fillRect(34,36,444,248);
+  g.strokeStyle='#f4cf57';g.lineWidth=7;g.strokeRect(39,41,434,238);
+  g.fillStyle='#f6cf4a';g.beginPath();g.arc(256,160,68,0,Math.PI*2);g.fill();
+  const flagTexture=new THREE.CanvasTexture(flagCanvas);flagTexture.colorSpace=THREE.SRGBColorSpace;
+  const geometry=new THREE.PlaneGeometry(1.82,1.14,20,12),positions=geometry.attributes.position;
+  for(let i=0;i<positions.count;i++){
+    const x=positions.getX(i),y=positions.getY(i),u=(x+0.91)/1.82,v=(y+0.57)/1.14;
+    positions.setZ(i,.13*u*Math.sin(u*Math.PI*2+v*1.1));
+  }
+  positions.needsUpdate=true;geometry.computeVertexNormals();
+  const cloth=new THREE.Mesh(geometry,new THREE.MeshStandardMaterial({map:flagTexture,roughness:.92,metalness:.01,side:THREE.DoubleSide}));
+  cloth.position.set(.98,2.24,.015);cloth.castShadow=true;cloth.receiveShadow=true;root.add(cloth);
+  const hem=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3([
+    new THREE.Vector3(.08,2.81,.02),new THREE.Vector3(.98,2.81,.02),new THREE.Vector3(1.88,2.81,.02)
+  ]),24,.018,8,false),brass);root.add(hem);
+  const lowerHem=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3([
+    new THREE.Vector3(.08,1.67,.02),new THREE.Vector3(.98,1.67,.02),new THREE.Vector3(1.88,1.67,.02)
+  ]),24,.018,8,false),brass);root.add(lowerHem);
+  for(let i=0;i<8;i++){
+    const tassel=walkCylinder(.012,.012,.13,brass,.12+i*.25,1.59,.02,{parent:root,seg:8});
+    tassel.rotation.z=.08;
+  }
+}
 function walkBuildArtifacts(){
-  const allItems=S.items.filter(i=>i.type==='daocu'),items=allItems.filter(i=>!/tượng\s*quang trung/i.test(i.title||''));if(!allItems.length){
+  const allItems=S.items.filter(i=>i.type==='daocu'),items=allItems.filter(i=>!/tượng\s*quang trung/i.test(i.title||'')&&i.id!=='dai-bac');if(!allItems.length){
     const dummy={id:'model-tau',type:'daocu',title:'Mô hình thuyền chiến Tây Sơn',date:'Mô hình minh họa',detail:'Mô hình khái quát để quan sát cấu tạo thuyền chiến.'};
     walkPedestal(14,0,dummy.title);const g=new THREE.Group();g.position.set(14,1.62,0);walkModelBoat(g);g.userData.item=dummy;W.scene.add(g);W.targets.push(g);return;
   }
   const byCampaign={xiem:[],thanh:[]};items.forEach(it=>byCampaign[it.campaign==='thanh'?'thanh':'xiem'].push(it));
+  const displaySlots={xiem:[{x:14,z:-4.25},{x:10.6,z:-4.25},{x:17.4,z:-4.25}],thanh:[{x:14,z:4.25},{x:10.6,z:4.25},{x:17.4,z:4.25}]};
   Object.entries(byCampaign).forEach(([campaign,group])=>group.forEach((it,i)=>{
-    const x=group.length===1?14:12.8+(i%2)*2.4,z=(campaign==='xiem'?-1:1)*(1.45+Math.floor(i/3)*1.5);
+    const {x,z}=displaySlots[campaign][i%displaySlots[campaign].length];
     walkPedestal(x,z,it.title);const model=new THREE.Group();model.position.set(x,1.63,z);model.userData.item=it;walkModelGeneric(model,it);W.scene.add(model);W.targets.push(model);
     walkPointLight(x,4,z,0xffd18a,1.1,5);
   }));
-  walkSign('HIỆN VẬT TÂY SƠN','CHIẾN THẮNG QUÂN XIÊM',19.65,4.2,-2.8,-Math.PI/2,'#4a1718');
-  walkSign('HIỆN VẬT TÂY SƠN','CHIẾN THẮNG QUÂN THANH',19.65,4.2,2.8,-Math.PI/2,'#273c32');
+  walkSign('HIỆN VẬT TÂY SƠN','CHIẾN THẮNG QUÂN XIÊM',19.65,5.05,-4,-Math.PI/2,'#4a1718');
+  walkSign('HIỆN VẬT TÂY SƠN','CHIẾN THẮNG QUÂN THANH',19.65,5.05,4,-Math.PI/2,'#273c32');
 }
 
 function walkBuildTaySonDisplays(){
@@ -1772,46 +1845,74 @@ function walkBuildTaySonDisplays(){
     const mat=new THREE.MeshBasicMaterial({map:walkLabelTexture(title,sub,'#382116'),side:THREE.DoubleSide});
     const p=new THREE.Mesh(new THREE.PlaneGeometry(w,.42),mat);p.position.set(x,1.04,z);p.rotation.x=-.22;W.scene.add(p);
   }
-  // Central bronze statue on a dark wooden and gilded plinth.
-  walkCylinder(1.12,1.12,.16,wood,14,.18,0,{seg:32});
-  walkCylinder(.94,1.02,.12,brass,14,.32,0,{seg:32});
-  walkBox(1.72,.5,1.42,woodTop,14,.64,0);
-  walkBox(1.78,.08,1.48,brass,14,.93,0);
-  const statue=new THREE.Group();statue.position.set(14,1.0,0);statue.rotation.y=0;walkModelStatue(statue);statue.scale.set(1.12,1.12,1.12);W.scene.add(statue);
+  // Keep a clear central aisle; place the statue along the west-side display row.
+  walkCylinder(1.12,1.12,.16,wood,17.35,.18,-4.25,{seg:32});
+  walkCylinder(.94,1.02,.12,brass,17.35,.32,-4.25,{seg:32});
+  walkBox(1.72,.5,1.42,woodTop,17.35,.64,-4.25);
+  walkBox(1.78,.08,1.48,brass,17.35,.93,-4.25);
+  const statue=new THREE.Group();statue.position.set(17.35,1.0,-4.25);statue.rotation.y=0;walkModelStatue(statue);statue.scale.set(1.12,1.12,1.12);W.scene.add(statue);
   const statueItem=S.items.find(i=>i.type==='daocu'&&/tượng\s*quang trung/i.test(i.title||''));
   if(statueItem){statue.userData.item=statueItem;W.targets.push(statue);}
-  plaque(14,1.0,'TƯỢNG QUANG TRUNG','THỜI KỲ TÂY SƠN',1.7);
-  // Cannon on a low velvet-covered display island, with detailed wooden wheels.
-  walkBox(2.65,.42,1.55,wood,10.8,.25,0);walkBox(2.72,.07,1.62,brass,10.8,.49,0);walkBox(2.58,.045,1.48,velvet,10.8,.55,0);
-  const cannon=new THREE.Group();cannon.position.set(10.8,.56,0);cannon.scale.set(1.15,1.15,1.15);walkModelCannon(cannon);W.scene.add(cannon);
-  plaque(10.8,1.12,'PHÁO THỜI TÂY SƠN','MÔ HÌNH MINH HỌA',1.8);
+  plaque(17.35,-3.0,'TƯỢNG QUANG TRUNG','THỜI KỲ TÂY SƠN',1.7);
+  // A compact, dark plinth keeps the corroded cannon off the visitor route.
+  walkBox(1.58,.32,2.72,wood,10.55,.2,-4.25);
+  walkBox(1.64,.07,2.78,brass,10.55,.395,-4.25);
+  walkBox(1.5,.045,2.64,velvet,10.55,.45,-4.25);
+  const cannon=new THREE.Group();cannon.position.set(10.55,.49,-4.25);cannon.rotation.y=-Math.PI/2;cannon.scale.set(1.08,1.08,1.08);walkModelCannon(cannon);W.scene.add(cannon);
+  plaque(10.55,-2.78,'PHÁO THỜI TÂY SƠN','MÔ HÌNH TÁI DỰNG',1.8);
   // Helmet under glass.
-  caseBase(17.1,-3.65,2.35,1.35);
-  const helmetMetal=walkMaterial(0x75634b,.32,.72),helmetDark=walkMaterial(0x3e3024,.5,.42);
-  const dome=new THREE.Mesh(new THREE.SphereGeometry(.42,20,14,0,Math.PI*2,0,Math.PI*.58),helmetMetal);dome.position.set(17.1,1.12,-3.65);dome.scale.set(1,.8,1);W.scene.add(dome);
-  walkBox(.9,.07,.72,helmetDark,17.1,.91,-3.65);walkBox(.08,.34,.08,brass,17.1,1.42,-3.65);
-  plaque(17.1,.0,'MŨ TRẤN THỦ','TRANG BỊ QUÂN ĐỘI',1.7);
-  // Two swords resting diagonally inside a long glass case.
+  // caseBase(17.1,-3.65,2.35,1.35);
+  // const helmetMetal=walkMaterial(0x75634b,.32,.72),helmetDark=walkMaterial(0x3e3024,.5,.42);
+  // const dome=new THREE.Mesh(new THREE.SphereGeometry(.42,20,14,0,Math.PI*2,0,Math.PI*.58),helmetMetal);dome.position.set(17.1,1.12,-3.65);dome.scale.set(1,.8,1);W.scene.add(dome);
+  // walkBox(.9,.07,.72,helmetDark,17.1,.91,-3.65);walkBox(.08,.34,.08,brass,17.1,1.42,-3.65);
+  // plaque(17.1,.0,'MŨ TRẤN THỦ','TRANG BỊ QUÂN ĐỘI',1.7);
+  // Corroded swords rest in parallel on a burgundy textile inside a glass case.
   caseBase(17.1,3.55,3.35,1.5);
-  for(let i=0;i<2;i++){
-    const z=3.22+i*.58,blade=walkBox(2.35,.045,.09,iron,17.08,1.0,z);blade.rotation.y=-.12;
-    const guard=walkBox(.38,.065,.12,brass,15.85,1.0,z);guard.rotation.y=-.12;
-    const grip=walkCylinder(.055,.055,.48,woodTop,15.57,1.0,z,{seg:10});grip.rotation.z=Math.PI/2;
-    walkSphere(.085,brass,15.31,1.0,z,{x:1,y:1,z:1});
+  const bladeProfile=new THREE.Shape();
+  bladeProfile.moveTo(0,-.09);bladeProfile.quadraticCurveTo(.42,-.075,1.08,-.045);
+  bladeProfile.quadraticCurveTo(1.38,-.025,1.58,0);bladeProfile.quadraticCurveTo(1.38,.025,1.08,.045);
+  bladeProfile.quadraticCurveTo(.42,.075,0,.09);bladeProfile.lineTo(0,-.09);
+  const bladeGeometry=new THREE.ExtrudeGeometry(bladeProfile,{depth:.035,bevelEnabled:true,bevelSegments:2,steps:1,bevelSize:.008,bevelThickness:.008,curveSegments:10});
+  const rustCanvas=document.createElement('canvas');rustCanvas.width=256;rustCanvas.height=128;
+  const rustCtx=rustCanvas.getContext('2d');rustCtx.fillStyle='#77766b';rustCtx.fillRect(0,0,256,128);
+  for(let i=0;i<280;i++){
+    const x=(i*83)%256,y=(i*47)%128,r=1+(i*11)%8;
+    rustCtx.fillStyle=i%2?'rgba(133,77,39,.56)':'rgba(44,58,56,.48)';
+    rustCtx.beginPath();rustCtx.ellipse(x,y,r,r*.45,(i%5)*.24,0,Math.PI*2);rustCtx.fill();
+  }
+  const bladeTexture=new THREE.CanvasTexture(rustCanvas);bladeTexture.colorSpace=THREE.SRGBColorSpace;
+  const bladeMetal=walkMaterial(0xb0a68b,.94,.34,{map:bladeTexture,bumpMap:bladeTexture,bumpScale:.025,side:THREE.DoubleSide});
+  const hiltMetal=walkMaterial(0x849087,.83,.42),wrap=walkMaterial(0x625548,.95,.04);
+  for(let i=0;i<7;i++){
+    const z=2.98+i*.19,root=new THREE.Group();root.position.set(16.16,.83,z);W.scene.add(root);
+    const blade=new THREE.Mesh(bladeGeometry,bladeMetal);blade.rotation.x=Math.PI/2;blade.position.set(0,0,0);blade.castShadow=true;blade.receiveShadow=true;root.add(blade);
+    const fuller=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3([
+      new THREE.Vector3(.12,-.008,0),new THREE.Vector3(.72,-.008,0),new THREE.Vector3(1.35,-.008,0)
+    ]),18,.008,6,false),iron);
+    root.add(fuller);
+    const guard=walkBox(.11,.055,.34,hiltMetal,-.035,.035,0,{parent:root});guard.rotation.y=-.08;
+    const grip=walkCylinder(.052,.06,.48,woodTop,-.28,.025,0,{parent:root,seg:12});grip.rotation.z=Math.PI/2;
+    for(let wrapIndex=0;wrapIndex<5;wrapIndex++){
+      const ring=new THREE.Mesh(new THREE.TorusGeometry(.056,.009,6,16),wrap);
+      ring.position.set(-.11-wrapIndex*.075,.025,0);ring.rotation.y=Math.PI/2;root.add(ring);
+    }
+    walkSphere(.09,hiltMetal,-.56,.025,0,{x:1.12,y:.8,z:.8},root);
+    const quillon=new THREE.Mesh(new THREE.TorusGeometry(.16,.025,8,18,Math.PI),hiltMetal);
+    quillon.position.set(-.04,.035,0);quillon.rotation.x=Math.PI/2;quillon.rotation.z=Math.PI;root.add(quillon);
   }
   plaque(17.1,4.42,'GƯƠM VÀ KIẾM','VŨ KHÍ CẬN CHIẾN',2.1);
   // Reference photo mounted as a framed image on the back wall.
-  const frame=walkMaterial(0xb88b48,.3,.6),frameDark=walkMaterial(0x38261a,.55,.2);
-  walkBox(4.7,2.8,.14,frameDark,19.68,2.75,0);
-  walkBox(4.82,.12,.18,frame,19.58,4.17,0);walkBox(4.82,.12,.18,frame,19.58,1.33,0);
+  const frame=walkMaterial(0xb88b48,.3,.6);
+  //walkBox(4.7,2.8,.14,frameDark,19.68,2.75,0);
+  walkBox(.18,.12,4.82,frame,19.58,4.17,0);walkBox(.18,.12,4.82,frame,19.58,1.33,0);
   walkBox(.12,2.85,.18,frame,19.58,2.75,-2.35);walkBox(.12,2.85,.18,frame,19.58,2.75,2.35);
   const canvas=new THREE.Mesh(new THREE.PlaneGeometry(4.5,2.58),new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.DoubleSide}));
   canvas.position.set(19.57,2.75,0);canvas.rotation.y=-Math.PI/2;W.scene.add(canvas);
   const refImg=new Image();refImg.onload=()=>{const tex=new THREE.Texture(refImg);tex.colorSpace=THREE.SRGBColorSpace;tex.needsUpdate=true;canvas.material.map=tex;canvas.material.color.set(0xffffff);canvas.material.needsUpdate=true;};refImg.src='phong-hien-vat-tay-son.png';
   // Warm spotlights and subtle brass posts evoke the museum reference.
-  [[10.8,0],[14,0],[17.1,-3.65],[17.1,3.55]].forEach(([x,z])=>walkPointLight(x,4.7,z,0xffd39a,1.0,5.5));
+  [[10.55,-4.25],[14,-4.25],[17.35,-4.25],[17.1,3.55]].forEach(([x,z])=>walkPointLight(x,4.7,z,0xffd39a,1.0,5.5));
   const postMat=walkMaterial(0xc49a51,.26,.7);
-  [[9.3,-1.7],[12.3,-1.7],[15.8,-1.7],[18.6,-1.7],[9.3,1.7],[12.3,1.7],[15.8,1.7],[18.6,1.7]].forEach(([x,z])=>{
+  [[9.3,-5.55],[12.3,-5.55],[15.8,-5.55],[18.6,-5.55],[9.3,5.55],[12.3,5.55],[15.8,5.55],[18.6,5.55]].forEach(([x,z])=>{
     walkCylinder(.055,.07,.68,postMat,x,.34,z,{seg:12});walkSphere(.12,postMat,x,.72,z,{x:1,y:1,z:1});
   });
 }
