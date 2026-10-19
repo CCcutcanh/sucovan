@@ -2031,6 +2031,12 @@ function walkBuildTaySonDisplays(){
   });
 }
 
+function walkBattleGroundHeight(x,z,campaign){
+  const edge=Math.min(1,Math.abs(z)/5.8);
+  const ridgeA=Math.exp(-((x+1.25)**2/1.1+(z+1.5)**2/3.2)),ridgeB=Math.exp(-((x-1.15)**2/1.2+(z-.75)**2/3.8));
+  const elevation=campaign==='thanh'?ridgeA*.62+ridgeB*.42:Math.max(0,Math.abs(z)-.8)*.085;
+  return .02+edge*.08+elevation+Math.sin(x*2.1+z*.6)*.012+Math.cos(x*.9-z*1.4)*.01;
+}
 function walkBattleGround(group,groundColor,campaign){
   const canvas=document.createElement('canvas');canvas.width=canvas.height=512;const context=canvas.getContext('2d');
   context.fillStyle='#ffffff';context.fillRect(0,0,512,512);
@@ -2043,10 +2049,9 @@ function walkBattleGround(group,groundColor,campaign){
   const geometry=new THREE.PlaneGeometry(5.92,11.82,36,64),positions=geometry.attributes.position,colors=[];
   const lowColor=new THREE.Color(groundColor),highColor=new THREE.Color(campaign==='thanh'?0x8d8165:0x7a8466);
   for(let i=0;i<positions.count;i++){
-    const x=positions.getX(i),z=-positions.getY(i),edge=Math.min(1,Math.abs(z)/5.8);
-    const ridgeA=Math.exp(-((x+1.25)**2/1.1+(z+1.5)**2/3.2)),ridgeB=Math.exp(-((x-1.15)**2/1.2+(z-.75)**2/3.8));
+    const x=positions.getX(i),z=-positions.getY(i),height=walkBattleGroundHeight(x,z,campaign);
+    const edge=Math.min(1,Math.abs(z)/5.8),ridgeA=Math.exp(-((x+1.25)**2/1.1+(z+1.5)**2/3.2)),ridgeB=Math.exp(-((x-1.15)**2/1.2+(z-.75)**2/3.8));
     const elevation=campaign==='thanh'?ridgeA*.62+ridgeB*.42:Math.max(0,Math.abs(z)-.8)*.085;
-    const height=.02+edge*.08+elevation+Math.sin(x*2.1+z*.6)*.012+Math.cos(x*.9-z*1.4)*.01;
     positions.setZ(i,height);
     const tint=lowColor.clone().lerp(highColor,Math.min(1,elevation/.62+edge*.2));colors.push(tint.r,tint.g,tint.b);
   }
@@ -2123,7 +2128,7 @@ function walkRiverRelief(group){
 }
 function walkBattleBurst(position,startAt=0){
   if(!W.battleGroup)return;
-  const root=new THREE.Group();root.position.copy(position);root.position.y=.24;W.battleGroup.add(root);
+  const root=new THREE.Group();root.position.copy(position);root.position.y=Math.max(position.y,walkBattleGroundHeight(position.x,position.z,W.activeCampaign)+.14);W.battleGroup.add(root);
   const add=(color,size,x,y,z)=>{
     const material=new THREE.MeshBasicMaterial({color,transparent:true,opacity:0,depthWrite:false});
     const mesh=new THREE.Mesh(new THREE.SphereGeometry(size,10,8),material);mesh.position.set(x,y,z);root.add(mesh);return mesh;
@@ -2153,7 +2158,7 @@ function walkBattleResetFleet(){
 }
 function walkBattleResetArmy(){
   walkBattleClearEffects();W.battleSiegeTriggered=false;
-  W.battleArmy.forEach(unit=>{unit.mesh.visible=true;unit.mesh.position.set(unit.startX,.025,unit.startZ);unit.mesh.rotation.y=unit.team==='taySon'?Math.PI:0;});
+  W.battleArmy.forEach(unit=>{unit.mesh.visible=true;unit.mesh.position.set(unit.startX,walkBattleGroundHeight(unit.startX,unit.startZ,'thanh')+.035,unit.startZ);unit.mesh.rotation.y=unit.team==='taySon'?Math.PI:0;});
 }
 function walkBattleUpdateEffects(t){
   W.battleEffects=W.battleEffects.filter(effect=>{
@@ -2214,13 +2219,14 @@ function walkBattleUpdateThanh(t){
       const assaultZ=ngoc?-2.75:.42,cityZ=-5.35;
       let z=mix(startZ,assaultZ,ease((t-approachStart)/(approachEnd-approachStart)));
       z=mix(z,cityZ,ease((t-11.5)/4.8));
-      mesh.position.x=startX+(ngoc?.45:.12)*ease((t-approachStart)/4);
-      mesh.position.z=z;mesh.rotation.y=Math.PI+Math.sin(t*2+index)*.025;
-      mesh.position.y=.025+Math.abs(Math.sin(t*7+index*.7))*.018;
+      const x=startX+(ngoc?.45:.12)*ease((t-approachStart)/4);
+      mesh.position.x=x;mesh.position.z=z;mesh.rotation.y=Math.PI+Math.sin(t*2+index)*.025;
+      mesh.position.y=walkBattleGroundHeight(x,z,'thanh')+.035+Math.abs(Math.sin(t*7+index*.7))*.018;
     }else{
       const rout=ease((t-11.2)/3.1);
-      mesh.position.z=mix(startZ,-5.9,rout);mesh.rotation.y=Math.PI*rout;
-      mesh.position.y=.025+Math.abs(Math.sin(t*8+index))*.012;
+      const z=mix(startZ,-5.9,rout);
+      mesh.position.z=z;mesh.rotation.y=Math.PI*rout;
+      mesh.position.y=walkBattleGroundHeight(startX,z,'thanh')+.035+Math.abs(Math.sin(t*8+index))*.012;
       if(t>16.8)mesh.visible=false;
     }
   });
@@ -2230,7 +2236,7 @@ function walkBattleSoldier(group,x,z,team,heading,shield=false){
     taySon:{cloth:walkMaterial(0x786238,.84,.04),armor:walkMaterial(0x4e6844,.72,.08),helmet:walkMaterial(0xb28a48,.48,.4),skin:walkMaterial(0x9b7150,.82,.02),wood:walkMaterial(0x63452a,.82,.04),shield:walkMaterial(0x987b49,.88,.02)},
     thanh:{cloth:walkMaterial(0x41494c,.86,.04),armor:walkMaterial(0x59636a,.68,.1),helmet:walkMaterial(0x51443a,.74,.12),skin:walkMaterial(0x89684e,.84,.02),wood:walkMaterial(0x57402c,.82,.02),shield:walkMaterial(0x786d58,.88,.02)}
   });
-  const material=mats[team],soldier=new THREE.Group();soldier.position.set(x,.025,z);soldier.rotation.y=heading;
+  const material=mats[team],soldier=new THREE.Group();soldier.position.set(x,walkBattleGroundHeight(x,z,'thanh')+.035,z);soldier.rotation.y=heading;
   walkBox(.18,.24,.15,material.armor,0,.29,0,{parent:soldier});
   walkSphere(.085,material.skin,0,.48,.015,{x:1,y:1.05,z:.9},soldier);
   const helmet=new THREE.Mesh(new THREE.SphereGeometry(.09,10,8,0,Math.PI*2,0,Math.PI*.62),material.helmet);helmet.position.set(0,.53,.01);soldier.add(helmet);
@@ -2248,24 +2254,26 @@ function walkBattleSoldier(group,x,z,team,heading,shield=false){
 }
 function walkBattleFort(group,x,z,name,width,defendedBy){
   const earth=walkMaterial(0x776648,.96,.01),stone=walkMaterial(0x665c4d,.9,.02),roof=walkMaterial(0x554338,.83,.04);
-  walkBox(width,.12,.92,earth,x,.11,z,{parent:group});
-  walkBox(width*.42,.42,.14,stone,x-width*.29,.34,z-.34,{parent:group});
-  walkBox(width*.42,.42,.14,stone,x+width*.29,.34,z-.34,{parent:group});
-  walkBox(width*.36,.3,.14,roof,x,.28,z-.34,{parent:group});
-  walkBox(.16,.62,.34,stone,x-width*.48,.42,z-.38,{parent:group});
-  walkBox(.16,.62,.34,stone,x+width*.48,.42,z-.38,{parent:group});
-  walkBox(.56,.06,.22,roof,x,.67,z-.38,{parent:group});
-  walkBox(.34,.38,.1,walkMaterial(0x30271f,.9,.01),x,.25,z-.25,{parent:group});
-  for(let index=0;index<5;index++)walkBox(.12,.16,.14,stone,x-width*.42+index*width*.21,.67,z-.37,{parent:group});
-  walkBattleLabel(group,name,x,z-.95,defendedBy,width*1.08);
+  const root=new THREE.Group();root.position.set(x,walkBattleGroundHeight(x,z,'thanh')+.025,z);group.add(root);
+  walkBox(width,.12,.92,earth,0,.06,0,{parent:root});
+  walkBox(width*.42,.42,.14,stone,-width*.29,.29,-.34,{parent:root});
+  walkBox(width*.42,.42,.14,stone,width*.29,.29,-.34,{parent:root});
+  walkBox(width*.36,.3,.14,roof,0,.23,-.34,{parent:root});
+  walkBox(.16,.62,.34,stone,-width*.48,.37,-.38,{parent:root});
+  walkBox(.16,.62,.34,stone,width*.48,.37,-.38,{parent:root});
+  walkBox(.56,.06,.22,roof,0,.62,-.38,{parent:root});
+  walkBox(.34,.38,.1,walkMaterial(0x30271f,.9,.01),0,.2,-.25,{parent:root});
+  for(let index=0;index<5;index++)walkBox(.12,.16,.14,stone,-width*.42+index*width*.21,.62,-.37,{parent:root});
+  walkBattleLabel(root,name,0,-.95,defendedBy,width*1.08);
 }
 function walkThanhRelief(group){
   const fort=walkMaterial(0x58483a,.9,.02),brick=walkMaterial(0x625046,.88,.02);
   const ridge=new THREE.Mesh(new THREE.SphereGeometry(1,24,12),walkMaterial(0x827456,.98,.01));ridge.position.set(-2.1,.19,4.8);ridge.scale.set(1.25,.22,.72);group.add(ridge);
   walkBattleFort(group,-1.45,-2.35,'NGỌC HỒI',1.45,'ĐỒN QUÂN THANH');
   walkBattleFort(group,1.35,.75,'ĐỐNG ĐA',1.1,'ĐỒN QUÂN THANH');
-  walkBox(2.4,.1,.18,brick,1.8,.12,-4.95,{parent:group});
-  for(let i=0;i<4;i++)walkBox(.17,.32,.16,fort,.8+i*.55,.27,-4.95,{parent:group});
+  const cityWallY=walkBattleGroundHeight(1.8,-4.95,'thanh');
+  walkBox(2.4,.1,.18,brick,1.8,cityWallY+.05,-4.95,{parent:group});
+  for(let i=0;i<4;i++)walkBox(.17,.32,.16,fort,.8+i*.55,cityWallY+.26,-4.95,{parent:group});
   walkBattleLabel(group,'CỬA THÀNH THĂNG LONG',1.65,-5.15,'#3c3932',2.1);
   walkBattleLabel(group,'TAM ĐIỆP',-2.05,4.85,'#433c33',1.45);
   walkBattleLabel(group,'HƯỚNG BẮC',-.05,5.3,'#435247',1.25);
@@ -2285,7 +2293,7 @@ function walkThanhRelief(group){
   for(let row=0;row<2;row++)for(let col=0;col<5;col++)addSoldier(-2.25+col*.36,-3.08+row*.3,'thanh','defender',0);
   for(let col=0;col<5;col++)addSoldier(.48+col*.34,.05,'thanh','defender',0);
   for(const x of [-2.1,1.45]){
-    const cannon=new THREE.Group();cannon.position.set(x,.06,x<0?-3.55:-.45);cannon.rotation.y=x<0?0:Math.PI;cannon.scale.setScalar(.2);walkModelCannon(cannon);group.add(cannon);
+    const z=x<0?-3.55:-.45,cannon=new THREE.Group();cannon.position.set(x,walkBattleGroundHeight(x,z,'thanh')+.04,z);cannon.rotation.y=x<0?0:Math.PI;cannon.scale.setScalar(.2);walkModelCannon(cannon);group.add(cannon);
   }
 }
 function walkBuildBattle(){
@@ -2517,7 +2525,7 @@ function walkStopBattle(){
   Object.values(W.battleCampaignGroups).forEach(group=>{group.visible=true;});
   if(W.camera&&W.battleOriginalFov!==null){W.camera.fov=W.battleOriginalFov;W.camera.updateProjectionMatrix();W.battleOriginalFov=null;}
   walkBattleClearEffects();W.battleFleet.forEach(unit=>{unit.mesh.visible=unit.role!=='ambush-left'&&unit.role!=='ambush-right';unit.mesh.position.set(unit.startX,.14,unit.startZ);unit.mesh.rotation.z=0;unit.mesh.userData.battleHit=false;});
-  W.battleArmy.forEach(unit=>{unit.mesh.visible=true;unit.mesh.position.set(unit.startX,.025,unit.startZ);unit.mesh.rotation.y=unit.team==='taySon'?Math.PI:0;});
+  W.battleArmy.forEach(unit=>{unit.mesh.visible=true;unit.mesh.position.set(unit.startX,walkBattleGroundHeight(unit.startX,unit.startZ,'thanh')+.035,unit.startZ);unit.mesh.rotation.y=unit.team==='taySon'?Math.PI:0;});
   W.ships.forEach(ship=>{ship.mesh.visible=ship.campaign===W.activeCampaign;ship.mesh.position.x=ship.bx;ship.mesh.position.z=ship.bz;});
   $('#walkPrompt').textContent='Kết thúc tái hiện. Hãy quan sát sa hình hoặc mở một hiện vật để xem nội dung chi tiết.';
 }
