@@ -234,8 +234,8 @@ ART['sa-ban-rg']=()=>{let tr='';
   <rect x="150" y="236" width="14" height="22" fill="#2c7089"/><rect x="230" y="236" width="14" height="22" fill="#2c7089"/><rect x="300" y="236" width="14" height="22" fill="#2c7089"/>
   <ellipse cx="200" cy="150" rx="54" ry="17" fill="#3f7a3c"/><ellipse cx="200" cy="148" rx="40" ry="11" fill="#4d8c46"/>
   <g fill="#c9b78a"><rect x="336" y="254" width="10" height="8"/><rect x="350" y="258" width="10" height="8"/><rect x="342" y="268" width="10" height="8"/><rect x="358" y="270" width="10" height="8"/></g>
-  <path d="M16 108H132" stroke="#ff8c94" stroke-width="3" fill="none"/><path d="M142 108l-12-7v14z" fill="#ff8c94"/>
-  <text x="80" y="98" text-anchor="middle" font-size="9" fill="#fff" font-family="Be Vietnam Pro, system-ui, sans-serif">Hướng tiến của quân Xiêm</text>
+  ${boat(34,112,XI,{s:.62,flip:-1})}${boat(62,105,XI,{s:.62,flip:-1})}${boat(90,111,XI,{s:.62,flip:-1})}
+  <text x="66" y="92" text-anchor="middle" font-size="9" fill="#fff" font-family="Be Vietnam Pro, system-ui, sans-serif">Đoàn thuyền quân Xiêm</text>
   <text x="60" y="26" text-anchor="middle" font-size="10" fill="#fff" font-family="Be Vietnam Pro, system-ui, sans-serif">Rạch Gầm</text><text x="341" y="26" text-anchor="middle" font-size="10" fill="#fff" font-family="Be Vietnam Pro, system-ui, sans-serif">Xoài Mút</text>
   <text x="200" y="176" text-anchor="middle" font-size="9" fill="#fff" font-family="Be Vietnam Pro, system-ui, sans-serif">Cù lao Thới Sơn</text><text x="352" y="288" text-anchor="middle" font-size="9" fill="#fff" font-family="Be Vietnam Pro, system-ui, sans-serif">Mỹ Tho</text>
   <text x="200" y="226" text-anchor="middle" font-size="9" fill="#cfe9f2" font-family="Be Vietnam Pro, system-ui, sans-serif">Sông Tiền</text>`)};
@@ -1289,7 +1289,23 @@ const WALK_TYPES={
   battle:{label:'Phòng sa hình',icon:'🗺',center:[0,-14],color:0x17332e},
   documents:{label:'Phòng tư liệu',icon:'📜',center:[0,14],color:0x39271a}
 };
-const W={active:false,ready:false,loopRunning:false,renderer:null,scene:null,camera:null,root:null,targets:[],solids:[],rooms:[],keys:{},velocity:{x:0,z:0},yaw:0,pitch:0,last:0,ray:null,centerRay:null,current:null,activeCampaign:'xiem',promptAt:0,promptText:'',statusText:'',screenCanvas:null,screenTexture:null,screenLast:0,tvScreens:[],tvVideoElements:{},tvVideoTextures:{},tvPreviewsLoaded:false,ships:[],battleRunning:false,battleStart:0,battlePhase:-1,wasLocked:false};
+const W={active:false,ready:false,loopRunning:false,renderer:null,scene:null,camera:null,root:null,targets:[],solids:[],rooms:[],keys:{},velocity:{x:0,z:0},yaw:0,pitch:0,last:0,ray:null,centerRay:null,current:null,activeCampaign:'xiem',promptAt:0,promptText:'',statusText:'',screenCanvas:null,screenTexture:null,screenLast:0,tvScreens:[],tvVideoElements:{},tvVideoTextures:{},tvPreviewsLoaded:false,ships:[],battleFleet:[],battleArmy:[],battleShots:[],battleEffects:[],battleMuzzles:[],battleGroup:null,battleCampaignGroups:{},battleOriginalFov:null,battleElapsed:0,battlePaused:false,battleRunning:false,battleSiegeTriggered:false,battleStart:0,battlePhase:-1,wasLocked:false};
+const WALK_BATTLE_SCENES=[
+  {title:'Chọn khúc sông làm trận địa',caption:'Quân Xiêm có khoảng 5 vạn người và 300 thuyền; Tây Sơn khoảng 2 vạn. Nguyễn Huệ chọn đoạn sông Tiền từ Rạch Gầm đến Xoài Mút, nơi cù lao và hai bờ giúp che giấu quân mai phục.'},
+  {title:'Nhử quân Xiêm tiến sâu',caption:'Một thuyền Tây Sơn ra khiêu chiến rồi giả thua rút lui. Đội thuyền Xiêm đuổi theo, tiến vào khúc sông đã được chuẩn bị.'},
+  {title:'Khóa hai đầu, khép thế trận',caption:'Khi quân Xiêm lọt vào trận địa, thủy binh Tây Sơn từ Rạch Gầm và Xoài Mút đồng loạt xuất kích, chặn đường tiến và đường rút.'},
+  {title:'Pháo lệnh và hỏa công',caption:'Pháo binh từ bờ phối hợp với thủy binh. Đạn pháo và hỏa công đánh vào đội thuyền đang đi sát nhau trên sông.'},
+  {title:'Đội hình Xiêm rối loạn',caption:'Thuyền trúng đạn bốc cháy, một số bị đánh chìm; đội hình bị chia cắt và không thể hỗ trợ lẫn nhau.'},
+  {title:'Chiến thắng Rạch Gầm – Xoài Mút',caption:'Trận đánh đầu năm 1785 kết thúc trong chưa đầy một ngày. Phần lớn quân Xiêm bị đánh tan, số còn lại tháo chạy.'}
+];
+const WALK_THANH_SCENES=[
+  {title:'Tập kết và xuất quân từ Tam Điệp',caption:'Ngày 30 tháng Chạp năm Mậu Thân, đại quân Tây Sơn chia thành nhiều đạo, tiến công trên các hướng phối hợp.'},
+  {title:'Tiến công đồn Ngọc Hồi',caption:'Đạo quân do Quang Trung trực tiếp chỉ huy áp sát đồn Ngọc Hồi, cửa ngõ phía nam Thăng Long.'},
+  {title:'Khiên rơm mở đường xung phong',caption:'Quân Tây Sơn dùng khiên ghép bằng ván, phủ rơm thấm nước để chống hỏa lực rồi tiến sát lũy.'},
+  {title:'Đô đốc Long tập kích Đống Đa',caption:'Cùng lúc, đạo quân của Đô đốc Long bất ngờ đánh đồn Đống Đa, phá vỡ tuyến phòng thủ phía tây nam.'},
+  {title:'Quân Thanh tan rã, Tôn Sĩ Nghị bỏ chạy',caption:'Hai hướng tiến công phối hợp khiến hệ thống phòng thủ sụp đổ; quân Thanh rút chạy khỏi Thăng Long.'},
+  {title:'Quang Trung tiến vào Thăng Long',caption:'Trưa mùng 5 Tết Kỷ Dậu, quân Tây Sơn giải phóng Thăng Long và giành thắng lợi quyết định.'}
+];
 function walkMakeUI(){
   const old=$('#walk3d');if(old)return;
   const root=document.createElement('div');root.id='walk3d';root.hidden=true;
@@ -1301,6 +1317,12 @@ function walkMakeUI(){
     </div>
     <div class="walk-cross" aria-hidden="true">+</div>
     <div id="walkPrompt" class="walk-prompt">Nhấn “Bắt đầu tham quan”, sau đó nhấp vào cảnh 3D để điều khiển góc nhìn.</div>
+    <aside id="walkBattlePanel" class="walk-battle-panel" hidden aria-live="polite">
+      <div class="walk-battle-heading"><span id="walkBattleCount">TRẬN RẠCH GẦM – XOÀI MÚT</span><button type="button" data-battle-control="close" aria-label="Đóng phần tái hiện">Đóng</button></div>
+      <div class="walk-battle-track" id="walkBattleTrack"></div>
+      <h2 id="walkBattleTitle"></h2><p id="walkBattleCaption"></p>
+      <div class="walk-battle-actions"><button type="button" data-battle-control="previous">Cảnh trước</button><button type="button" data-battle-control="pause">Tạm dừng</button><button type="button" data-battle-control="next">Cảnh sau</button><button type="button" data-battle-control="replay">Xem lại</button></div>
+    </aside>
     <div class="walk-help">Di chuyển: <b>W A S D</b> hoặc phím mũi tên · Nhìn quanh: <b>di chuyển chuột</b> · Tương tác: <b>E</b> hoặc nhấp chuột khi ngắm hiện vật · <b>Esc</b>: nhả chuột</div>
     <div class="walk-status" id="walkStatus">Đang ở sảnh trung tâm</div>
     <div class="walk-mobile"><div class="walk-pad"><button data-hold="w" aria-label="Tiến">▲</button><button data-hold="a" aria-label="Sang trái">◀</button><button data-hold="s" aria-label="Lùi">▼</button><button data-hold="d" aria-label="Sang phải">▶</button></div><div class="walk-turn"><button data-turn="-1" aria-label="Quay trái">↶</button><button data-turn="1" aria-label="Quay phải">↷</button></div></div>
@@ -1310,6 +1332,7 @@ function walkMakeUI(){
     <div class="walk-image-zoom" id="walkImageZoom" hidden role="dialog" aria-modal="true" aria-label="Ảnh phóng to"><button class="walk-image-close" id="walkImageClose" aria-label="Đóng ảnh">×</button><div class="walk-image-content" id="walkImageContent"></div></div>
   `;
   document.body.appendChild(root);
+  $('#walkBattleTrack').innerHTML=WALK_BATTLE_SCENES.map((scene,index)=>`<button type="button" data-battle-scene="${index}" aria-label="Cảnh ${index+1}: ${esc(scene.title)}" title="${esc(scene.title)}">${index+1}</button>`).join('');
   const btn=document.createElement('button');btn.id='enter3D';btn.className='btn primary';btn.textContent='🚶 Khám phá không gian 3D';
   const entryBtns=$('.entry-btns');if(entryBtns)entryBtns.insertBefore(btn,entryBtns.firstChild);
   if($('#enterBtn')){ $('#enterBtn').textContent='Xem theo danh mục';$('#enterBtn').classList.remove('primary'); }
@@ -1320,6 +1343,16 @@ function walkMakeUI(){
   $('#walkIntroBtn').onclick=()=>{$('#walkIntro').hidden=false;if(document.pointerLockElement=== $('#walkCanvas'))document.exitPointerLock?.()};
   $('#walkBegin').onclick=()=>{if(!W.ready){walkInit();}if(W.ready){$('#walkIntro').hidden=true;$('#walkDetail').hidden=true;walkRequestLock();}};
   $('#walkDetailClose').onclick=walkCloseDetail;
+  $('#walkBattlePanel').addEventListener('click',e=>{
+    const scene=e.target.closest('[data-battle-scene]');
+    if(scene){walkSeekBattle(+scene.dataset.battleScene);return}
+    const control=e.target.closest('[data-battle-control]')?.dataset.battleControl;
+    if(control==='pause')walkToggleBattlePause();
+    else if(control==='previous')walkSeekBattle(Math.max(0,W.battlePhase-1));
+    else if(control==='next')walkSeekBattle(Math.min(5,W.battlePhase+1));
+    else if(control==='replay')walkPlayBattle();
+    else if(control==='close')walkStopBattle();
+  });
   $('#walkInteract').onclick=walkInteract;
   $('#walkImageClose').onclick=walkCloseGalleryImage;
   $('#walkImageZoom').addEventListener('click',e=>{if(e.target.id==='walkImageZoom')walkCloseGalleryImage()});
@@ -1384,6 +1417,7 @@ function walkOpen(){
   walkResize();walkStartLoop();
 }
 function walkLeave(){
+  if(!$('#walkBattlePanel').hidden)walkStopBattle();
   if(!$('#walkDetail').hidden)walkCloseDetail();
   if(!$('#walkImageZoom').hidden)walkCloseGalleryImage();
   if(document.pointerLockElement===$('#walkCanvas'))document.exitPointerLock?.();
@@ -2036,22 +2070,25 @@ function walkBattleLabel(group,text,x,z,bg='#3a3026',width=1.05){
   const plate=new THREE.Mesh(new THREE.PlaneGeometry(width,.42),new THREE.MeshBasicMaterial({map:texture,side:THREE.DoubleSide}));
   plate.rotation.x=-Math.PI/2;root.add(plate);group.add(root);
 }
-function walkBattleArrow(group,start,end,color,height=.34){
-  const marker=new THREE.Group(),material=new THREE.MeshBasicMaterial({color,transparent:true,opacity:.88});
-  const from=new THREE.Vector3(start[0],height,start[1]),to=new THREE.Vector3(end[0],height,end[1]),direction=new THREE.Vector3().subVectors(to,from).normalize();
-  const lineGeometry=new THREE.BufferGeometry().setFromPoints([from,to]),shaft=new THREE.Line(lineGeometry,new THREE.LineBasicMaterial({color,transparent:true,opacity:.88}));marker.add(shaft);
-  const head=new THREE.Mesh(new THREE.ConeGeometry(.06,.14,5),material);head.position.copy(to);head.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),direction);head.castShadow=false;marker.add(head);group.add(marker);return marker;
-}
 function walkBattleBoat(group,x,z,color){
-  const boat=new THREE.Group();boat.position.set(x,.14,z);boat.scale.set(1.8,1.35,1.55);
-  const hullShape=new THREE.Shape();hullShape.moveTo(-.52,0);hullShape.quadraticCurveTo(-.42,-.17,-.2,-.18);hullShape.lineTo(.34,-.14);hullShape.quadraticCurveTo(.56,0,.34,.14);hullShape.lineTo(-.28,.16);hullShape.quadraticCurveTo(-.46,.13,-.52,0);
-  const hullGeometry=new THREE.ExtrudeGeometry(hullShape,{depth:.14,bevelEnabled:true,bevelSegments:1,steps:1,bevelSize:.025,bevelThickness:.02});hullGeometry.translate(0,0,-.07);hullGeometry.rotateX(-Math.PI/2);
-  const hull=new THREE.Mesh(hullGeometry,walkMaterial(color,.66,.12));hull.position.y=.05;hull.castShadow=true;boat.add(hull);
-  walkBox(.55,.07,.2,walkMaterial(0x725b42,.78,.06),0,.2,0,{parent:boat});
-  walkCylinder(.025,.035,.46,walkMaterial(0x806847,.7,.12),-.05,.43,0,{parent:boat,seg:7});
-  const sailShape=new THREE.Shape();sailShape.moveTo(0,0);sailShape.lineTo(.24,.35);sailShape.lineTo(.27,0);sailShape.closePath();
-  const sail=new THREE.Mesh(new THREE.ShapeGeometry(sailShape),walkMaterial(0xd8d0bb,.9,.01,{side:THREE.DoubleSide}));sail.position.set(-.04,.24,.015);boat.add(sail);
-  group.add(boat);return boat;
+  const boat=new THREE.Group();boat.position.set(x,.14,z);boat.scale.set(.48,.48,.48);
+  const team=color==='xiem'?'xiem':'tayson';
+  const mats=group.userData.battleBoatMats||(group.userData.battleBoatMats={
+    xiem:{hull:walkMaterial(0x7f302b,.58,.16),trim:walkMaterial(0xb99455,.45,.36),sail:walkMaterial(0xe8d6b5,.92,.02,{side:THREE.DoubleSide}),flag:walkMaterial(0xb3262e,.68,.08,{side:THREE.DoubleSide})},
+    tayson:{hull:walkMaterial(0x244d62,.48,.28),trim:walkMaterial(0xc39b58,.42,.4),sail:walkMaterial(0xd5d9ca,.9,.02,{side:THREE.DoubleSide}),flag:walkMaterial(0xa3262e,.6,.12,{side:THREE.DoubleSide})}
+  });
+  const material=mats[team];
+  const hullShape=new THREE.Shape();hullShape.moveTo(-.78,0);hullShape.quadraticCurveTo(-.65,-.22,-.3,-.2);hullShape.lineTo(.48,-.16);hullShape.quadraticCurveTo(.78,0,.48,.16);hullShape.lineTo(-.48,.18);hullShape.quadraticCurveTo(-.7,.14,-.78,0);
+  const hullGeometry=new THREE.ExtrudeGeometry(hullShape,{depth:.2,bevelEnabled:true,bevelSegments:2,steps:1,bevelSize:.035,bevelThickness:.025});hullGeometry.translate(0,0,-.1);hullGeometry.rotateX(-Math.PI/2);
+  const hull=new THREE.Mesh(hullGeometry,material.hull);hull.position.y=.08;hull.castShadow=true;boat.add(hull);
+  walkBox(1.02,.09,.34,material.trim,-.02,.22,0,{parent:boat});
+  walkBox(.3,.2,.28,material.hull,-.3,.34,0,{parent:boat});
+  walkCylinder(.035,.045,.72,material.trim,-.05,.62,0,{parent:boat,seg:8});
+  const sailShape=new THREE.Shape();sailShape.moveTo(0,0);sailShape.lineTo(.34,.54);sailShape.lineTo(.36,0);sailShape.closePath();
+  const sail=new THREE.Mesh(new THREE.ShapeGeometry(sailShape),material.sail);sail.position.set(-.08,.34,.025);boat.add(sail);
+  const pennant=new THREE.Mesh(new THREE.PlaneGeometry(.25,.13),material.flag);pennant.position.set(.02,.93,.025);boat.add(pennant);
+  const wake=new THREE.Mesh(new THREE.CircleGeometry(.44,20),new THREE.MeshBasicMaterial({color:0xc4e2df,transparent:true,opacity:.17,depthWrite:false}));wake.rotation.x=-Math.PI/2;wake.position.set(-.42,.025,0);wake.scale.set(1,.23,1);boat.add(wake);
+  boat.userData.team=team;group.add(boat);return boat;
 }
 function walkRiverRelief(group){
   const water=new THREE.Shape();water.moveTo(-3.02,-.78);water.bezierCurveTo(-1.8,-1.02,-1.3,-.28,-.22,-.38);water.bezierCurveTo(.92,-.49,1.62,-.9,3.02,-.62);water.lineTo(3.02,.66);water.bezierCurveTo(1.8,.42,.93,.94,-.13,.82);water.bezierCurveTo(-1.32,.72,-1.82,.23,-3.02,.48);water.closePath();
@@ -2061,27 +2098,195 @@ function walkRiverRelief(group){
   const islandGeometry=new THREE.ShapeGeometry(shoal,20);islandGeometry.rotateX(-Math.PI/2);
   const island=new THREE.Mesh(islandGeometry,walkMaterial(0x58634c,.98,.01));island.position.set(.55,.145,-.04);island.receiveShadow=true;group.add(island);
   [[-2.5,-1.32],[-1.55,-1.5],[1.55,-1.43],[2.5,-1.22],[-2.35,1.38],[1.9,1.42]].forEach(([x,z],i)=>walkBattleTree(group,x,z,.8+(i%2)*.1));
-  const enemyRoute=walkBattleArrow(group,[2.8,.05],[.45,.12],0x496d82,.15);W.ships.push({mesh:enemyRoute,bx:0,bz:0,index:W.ships.length,campaign:'xiem'});
-  walkBattleArrow(group,[-2.4,-1.35],[-.45,-.56],0x8f4938,.15);
-  walkBattleArrow(group,[2.35,1.32],[.45,.55],0x8f4938,.15);
   walkBattleLabel(group,'RẠCH GẦM',-2.15,-.92,'#3a3026',1.45);
   walkBattleLabel(group,'XOÀI MÚT',2.12,.91,'#3a3026',1.45);
   walkBattleLabel(group,'CÙ LAO THỚI SƠN',.55,-.02,'#3d4638',1.8);
   walkBattleLabel(group,'KIM SƠN',-2.0,2.2,'#4b4437',1.15);
   walkBattleLabel(group,'BÌNH ĐỨC',1.9,-2.05,'#4b4437',1.25);
+  W.battleGroup=group;W.battleFleet=[];W.battleShots=[];W.battleEffects=[];W.battleMuzzles=[];
+  const addBoat=(x,z,team,role,index,heading)=>{
+    const mesh=walkBattleBoat(group,x,z,team);mesh.rotation.y=heading;mesh.userData.role=role;mesh.userData.slot=index;
+    W.battleFleet.push({mesh,team,role,index,startX:x,startZ:z});return mesh;
+  };
+  for(let i=0;i<8;i++)addBoat(1.12+(i%4)*.43,-.28+Math.floor(i/4)*.55,'xiem','fleet',i,Math.PI);
+  addBoat(-2.35,.06,'tayson','decoy',0,0);
+  for(let i=0;i<3;i++){
+    const z=-.34+i*.34;
+    const left=addBoat(-2.72,z,'tayson','ambush-left',i,0);left.visible=false;
+    const right=addBoat(2.72,z,'tayson','ambush-right',i,Math.PI);right.visible=false;
+  }
+  [-1,1].forEach(side=>{
+    const cannon=new THREE.Group();cannon.position.set(0,.19,side*1.33);cannon.rotation.y=side<0?Math.PI/2:-Math.PI/2;cannon.scale.setScalar(.34);walkModelCannon(cannon);group.add(cannon);
+    const flash=new THREE.Mesh(new THREE.SphereGeometry(.16,12,10),new THREE.MeshBasicMaterial({color:0xffb33b,transparent:true,opacity:0,depthWrite:false}));
+    flash.position.set(0,.55,side*.98);group.add(flash);W.battleMuzzles.push(flash);
+  });
+}
+function walkBattleBurst(position,startAt=0){
+  if(!W.battleGroup)return;
+  const root=new THREE.Group();root.position.copy(position);root.position.y=.24;W.battleGroup.add(root);
+  const add=(color,size,x,y,z)=>{
+    const material=new THREE.MeshBasicMaterial({color,transparent:true,opacity:0,depthWrite:false});
+    const mesh=new THREE.Mesh(new THREE.SphereGeometry(size,10,8),material);mesh.position.set(x,y,z);root.add(mesh);return mesh;
+  };
+  const fire=[add(0xff7a19,.12,-.06,.12,0),add(0xffc04a,.09,.04,.18,.03),add(0xe94b22,.1,.08,.1,-.04)];
+  const smoke=[add(0x68635c,.1,-.08,.28,0),add(0x79736a,.12,.08,.37,.03),add(0x494945,.095,0,.48,-.02)];
+  const ring=new THREE.Mesh(new THREE.TorusGeometry(.12,.018,5,18),new THREE.MeshBasicMaterial({color:0xffc04a,transparent:true,opacity:0,depthWrite:false}));ring.rotation.x=Math.PI/2;root.add(ring);
+  W.battleEffects.push({root,fire,smoke,ring,startAt,duration:2.5});
+}
+function walkBattleClearEffects(){
+  W.battleEffects.forEach(effect=>{effect.root.parent?.remove(effect.root);effect.root.traverse(node=>{node.material?.dispose();node.geometry?.dispose();});});
+  W.battleShots.forEach(shot=>{shot.mesh.parent?.remove(shot.mesh);shot.mesh.material?.dispose();shot.mesh.geometry?.dispose();});
+  W.battleEffects=[];W.battleShots=[];W.battleMuzzles.forEach(muzzle=>{muzzle.material.opacity=0;muzzle.scale.setScalar(.01);});
+}
+function walkBattleBuildShots(){
+  if(!W.battleGroup)return;walkBattleClearEffects();
+  const targets=W.battleFleet.filter(unit=>unit.team==='xiem'&&unit.role==='fleet');
+  targets.slice(0,6).forEach((unit,index)=>{
+    const side=index%2?1:-1,mesh=new THREE.Mesh(new THREE.SphereGeometry(.065,10,8),new THREE.MeshBasicMaterial({color:0xffd875,transparent:true,opacity:0}));
+    mesh.visible=false;W.battleGroup.add(mesh);
+    W.battleShots.push({mesh,unit,side,startAt:13.1+index*.43,duration:.48,hit:false});
+  });
+}
+function walkBattleResetFleet(){
+  W.battleFleet.forEach(unit=>{unit.mesh.visible=unit.role!=='ambush-left'&&unit.role!=='ambush-right';unit.mesh.position.set(unit.startX,.14,unit.startZ);unit.mesh.rotation.z=0;unit.mesh.userData.battleHit=false;});
+  walkBattleBuildShots();
+}
+function walkBattleResetArmy(){
+  walkBattleClearEffects();W.battleSiegeTriggered=false;
+  W.battleArmy.forEach(unit=>{unit.mesh.visible=true;unit.mesh.position.set(unit.startX,.025,unit.startZ);unit.mesh.rotation.y=unit.team==='taySon'?Math.PI:0;});
+}
+function walkBattleUpdateEffects(t){
+  W.battleEffects=W.battleEffects.filter(effect=>{
+    const age=t-effect.startAt;if(age<0)return true;
+    if(age>=effect.duration){effect.root.parent?.remove(effect.root);effect.root.traverse(node=>{node.material?.dispose();node.geometry?.dispose();});return false;}
+    const life=age/effect.duration,fade=Math.min(1,age*7,Math.max(0,(1-life)*4));
+    effect.fire.forEach((mesh,index)=>{mesh.material.opacity=.92*fade;mesh.position.y=.1+life*(.48+index*.06);mesh.scale.setScalar(1+life*.55);});
+    effect.smoke.forEach((mesh,index)=>{mesh.material.opacity=.48*fade;mesh.position.y=.26+life*(.95+index*.12);mesh.scale.setScalar(.7+life*1.3);});
+    effect.ring.material.opacity=.6*(1-life);effect.ring.scale.setScalar(.7+life*3.2);
+    return true;
+  });
+  W.battleShots.forEach(shot=>{
+    const age=t-shot.startAt;if(age<0||age>shot.duration){shot.mesh.visible=false;return;}
+    shot.mesh.visible=true;const p=ease(age/shot.duration),origin=new THREE.Vector3(-.88,.38,shot.side*1.28),target=shot.unit.mesh.position.clone();target.y=.3;
+    shot.mesh.position.lerpVectors(origin,target,p);shot.mesh.material.opacity=Math.sin(p*Math.PI);
+    if(p>=1&&!shot.hit){shot.hit=true;shot.unit.mesh.userData.battleHit=true;walkBattleBurst(target,shot.startAt+shot.duration);}
+  });
+  const volley=t>=13.05&&t<16.2?Math.max(0,Math.sin((t-13.05)*Math.PI*2.4)):0;
+  W.battleMuzzles.forEach((muzzle,index)=>{muzzle.material.opacity=volley*(index? .72:1);muzzle.scale.setScalar(.01+volley*.9);});
+}
+function walkBattleUpdateFleet(t){
+  const decoy=ease((t-4)/1.5),retreat=ease((t-5.5)/1.1),block=ease((t-7.4)/1.8),retreatEnemy=ease((t-16)/2.2);
+  W.battleFleet.forEach(unit=>{
+    const {mesh,role,index}=unit;let x=unit.startX,z=unit.startZ;
+    if(role==='decoy')x=mix(-2.35,mix(-.55,-2.72,retreat),decoy);
+    if(role==='fleet'){
+      const column=index%4,row=Math.floor(index/4),start=1.12+column*.43;
+      x=mix(start,-.55+column*.3,ease((t-4.2)/4));z=-.28+row*.55+Math.sin(t*2+index)*.018;
+      x=mix(x,2.9+column*.18,retreatEnemy);
+      const sink=index<6?ease((t-(16.2+index*.25))/.85):0;
+      mesh.position.y=.14-sink*.16;mesh.rotation.z=sink*.22+Math.sin(t*3+index)*.025;
+      if(sink>.88&&t>15.6)mesh.visible=false;
+    }else if(role==='ambush-left'||role==='ambush-right'){
+      const side=role==='ambush-left'?-1:1;mesh.visible=t>=7.25;
+      x=side*mix(2.72,.72,block);z=unit.startZ+Math.sin(t*2+index)*.025;
+      mesh.position.y=.14+Math.sin(t*2.2+index)*.025;mesh.rotation.z=Math.sin(t*1.8+index)*.035;
+    }
+    if(role==='decoy')mesh.position.y=.14+Math.sin(t*2.1)*.03;
+    mesh.position.x=x;mesh.position.z=z;
+  });
+  const targets=W.battleFleet.filter(unit=>unit.team==='xiem'&&unit.role==='fleet');
+  W.battleShots.forEach(shot=>{if(shot.unit)shot.mesh.visible=t>=shot.startAt&&t<=shot.startAt+shot.duration;});
+  targets.forEach((unit,index)=>{
+    const hitAt=16.2+index*.25;
+    if(t>=hitAt&&!unit.mesh.userData.battleHit){unit.mesh.userData.battleHit=true;walkBattleBurst(unit.mesh.position,hitAt);}
+  });
+}
+function walkBattleUpdateThanh(t){
+  if(t>=10.5&&!W.battleSiegeTriggered){
+    W.battleSiegeTriggered=true;
+    walkBattleBurst(new THREE.Vector3(-1.45,.2,-2.65),10.5);
+    walkBattleBurst(new THREE.Vector3(1.35,.2,.35),10.9);
+  }
+  W.battleArmy.forEach((unit,index)=>{
+    const {mesh,team,role,formation,startZ,startX}=unit;
+    if(role==='attacker'){
+      const ngoc=formation==='ngoc-hoi',approachStart=ngoc?1.2:5.6,approachEnd=ngoc?10.6:11.2;
+      const assaultZ=ngoc?-2.75:.42,cityZ=-5.35;
+      let z=mix(startZ,assaultZ,ease((t-approachStart)/(approachEnd-approachStart)));
+      z=mix(z,cityZ,ease((t-11.5)/4.8));
+      mesh.position.x=startX+(ngoc?.45:.12)*ease((t-approachStart)/4);
+      mesh.position.z=z;mesh.rotation.y=Math.PI+Math.sin(t*2+index)*.025;
+      mesh.position.y=.025+Math.abs(Math.sin(t*7+index*.7))*.018;
+    }else{
+      const rout=ease((t-11.2)/3.1);
+      mesh.position.z=mix(startZ,-5.9,rout);mesh.rotation.y=Math.PI*rout;
+      mesh.position.y=.025+Math.abs(Math.sin(t*8+index))*.012;
+      if(t>16.8)mesh.visible=false;
+    }
+  });
+}
+function walkBattleSoldier(group,x,z,team,heading,shield=false){
+  const mats=group.userData.soldierMaterials||(group.userData.soldierMaterials={
+    taySon:{cloth:walkMaterial(0x786238,.84,.04),armor:walkMaterial(0x4e6844,.72,.08),helmet:walkMaterial(0xb28a48,.48,.4),skin:walkMaterial(0x9b7150,.82,.02),wood:walkMaterial(0x63452a,.82,.04),shield:walkMaterial(0x987b49,.88,.02)},
+    thanh:{cloth:walkMaterial(0x41494c,.86,.04),armor:walkMaterial(0x59636a,.68,.1),helmet:walkMaterial(0x51443a,.74,.12),skin:walkMaterial(0x89684e,.84,.02),wood:walkMaterial(0x57402c,.82,.02),shield:walkMaterial(0x786d58,.88,.02)}
+  });
+  const material=mats[team],soldier=new THREE.Group();soldier.position.set(x,.025,z);soldier.rotation.y=heading;
+  walkBox(.18,.24,.15,material.armor,0,.29,0,{parent:soldier});
+  walkSphere(.085,material.skin,0,.48,.015,{x:1,y:1.05,z:.9},soldier);
+  const helmet=new THREE.Mesh(new THREE.SphereGeometry(.09,10,8,0,Math.PI*2,0,Math.PI*.62),material.helmet);helmet.position.set(0,.53,.01);soldier.add(helmet);
+  for(const side of [-1,1]){
+    const leg=walkCylinder(.035,.045,.19,material.cloth,side*.055,.105,0,{parent:soldier,seg:7});leg.rotation.z=side*.08;
+    const arm=walkCylinder(.032,.038,.2,material.cloth,side*.13,.31,.015,{parent:soldier,seg:7});arm.rotation.z=side*.48;
+  }
+  const spear=walkCylinder(.012,.018,.67,material.wood,-.13,.49,-.015,{parent:soldier,seg:6});spear.rotation.z=-.08;
+  const point=new THREE.Mesh(new THREE.ConeGeometry(.035,.11,5),material.helmet);point.position.set(-.16,.85,-.015);point.rotation.z=-.08;soldier.add(point);
+  if(shield){
+    walkBox(.24,.34,.07,material.shield,.14,.33,.16,{parent:soldier});
+    walkBox(.16,.25,.018,mats.taySon.helmet,.14,.33,.2,{parent:soldier});
+  }
+  group.add(soldier);return soldier;
+}
+function walkBattleFort(group,x,z,name,width,defendedBy){
+  const earth=walkMaterial(0x776648,.96,.01),stone=walkMaterial(0x665c4d,.9,.02),roof=walkMaterial(0x554338,.83,.04);
+  walkBox(width,.12,.92,earth,x,.11,z,{parent:group});
+  walkBox(width*.42,.42,.14,stone,x-width*.29,.34,z-.34,{parent:group});
+  walkBox(width*.42,.42,.14,stone,x+width*.29,.34,z-.34,{parent:group});
+  walkBox(width*.36,.3,.14,roof,x,.28,z-.34,{parent:group});
+  walkBox(.16,.62,.34,stone,x-width*.48,.42,z-.38,{parent:group});
+  walkBox(.16,.62,.34,stone,x+width*.48,.42,z-.38,{parent:group});
+  walkBox(.56,.06,.22,roof,x,.67,z-.38,{parent:group});
+  walkBox(.34,.38,.1,walkMaterial(0x30271f,.9,.01),x,.25,z-.25,{parent:group});
+  for(let index=0;index<5;index++)walkBox(.12,.16,.14,stone,x-width*.42+index*width*.21,.67,z-.37,{parent:group});
+  walkBattleLabel(group,name,x,z-.95,defendedBy,width*1.08);
 }
 function walkThanhRelief(group){
   const fort=walkMaterial(0x58483a,.9,.02),brick=walkMaterial(0x625046,.88,.02);
-  const rampart=new THREE.Mesh(new THREE.SphereGeometry(1,28,14),fort);rampart.position.set(0,.17,-4.05);rampart.scale.set(2.35,.19,.38);rampart.castShadow=true;group.add(rampart);
-  for(let i=0;i<3;i++)walkBox(.42,.32,.34,brick,-1.45+i*1.45,.35,-4.05,{parent:group});
-  [[-2.25,5.25,-1.25,-1.0],[0,5.45,.05,-.9],[2.25,5.15,1.15,1.05]].forEach(([sx,sz,ex,ez])=>{
-    const route=walkBattleArrow(group,[sx,sz],[ex,ez],0x8f4938,.23);W.ships.push({mesh:route,bx:0,bz:0,index:W.ships.length,campaign:'thanh'});
-  });
-  walkBattleArrow(group,[1.45,-1.1],[2.15,-4.75],0x596a70,.23);
+  const ridge=new THREE.Mesh(new THREE.SphereGeometry(1,24,12),walkMaterial(0x827456,.98,.01));ridge.position.set(-2.1,.19,4.8);ridge.scale.set(1.25,.22,.72);group.add(ridge);
+  walkBattleFort(group,-1.45,-2.35,'NGỌC HỒI',1.45,'ĐỒN QUÂN THANH');
+  walkBattleFort(group,1.35,.75,'ĐỐNG ĐA',1.1,'ĐỒN QUÂN THANH');
+  walkBox(2.4,.1,.18,brick,1.8,.12,-4.95,{parent:group});
+  for(let i=0;i<4;i++)walkBox(.17,.32,.16,fort,.8+i*.55,.27,-4.95,{parent:group});
+  walkBattleLabel(group,'CỬA THÀNH THĂNG LONG',1.65,-5.15,'#3c3932',2.1);
   walkBattleLabel(group,'TAM ĐIỆP',-2.05,4.85,'#433c33',1.45);
-  walkBattleLabel(group,'NGỌC HỒI',-1.65,-1.9,'#493d31',1.55);
-  walkBattleLabel(group,'ĐỐNG ĐA',1.35,1.25,'#493d31',1.35);
-  walkBattleLabel(group,'THĂNG LONG',1.75,-5.25,'#3c3932',1.7);
+  walkBattleLabel(group,'HƯỚNG BẮC',-.05,5.3,'#435247',1.25);
+  W.battleGroup=group;W.battleArmy=[];W.battleSiegeTriggered=false;
+  const addSoldier=(x,z,team,role,heading,shield=false,formation='')=>{
+    const mesh=walkBattleSoldier(group,x,z,team,heading,shield);
+    W.battleArmy.push({mesh,team,role,formation,startX:x,startZ:z});return mesh;
+  };
+  for(let row=0;row<5;row++)for(let col=0;col<4;col++){
+    const x=-2.55+col*.36,z=2.05+row*.39;
+    addSoldier(x,z,'taySon','attacker',Math.PI,true,'ngoc-hoi');
+  }
+  for(let row=0;row<4;row++)for(let col=0;col<3;col++){
+    const x=.8+col*.35,z=2.35+row*.4;
+    addSoldier(x,z,'taySon','attacker',Math.PI,false,'dong-da');
+  }
+  for(let row=0;row<2;row++)for(let col=0;col<5;col++)addSoldier(-2.25+col*.36,-3.08+row*.3,'thanh','defender',0);
+  for(let col=0;col<5;col++)addSoldier(.48+col*.34,.05,'thanh','defender',0);
+  for(const x of [-2.1,1.45]){
+    const cannon=new THREE.Group();cannon.position.set(x,.06,x<0?-3.55:-.45);cannon.rotation.y=x<0?0:Math.PI;cannon.scale.setScalar(.2);walkModelCannon(cannon);group.add(cannon);
+  }
 }
 function walkBuildBattle(){
   const campaigns=[
@@ -2090,7 +2295,7 @@ function walkBuildBattle(){
   ];
   campaigns.forEach(campaign=>{
     const item=S.items.find(it=>it.type==='sahinh'&&(it.campaign||'xiem')===campaign.id)||{id:'map-'+campaign.id,campaign:campaign.id,type:'sahinh',title:campaign.title,detail:campaign.subtitle};
-    const group=new THREE.Group();group.position.set(campaign.x,0,-14);group.scale.set(.76,.76,.76);group.userData.item=item;W.scene.add(group);W.targets.push(group);
+    const group=new THREE.Group();group.position.set(campaign.x,0,-14);group.scale.set(.76,.76,.76);group.userData.item=item;group.userData.campaign=campaign.id;W.battleCampaignGroups[campaign.id]=group;W.scene.add(group);W.targets.push(group);
     walkBattleGround(group,campaign.id==='xiem'?0x535b4b:0x6b5d4c,campaign.id);campaign.build(group);
     walkSign(campaign.title,campaign.subtitle,campaign.x,2.55,-19.68,0,campaign.color);
     walkPointLight(campaign.x,3.8,-14,0xffd18a,.85,6);
@@ -2174,7 +2379,7 @@ function walkLocationLabel(){
   if(!W.camera)return 'Sảnh trung tâm';const x=W.camera.position.x,z=W.camera.position.z;const r=W.rooms.find(a=>x>=a.minX&&x<=a.maxX&&z>=a.minZ&&z<=a.maxZ);return r?r.label:'Sảnh trung tâm';
 }
 function walkTeleport(id){
-  if(!W.camera)return;const p={gallery:{x:-10.3,z:0,yaw:Math.PI/2},artifacts:{x:10.3,z:0,yaw:-Math.PI/2},battle:{x:-1,z:-9.3,yaw:0,pitch:-.65},documents:{x:0,z:10.3,yaw:Math.PI},hall:{x:0,z:2.5,yaw:0}}[id]||{x:0,z:2.5,yaw:0};
+  if(!W.camera)return;const p={gallery:{x:-10.3,z:0,yaw:Math.PI/2},artifacts:{x:10.3,z:0,yaw:-Math.PI/2},battle:{x:0,z:-9.4,yaw:0,pitch:-.36},documents:{x:0,z:10.3,yaw:Math.PI},hall:{x:0,z:2.5,yaw:0}}[id]||{x:0,z:2.5,yaw:0};
   W.camera.position.set(p.x,1.8,p.z);W.velocity.x=0;W.velocity.z=0;W.yaw=p.yaw;W.pitch=p.pitch||0;walkApplyLook();W.current=null;$('#walkStatus').textContent=p.label||WALK_TYPES[id]?.label||'Sảnh trung tâm';$('#walkPrompt').textContent='Hãy quan sát xung quanh, hướng tâm ngắm vào một hiện vật rồi nhấn E.';
   if(id==='battle')walkPrimeVideoPreviews();
 }
@@ -2289,22 +2494,71 @@ function walkSpeak(it){
   if(!('speechSynthesis'in window)){toast('Trình duyệt không hỗ trợ đọc thuyết minh tự động.');return}
   try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt);u.lang='vi-VN';u.rate=Number(S.settings.rate)||1;const v=typeof pickVoice==='function'?pickVoice():null;if(v){u.voice=v;u.lang=v.lang||'vi-VN'}speechSynthesis.speak(u);}catch(e){toast('Không thể phát giọng đọc trên trình duyệt này.');}
 }
-function walkPlayBattle(){
-  $('#walkDetail').hidden=true;W.activeCampaign=W.current?.campaign||'xiem';W.battleRunning=true;W.battleStart=performance.now();W.battlePhase=-1;W.ships.forEach(s=>{s.mesh.visible=s.campaign===W.activeCampaign;if(s.mesh.visible){s.mesh.position.x=s.bx;s.mesh.position.z=s.bz}});
-  $('#walkPrompt').textContent='Tái hiện trận đánh: nhử địch · mai phục · chặn đầu khóa đuôi · hỏa công.';
-  if(!(W.camera.position.z < -7 && W.camera.position.z > -20 && Math.abs(W.camera.position.x) < 6))walkTeleport('battle');
+function walkBattleSetPhase(phase){
+  phase=Math.max(0,Math.min(5,phase));W.battlePhase=phase;
+  const scenes=W.activeCampaign==='thanh'?WALK_THANH_SCENES:WALK_BATTLE_SCENES;
+  const scene=scenes[phase];$('#walkBattleCount').textContent=`${W.activeCampaign==='thanh'?'NGỌC HỒI – ĐỐNG ĐA':'RẠCH GẦM – XOÀI MÚT'} · CẢNH ${phase+1} / 6`;
+  $('#walkBattleTitle').textContent=scene.title;$('#walkBattleCaption').textContent=scene.caption;
+  $$('#walkBattleTrack [data-battle-scene]').forEach((button,index)=>{button.classList.toggle('on',index===phase);button.classList.toggle('done',index<phase);button.setAttribute('aria-label',`Cảnh ${index+1}: ${scenes[index].title}`);button.title=scenes[index].title;});
+  const pause=$('#walkBattlePanel [data-battle-control="pause"]');if(pause)pause.textContent=W.battlePaused?'Tiếp tục':'Tạm dừng';
 }
-function walkUpdateBattle(now){
-  if(!W.battleRunning)return;W.renderer.shadowMap.needsUpdate=true;const t=(now-W.battleStart)/1000,ph=Math.min(5,Math.floor(t/1.2));
-  if(ph!==W.battlePhase){W.battlePhase=ph;const names=W.activeCampaign==='thanh'?['Hành quân thần tốc ra Bắc','Tiến công các đồn tiền tiêu','Đánh Ngọc Hồi','Mũi tiến công Đống Đa','Quân Thanh rút khỏi Thăng Long','Kết quả']:['Tương quan lực lượng','Nhử địch vào khúc sông','Mai phục, chặn đầu và khóa đuôi','Pháo bắn và hỏa công','Đội hình tan vỡ','Kết quả'];$('#walkPrompt').textContent='Cảnh '+(ph+1)+'/6 · '+names[ph];}
-  const p=Math.max(0,Math.min(1,t/7.2));W.ships.forEach((s,i)=>{if(s.campaign!==W.activeCampaign)return;const dir=i%2?1:-1,phase=Math.max(0,Math.min(1,(t-1.2)/4.6));s.mesh.position.x=s.bx+(dir*(phase-.5)*2.7)+(i%3-.9)*phase*.35;s.mesh.position.z=s.bz+(t>2.4?Math.sin(t*1.4+i*.6)*.24:0);});
-  if(W.activeCampaign==='xiem'&&now-W.screenLast>260){walkUpdateScreen(Math.min(5.95,t/7.2*6));W.screenLast=now;}
-  if(t>=7.2){W.battleRunning=false;W.ships.forEach(s=>{s.mesh.visible=true;s.mesh.position.x=s.bx;s.mesh.position.z=s.bz;});$('#walkPrompt').textContent='Kết thúc tái hiện. Hãy chọn sa hình hoặc bấm một hiện vật để xem nội dung chi tiết.';}
+function walkSeekBattle(phase){
+  const duration=W.activeCampaign==='thanh'?3:4;
+  W.battleElapsed=Math.max(0,Math.min(5,phase))*duration;W.battlePaused=false;W.battleRunning=true;
+  if(W.activeCampaign==='thanh')walkBattleResetArmy();else walkBattleResetFleet();
+  walkBattleSetPhase(phase);
+}
+function walkToggleBattlePause(){
+  if(!W.battleRunning)return;W.battlePaused=!W.battlePaused;
+  const button=$('#walkBattlePanel [data-battle-control="pause"]');if(button)button.textContent=W.battlePaused?'Tiếp tục':'Tạm dừng';
+}
+function walkStopBattle(){
+  W.battleRunning=false;W.battlePaused=false;W.battleElapsed=0;$('#walkBattlePanel').hidden=true;$('#walk3d').removeAttribute('data-battle-running');
+  Object.values(W.battleCampaignGroups).forEach(group=>{group.visible=true;});
+  if(W.camera&&W.battleOriginalFov!==null){W.camera.fov=W.battleOriginalFov;W.camera.updateProjectionMatrix();W.battleOriginalFov=null;}
+  walkBattleClearEffects();W.battleFleet.forEach(unit=>{unit.mesh.visible=unit.role!=='ambush-left'&&unit.role!=='ambush-right';unit.mesh.position.set(unit.startX,.14,unit.startZ);unit.mesh.rotation.z=0;unit.mesh.userData.battleHit=false;});
+  W.battleArmy.forEach(unit=>{unit.mesh.visible=true;unit.mesh.position.set(unit.startX,.025,unit.startZ);unit.mesh.rotation.y=unit.team==='taySon'?Math.PI:0;});
+  W.ships.forEach(ship=>{ship.mesh.visible=ship.campaign===W.activeCampaign;ship.mesh.position.x=ship.bx;ship.mesh.position.z=ship.bz;});
+  $('#walkPrompt').textContent='Kết thúc tái hiện. Hãy quan sát sa hình hoặc mở một hiện vật để xem nội dung chi tiết.';
+}
+function walkPlayBattle(){
+  $('#walkDetail').hidden=true;W.activeCampaign=W.current?.campaign||'xiem';W.battleRunning=true;W.battleStart=performance.now();W.battlePhase=-1;W.battlePaused=false;W.battleElapsed=0;
+  W.battleGroup=W.battleCampaignGroups[W.activeCampaign]||W.battleGroup;
+  W.ships.forEach(ship=>{ship.mesh.visible=ship.campaign===W.activeCampaign;if(ship.mesh.visible){ship.mesh.position.x=ship.bx;ship.mesh.position.z=ship.bz;}});
+  Object.entries(W.battleCampaignGroups).forEach(([id,group])=>{group.visible=id===W.activeCampaign;});
+  if(W.camera){
+    if(W.battleOriginalFov===null)W.battleOriginalFov=W.camera.fov;
+    W.camera.position.set(W.activeCampaign==='xiem'?-1.45:2.82,1.8,-10.8);W.yaw=W.activeCampaign==='xiem'?.22:0;W.pitch=-.38;
+    W.camera.fov=window.innerWidth<760?88:58;W.camera.updateProjectionMatrix();walkApplyLook();
+  }
+  if(W.activeCampaign==='xiem'){
+    $('#walkBattlePanel').hidden=false;$('#walk3d').dataset.battleRunning='true';
+    walkBattleResetFleet();walkBattleSetPhase(0);$('#walkPrompt').textContent='Tái hiện trận Rạch Gầm – Xoài Mút · 24 giây';
+  }else{
+    $('#walkBattlePanel').hidden=false;$('#walk3d').dataset.battleRunning='true';
+    walkBattleResetArmy();walkBattleSetPhase(0);$('#walkPrompt').textContent='Tái hiện chiến dịch Ngọc Hồi – Đống Đa · 18 giây';
+  }
+}
+function walkUpdateBattle(now,dt){
+  if(!W.battleRunning)return;W.renderer.shadowMap.needsUpdate=true;
+  if(W.activeCampaign==='xiem'){
+    if(!W.battlePaused)W.battleElapsed+=dt;
+    const t=W.battleElapsed,phase=Math.min(5,Math.floor(t/4));
+    if(phase!==W.battlePhase)walkBattleSetPhase(phase);
+    walkBattleUpdateFleet(t);walkBattleUpdateEffects(t);
+    if(t>=24){W.battleRunning=false;W.battlePaused=false;$('#walkBattlePanel [data-battle-control="pause"]').textContent='Tạm dừng';$('#walkBattleTitle').textContent='Chiến thắng Rạch Gầm – Xoài Mút';$('#walkBattleCaption').textContent='Phần lớn quân Xiêm bị đánh tan; số còn lại tháo chạy. Trận đánh kết thúc trong chưa đầy một ngày.';$('#walkPrompt').textContent='Tái hiện hoàn tất · Chọn “Xem lại” để phát lại.';}
+    return;
+  }
+  if(!W.battlePaused)W.battleElapsed+=dt;
+  const t=W.battleElapsed,phase=Math.min(5,Math.floor(t/3));
+  if(phase!==W.battlePhase)walkBattleSetPhase(phase);
+  walkBattleUpdateThanh(t);walkBattleUpdateEffects(t);
+  if(t>=18){W.battleRunning=false;W.battlePaused=false;$('#walkBattleTitle').textContent='Chiến thắng Ngọc Hồi – Đống Đa';$('#walkBattleCaption').textContent='Trưa mùng 5 Tết Kỷ Dậu, quân Tây Sơn giải phóng Thăng Long; quân Thanh tan rã và Tôn Sĩ Nghị bỏ chạy.';$('#walkPrompt').textContent='Tái hiện hoàn tất · Chọn “Xem lại” để phát lại.';}
 }
 function walkStartLoop(){if(W.loopRunning)return;W.loopRunning=true;W.last=performance.now();requestAnimationFrame(walkLoop);}
 function walkLoop(now){
   if(!W.ready||!W.active){W.loopRunning=false;return;}requestAnimationFrame(walkLoop);const dt=Math.min(.05,Math.max(0,(now-W.last)/1000));W.last=now;
-  walkMove(dt);walkUpdatePrompt(now);walkUpdateBattle(now);
+  walkMove(dt);walkUpdatePrompt(now);walkUpdateBattle(now,dt);
   W.renderer.render(W.scene,W.camera);
 }
 walkMakeUI();
