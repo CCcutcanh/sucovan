@@ -1270,7 +1270,7 @@ edBody.addEventListener('click',e=>{
     const re=/(<script id="seed" type="application\/json">)[\s\S]*?(<\/script>)/;
     download(slug(S.meta.war)+'.html',SRC.replace(re,(m,a,b)=>a+json+b),'text/html');
     document.querySelectorAll('link[href$="museum-fixed.css"],script[src$="museum-fixed.js"]').forEach(asset=>downloadAsset(asset.href));
-    ['RGXM.mp4','NH-DD.mp4','phong-hien-vat-tay-son.png','phao.glb','sung.glb','tuong3d.glb'].forEach(name=>downloadAsset(new URL(name,location.href).href));
+    ['RGXM.mp4','NH-DD.mp4','phong-hien-vat-tay-son.png','phao.glb','sung.glb','tuong3d.glb','tuong3d2.glb','tuong3d3.glb'].forEach(name=>downloadAsset(new URL(name,location.href).href));
     toast('Đã xuất HTML, CSS, JS, video và ảnh nền. Hãy giữ các file cùng thư mục và sao chép thêm images, resources, videos cùng mọi ảnh đang dùng.');
   }
   if(t.closest('#resetSample')&&confirm('Khôi phục nội dung mẫu sẽ xoá toàn bộ nội dung hiện tại. Tiếp tục?')){S=norm(clone(DEFAULT));save();ed.id=S.items[0].id;applyMeta();renderEd();toast('Đã khôi phục nội dung mẫu.')}
@@ -1305,7 +1305,7 @@ function walkMakeUI(){
     <div class="walk-status" id="walkStatus">Đang ở sảnh trung tâm</div>
     <div class="walk-mobile"><div class="walk-pad"><button data-hold="w" aria-label="Tiến">▲</button><button data-hold="a" aria-label="Sang trái">◀</button><button data-hold="s" aria-label="Lùi">▼</button><button data-hold="d" aria-label="Sang phải">▶</button></div><div class="walk-turn"><button data-turn="-1" aria-label="Quay trái">↶</button><button data-turn="1" aria-label="Quay phải">↷</button></div></div>
     <button class="walk-interact" id="walkInteract">✦ Tương tác</button>
-    <div class="walk-overlay" id="walkIntro"><div class="walk-card"><p class="eyebrow">Không gian trưng bày tương tác</p><h2>Khám phá bảo tàng bằng góc nhìn người tham quan</h2><p>Bước qua sảnh trung tâm để tự do đi vào bốn phòng. Tranh được treo trên tường; hiện vật đặt trên bệ trưng bày; sa hình có thể tái hiện diễn biến trận đánh; phòng tư liệu có các văn bản để đọc.</p><div><span class="walk-pill">WASD / phím mũi tên</span><span class="walk-pill">Chuột để nhìn quanh</span><span class="walk-pill">E để tương tác</span></div><p class="small">Mô hình hiện vật 3D hiện là mô phỏng minh họa bằng hình khối. Giáo viên có thể thay ảnh, mô tả và thuyết minh qua mục “Quản lý” ở giao diện bảo tàng thông thường.</p><div class="walk-buttons"><button class="primary" id="walkBegin">Bắt đầu tham quan 3D</button><button id="walkBack">Quay lại giao diện danh mục</button></div></div></div>
+    <div class="walk-overlay" id="walkIntro"><div class="walk-card"><p class="eyebrow">Không gian trưng bày tương tác</p><h2>Khám phá bảo tàng bằng góc nhìn người tham quan</h2><p>Bước qua sảnh trung tâm để tự do đi vào bốn phòng. Tranh được treo trên tường; hiện vật đặt trên bệ trưng bày; sa hình có thể tái hiện diễn biến trận đánh; phòng tư liệu có các văn bản để đọc.</p><div><span class="walk-pill">WASD / phím mũi tên</span><span class="walk-pill">Chuột để nhìn quanh</span><span class="walk-pill">E để tương tác</span></div><p class="small">Một số hiện vật 3D là mô hình minh họa; các tượng tiêu biểu được dựng từ mô hình 3D riêng. Giáo viên có thể cập nhật hiện vật, mô tả và thuyết minh qua mục “Quản lý”.</p><div class="walk-buttons"><button class="primary" id="walkBegin">Bắt đầu tham quan 3D</button><button id="walkBack">Quay lại giao diện danh mục</button></div></div></div>
     <aside class="walk-detail" id="walkDetail" hidden><button class="close" id="walkDetailClose" aria-label="Đóng">×</button><div id="walkDetailContent"></div></aside>
     <div class="walk-image-zoom" id="walkImageZoom" hidden role="dialog" aria-modal="true" aria-label="Ảnh phóng to"><button class="walk-image-close" id="walkImageClose" aria-label="Đóng ảnh">×</button><div class="walk-image-content" id="walkImageContent"></div></div>
   `;
@@ -1626,10 +1626,10 @@ function walkBuildGallery(){
   walkSign('KHÁNG CHIẾN CHỐNG XIÊM','RẠCH GẦM – XOÀI MÚT',-14,4.2,-5.8,2*Math.PI,'#4a1718');
   walkSign('KHÁNG CHIẾN CHỐNG THANH','NGỌC HỒI – ĐỐNG ĐA',-14,4.2,5.8,Math.PI,'#273c32');
 }
-function walkPedestal(x,z,label){
+function walkPedestal(x,z,label,subtitle='HIỆN VẬT MÔ PHỎNG',facing=1, tilt=-.25){
   const stone=walkMaterial(0xaaa18c,.5,.24),gold=walkMaterial(0xb88b43,.35,.5),black=walkMaterial(0x3b2921,.58,.22);
   walkCylinder(.95,.95,.18,black,x,.24,z,{seg:32});walkCylinder(.81,.9,.12,gold,x,.39,z,{seg:32});walkBox(1.36,.95,1.36,stone,x,.91,z);walkBox(1.48,.09,1.48,gold,x,1.43,z);walkBox(1.48,.14,1.48,black,x,1.54,z);
-  const placard=new THREE.Mesh(new THREE.PlaneGeometry(1.35,.36),new THREE.MeshBasicMaterial({map:walkLabelTexture(label,'HIỆN VẬT MÔ PHỎNG','#2c2924'),side:THREE.DoubleSide}));placard.rotation.x=-.25;placard.position.set(x,1.65,z+.55);W.scene.add(placard);
+  const placard=new THREE.Mesh(new THREE.PlaneGeometry(1.35,.36),new THREE.MeshBasicMaterial({map:walkLabelTexture(label,subtitle,'#2c2924'),side:THREE.DoubleSide}));placard.rotation.set(tilt,facing<0?Math.PI:0,0);placard.position.set(x,1.8,z+.6*facing);W.scene.add(placard);
 }
 function walkModelCannon(root){
   const rustCanvas=document.createElement('canvas');rustCanvas.width=512;rustCanvas.height=256;
@@ -1873,20 +1873,12 @@ function walkModelTaySonFlag(root){
 function walkBuildArtifacts(){
   const allItems=S.items.filter(i=>i.type==='daocu');
   const flagItem=allItems.find(it=>it.art==='co-tay-son'||/lá cờ|la co/i.test(it.title||''));
-  const items=allItems.filter(it=>it!==flagItem&&!/tượng\s*quang trung/i.test(it.title||'')&&it.id!=='dai-bac');
   if(flagItem){
-    const x=10.55,z=-3.55;
-    walkPedestal(x,z,flagItem.title);
+    const x=14,z=3.55;
+    walkPedestal(x,z,flagItem.title,flagItem.date||'THỜI KỲ TÂY SƠN',-1, .25);
     const flag=new THREE.Group();flag.position.set(x,1.63,z);flag.userData.item=flagItem;walkModelGeneric(flag,flagItem);W.scene.add(flag);W.targets.push(flag);
     walkPointLight(x,4,z,0xffd18a,1.1,5);
   }
-  const displaySlots=[{x:14,z:-3.55},{x:14,z:3.55}];
-  if(items.length>displaySlots.length)console.warn(`Có ${items.length} hiện vật đạo cụ bổ sung nhưng chỉ còn ${displaySlots.length} bệ trống trong phòng.`);
-  items.slice(0,displaySlots.length).forEach((it,i)=>{
-    const {x,z}=displaySlots[i];
-    walkPedestal(x,z,it.title);const model=new THREE.Group();model.position.set(x,1.63,z);model.userData.item=it;walkModelGeneric(model,it);W.scene.add(model);W.targets.push(model);
-    walkPointLight(x,4,z,0xffd18a,1.1,5);
-  });
   walkSign('HIỆN VẬT TÂY SƠN','CHIẾN THẮNG QUÂN XIÊM',19.65,5.05,-4,-Math.PI/2,'#4a1718');
   walkSign('HIỆN VẬT TÂY SƠN','CHIẾN THẮNG QUÂN THANH',19.65,5.05,4,-Math.PI/2,'#273c32');
 }
@@ -1906,7 +1898,8 @@ function walkLoadGLB(path,target,height,color,metalness,roughness,fallback,optio
   const loader=new THREE.GLTFLoader();
   loader.load(new URL(path,location.href).href,gltf=>{
     const model=gltf.scene,fitAxis=options.fitAxis||'y';
-    model.rotation.x=options.rotationX||0;
+    (options.removeNodeNames||[]).forEach(name=>model.getObjectByName(name)?.removeFromParent());
+    model.rotation.set(options.rotationX||0,options.rotationY||0,options.rotationZ||0);
     const sourceBox=new THREE.Box3().setFromObject(model),size=sourceBox.getSize(new THREE.Vector3()),axisSize=size[fitAxis];
     if(!Number.isFinite(axisSize)||axisSize<=0){
       const error=new Error(`Model ${path} không có kích thước hợp lệ.`);
@@ -1953,17 +1946,24 @@ function walkBuildTaySonDisplays(){
     const mat=new THREE.MeshBasicMaterial({map:walkLabelTexture(title,sub,'#382116'),side:THREE.DoubleSide});
     const p=new THREE.Mesh(new THREE.PlaneGeometry(w,.42),mat);p.position.set(x,y,z);p.rotation.set(tilt,yaw,0);W.scene.add(p);
   }
-  // Paired displays flank the central aisle: flag/statue on one side, cannon/swords opposite.
-  walkCylinder(1.12,1.12,.16,wood,17.1,.18,-3.55,{seg:32});
-  walkCylinder(.94,1.02,.12,brass,17.1,.32,-3.55,{seg:32});
-  walkBox(1.72,.5,1.42,woodTop,17.1,.64,-3.55);
-  walkBox(1.78,.08,1.48,brass,17.1,.93,-3.55);
-  const statue=new THREE.Group();statue.position.set(17.1,.97,-3.55);statue.rotation.y=0;W.scene.add(statue);
-  walkLoadGLB('tuong3d.glb',statue,3,0x765333,.48,.62,()=>walkModelStatue(statue));
   const statueItem=S.items.find(i=>i.type==='daocu'&&/tượng\s*quang trung/i.test(i.title||''));
-  if(statueItem){statue.userData.item=statueItem;W.targets.push(statue);}
-  plaque(17.1,-2.55,'TƯỢNG QUANG TRUNG','THỜI KỲ TÂY SƠN',1.7,1.04,0);
-  // Pair the cannon with the gun case on the visitor's right; the other two displays stay opposite.
+  const statueDisplays=[
+    {path:'tuong3d.glb',title:'Tượng Quang Trung',subtitle:'THỜI KỲ TÂY SƠN',x:10.55,item:statueItem},
+    {path:'tuong3d2.glb',title:'Tượng Trần Hưng Đạo',subtitle:'NHÀ TRẦN',x:14,modelOptions:{removeNodeNames:['Cube_1']}},
+    {path:'tuong3d3.glb',title:'Tượng Ngô Quyền',subtitle:'NHÀ NGÔ',x:17.45,modelOptions:{rotationX:-.32}}
+  ];
+  statueDisplays.forEach(display=>{
+    const item=display.item||{
+      id:display.path.replace('.glb',''),type:'daocu',title:display.title,date:'Mô hình minh họa',
+      origin:'Mô hình 3D minh họa',detail:`Mô hình 3D ${display.title.toLowerCase()} được trưng bày trong phòng hiện vật.`,
+      script:`Đây là ${display.title.toLowerCase()}, được giới thiệu qua mô hình 3D.`,question:'Quan sát mô hình và nêu điểm nổi bật của nhân vật lịch sử này.'
+    };
+    walkPedestal(display.x,-3.55,display.title,display.subtitle);
+    const statue=new THREE.Group();statue.position.set(display.x,1.63,-3.55);statue.userData.item=item;W.scene.add(statue);
+    walkLoadGLB(display.path,statue,2.7,0x765333,.48,.62,()=>walkModelStatue(statue),display.modelOptions);
+    W.targets.push(statue);walkPointLight(display.x,4.7,-3.55,0xffd39a,1.0,5.5);
+  });
+  // The opposite row holds the flag, cannon and matchlock.
   walkBox(2.72,.32,1.58,wood,10.55,.2,3.55);
   walkBox(2.78,.07,1.64,brass,10.55,.395,3.55);
   walkBox(2.64,.045,1.5,velvet,10.55,.45,3.55);
@@ -1990,7 +1990,7 @@ function walkBuildTaySonDisplays(){
   canvas.position.set(19.57,2.75,0);canvas.rotation.y=-Math.PI/2;W.scene.add(canvas);
   const refImg=new Image();refImg.onload=()=>{const tex=new THREE.Texture(refImg);tex.colorSpace=THREE.SRGBColorSpace;tex.needsUpdate=true;canvas.material.map=tex;canvas.material.color.set(0xffffff);canvas.material.needsUpdate=true;};refImg.src='phong-hien-vat-tay-son.png';
   // Warm spotlights and subtle brass posts evoke the museum reference.
-  [[10.55,-4.25],[14,-4.25],[17.35,-4.25],[17.1,3.55]].forEach(([x,z])=>walkPointLight(x,4.7,z,0xffd39a,1.0,5.5));
+  [[10.55,3.55],[14,3.55],[17.1,3.55]].forEach(([x,z])=>walkPointLight(x,4.7,z,0xffd39a,1.0,5.5));
   const postMat=walkMaterial(0xc49a51,.26,.7);
   [[9.3,-5.55],[12.3,-5.55],[15.8,-5.55],[18.6,-5.55],[9.3,5.55],[12.3,5.55],[15.8,5.55],[18.6,5.55]].forEach(([x,z])=>{
     walkCylinder(.055,.07,.68,postMat,x,.34,z,{seg:12});walkSphere(.12,postMat,x,.72,z,{x:1,y:1,z:1});
