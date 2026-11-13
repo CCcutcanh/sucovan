@@ -1926,8 +1926,8 @@ function walkBuildArtifacts(){
     walkPedestal(displayX,displayZ,flagItem.title,flagItem.date||'THỜI KỲ TÂY SƠN',-1, .25);
     const flag=new THREE.Group();flag.position.set(position.x,position.y,position.z);flag.rotation.y=Math.PI;flag.userData.item=flagItem;walkModelGeneric(flag,flagItem);W.scene.add(flag);W.targets.push(flag);
   }
-  walkSign('HIỆN VẬT TÂY SƠN','CHIẾN THẮNG QUÂN XIÊM',30.65,5.05,-4,-Math.PI/2,'#4a1718');
-  walkSign('HIỆN VẬT TÂY SƠN','CHIẾN THẮNG QUÂN THANH',30.65,5.05,4,-Math.PI/2,'#273c32');
+  walkSign('HIỆN VẬT CÁC CUỘC KHÁNG CHIẾN CHỐNG XÂM LƯỢC','THẾ KỈ THỨ X-XVIII',30.65,5.05,-4,-Math.PI/2,'#4a1718');
+  walkSign('HIỆN VẬT CÁC CUỘC KHÁNG CHIẾN CHỐNG XÂM LƯỢC','THẾ KỈ THỨ X-XVIII',30.65,5.05,4,-Math.PI/2,'#273c32');
 }
 
 function walkCannonCarriage(root){
@@ -2354,7 +2354,7 @@ function walkBuildBattle(){
     {x:5.78,z,yaw:-Math.PI/2,campaign:'thanh'}
   ]);
   tvSlots.forEach((slot,index)=>{
-    const video=videos.length?videos[Math.floor(Math.random()*videos.length)]:{id:`video-placeholder-${index}`,title:'Video đang cập nhật',path:'',campaign:slot.campaign};
+    const video=videos[index]||{id:`video-placeholder-${index}`,title:'Video đang cập nhật',path:'',campaign:slot.campaign};
     const {x,z,yaw}=slot;
     const root=new THREE.Group();root.position.set(x,3.15,z);root.rotation.y=yaw;
     const frame=new THREE.Mesh(new THREE.BoxGeometry(2.0,1.25,.13),tvFrame);root.add(frame);

@@ -1,10 +1,10 @@
 {
   "meta": {
     "title": "Bảo tàng ảo",
-    "war": "Kháng chiến chống quân Xiêm và quân Thanh",
-    "subtitle": "Hai chiến thắng của Nguyễn Huệ – Quang Trung: Rạch Gầm – Xoài Mút và Ngọc Hồi – Đống Đa.",
-    "welcome": "Khám phá hai chiến dịch chống ngoại xâm của Nguyễn Huệ – Quang Trung: kháng chiến chống quân Xiêm và chiến thắng quân Thanh.",
-    "outro": "Hãy so sánh cách Nguyễn Huệ – Quang Trung lựa chọn địa hình, thời cơ và cách phối hợp lực lượng trong hai chiến dịch."
+    "war": "Các cuộc kháng chiến chống ngoại xâm từ thế kỉ X đến thế kỉ XVIII",
+    "subtitle": "Kháng chiến chống quân Nam Hán, Kháng chiến chống quân Tống Lần 1 và 2, Kháng chiến chống quân Mông - Nguyên lần 1,2 và 3, kháng chiến chống quân Xiêm và kháng chiến chống quân Thanh",
+    "welcome": "Khám phá hai chiến dịch chống ngoại xâm của Việt Nam từ thế kỉ thứ X đến thế kỉ XVIII.",
+    "outro": "Hãy so sánh các cuộc kháng chiến và rút ra bài học về chiến lược, chiến thuật và tinh thần đoàn kết của nhân dân Việt Nam trong việc bảo vệ độc lập, chủ quyền của đất nước."
   },
   "settings": {
     "transition": "curtain",
@@ -603,18 +603,40 @@
       "name": "ngoquyen938.mp4",
       "path": "videos/ngoquyen938.mp4",
       "campaign": "thanh",
-      "title": "Ngô Quyền và chiến thắng Bạch Đằng",
+      "title": "Kháng chiến chống quân Nam Hán",
       "date": "938",
       "detail": "Video tư liệu về Ngô Quyền và chiến thắng Bạch Đằng năm 938.Chiến thắng Bạch Đằng năm 938 đã đập tan âm mưu xâm lược của quân Nam Hán, bảo vệ vững chắc nền độc lập của dân tộc. Đây là bước ngoặt lớn trong lịch sử Việt Nam, chấm dứt thời kỳ hơn một nghìn năm Bắc thuộc và mở ra thời kỳ độc lập, tự chủ lâu dài cho đất nước. Chiến thắng cũng khẳng định tài năng quân sự, sự sáng tạo và khả năng nắm bắt thời cơ của Ngô Quyền. Đặc biệt, chiến thắng còn thể hiện lòng yêu nước, tinh thần đoàn kết và ý chí kiên cường của nhân dân ta trong sự nghiệp đấu tranh bảo vệ Tổ quốc. Qua đó, các thế hệ sau càng thêm tự hào về truyền thống dân tộc và có trách nhiệm gìn giữ nền độc lập mà cha ông đã dày công xây dựng.\nNăm 938 là một dấu mốc quan trọng trong lịch sử dân tộc Việt Nam. Sau hơn một nghìn năm chịu sự thống trị của các triều đại phong kiến phương Bắc, nhân dân ta luôn đấu tranh để giành lại quyền tự chủ. Năm 937, Dương Đình Nghệ bị Kiều Công Tiễn sát hại. Lo sợ trước sức mạnh của Ngô Quyền, Kiều Công Tiễn đã cầu cứu vua Nam Hán. Nhân cơ hội đó, vua Nam Hán sai con trai là Hoằng Tháo chỉ huy quân theo đường biển tiến vào xâm lược nước ta.\n\nTrước tình hình nguy cấp, Ngô Quyền nhanh chóng đưa quân từ Ái Châu ra Bắc để chuẩn bị chống giặc. Ông quyết định chọn sông Bạch Đằng làm nơi quyết chiến vì nhận thấy đây là con sông có thủy triều lên xuống mạnh, thuận lợi cho việc xây dựng trận địa. Ngô Quyền cho quân đóng những cọc gỗ lớn, đầu nhọn và bịt sắt xuống lòng sông, bố trí ở những vị trí hiểm yếu. Khi nước triều lên, bãi cọc bị che khuất; khi nước rút, đầu cọc nhô lên khỏi mặt nước. Bên cạnh đó, ông còn bố trí quân mai phục hai bên bờ sông để chờ thời cơ tấn công.\n\nKhi quân Nam Hán tiến vào sông Bạch Đằng, Ngô Quyền cho quân dùng thuyền nhỏ ra khiêu chiến rồi giả vờ rút lui để dụ địch tiến sâu vào trận địa. Quân Nam Hán tưởng quân ta yếu thế nên đuổi theo. Lúc này, thủy triều đang lên cao nên bãi cọc vẫn chìm dưới nước, khiến quân địch không phát hiện được nguy hiểm. Khi thủy triều bắt đầu rút, quân ta quay lại phản công mạnh mẽ. Những chiến thuyền lớn của quân Nam Hán mắc vào bãi cọc, nhiều thuyền bị hư hại, lật và chìm xuống sông. Quân ta từ nhiều phía đồng loạt tấn công khiến quân địch rơi vào tình trạng hỗn loạn. Kết quả, Hoằng Tháo cùng nhiều binh lính bị tiêu diệt, quân Nam Hán thất bại hoàn toàn.",
       "script": "Video minh họa chiến thắng Bạch Đằng năm 938.",
       "question": "Thủy triều và địa hình sông được tận dụng thế nào trong trận Bạch Đằng?"
     },
     {
+      "id": "tong1",
+      "name": "tong1.mp4",
+      "path": "videos/tong1.mp4",
+      "campaign": "xiem",
+      "title": "Kháng chiến chống quân Nguyên lần 1",
+      "date": "981",
+      "detail": "Cuộc kháng chiến chống Tống lần thứ nhất (năm 981) là chiến thắng oanh liệt của quân dân Đại Cồ Việt dưới sự lãnh đạo của vua Lê Đại Hành (Lê Hoàn) nhằm bảo vệ nền độc lập non trẻ của dân tộc. Lợi dụng tình hình nội bộ nước ta rối ren sau khi vua Đinh Tiên Hoàng qua đời, nhà Tống đã cử Hầu Nhân Bảo chỉ huy hai đạo quân thủy – bộ ồ ạt tiến vào xâm lược nước ta theo đường Lạng Sơn và sông Bạch Đằng. Trước tình thế nguy cấp, Lê Hoàn được suy tôn lên làm vua, trực tiếp tổ chức phòng tuyến và chỉ huy kháng chiến; ông cho quân đóng cọc ngăn chặn thủy quân địch ở sông Bạch Đằng, đồng thời kiên cường đánh chặn bộ binh giặc trên bộ. Nhờ chiến thuật tài tình, tinh thần chiến đấu quả cảm của quân dân ta cùng những trận mai phục quyết định tại Bạch Đằng và Chi Lăng, quân Đại Cồ Việt đã tiêu diệt chủ tướng Hầu Nhân Bảo, đánh tan hoàn toàn ý chí xâm lược và buộc tàn quân nhà Tống phải rút chạy về nước, giữ vững vẹn toàn bờ cõi và nền tự chủ của quốc gia.",
+      "script": "Video minh họa diễn biến chiến",
+      "question": ""
+    },
+    {
+      "id": "tong2",
+      "name": "tong2.mp4",
+      "path": "videos/tong2.mp4",
+      "campaign": "xiem",
+      "title": "Kháng chiến chống quân Tống lần 2",
+      "date": "1785",
+      "detail": "1. Hoàn cảnh lịch sử: Vào những năm 70 của thế kỉ XI, nhà Tống ráo riết chuẩn bị lực lượng, tập trung quân đội và lương thực ở khu vực biên giới, âm mưu xâm lược Đại Việt. Trước nguy cơ đó, triều đình nhà Lý, đứng đầu là vua Lý Nhân Tông, cùng Thái úy Lý Thường Kiệt đã chủ động chuẩn bị kế hoạch đối phó nhằm bảo vệ nền độc lập của đất nước.\n2. Giai đoạn 1075 – Chủ động tiến công: Trước âm mưu xâm lược của nhà Tống, Lý Thường Kiệt chủ trương thực hiện kế hoạch chủ động tiến công để tự vệ với tư tưởng nổi tiếng: “Tiên phát chế nhân”. Cuối năm 1075, quân Đại Việt chia thành hai đạo thủy và bộ, tiến công vào các căn cứ tập kết quân lương của nhà Tống ở Khâm Châu, Liêm Châu và thành Ung Châu (thuộc Trung Quốc ngày nay). Sau khi phá hủy các căn cứ quân sự và kho lương của địch, quân ta nhanh chóng rút về nước, chuẩn bị lực lượng phòng thủ.\n3. Giai đoạn 1076–1077 – Kháng chiến chống quân Tống: Đầu năm 1076, nhà Tống huy động lực lượng lớn do Quách Quỳ và Triệu Tiết chỉ huy tiến vào xâm lược Đại Việt. Trước tình hình đó, Lý Thường Kiệt tổ chức xây dựng phòng tuyến phòng thủ vững chắc trên sông Như Nguyệt (sông Cầu), lựa chọn vị trí thuận lợi để ngăn chặn quân địch. Khi quân Tống tiến đến, quân dân Đại Việt kiên cường chiến đấu, nhiều lần đẩy lùi các đợt tiến công của đối phương. Trong thời gian diễn ra cuộc kháng chiến, bài thơ thần “Nam quốc sơn hà” vang lên, khẳng định chủ quyền và ý chí độc lập của dân tộc. Sau nhiều lần tấn công không thành công, quân Tống rơi vào tình trạng khó khăn, mệt mỏi và thiếu lương thực. Trước tình hình đó, Lý Thường Kiệt chủ động đề nghị giảng hòa để kết thúc chiến tranh. Quân Tống chấp nhận rút quân về nước.\n4. Kết quả và ý nghĩa lịch sử: Cuộc kháng chiến chống quân Tống giai đoạn 1075–1077 giành thắng lợi, bảo vệ vững chắc nền độc lập và chủ quyền của Đại Việt. Chiến thắng thể hiện tài năng lãnh đạo, chỉ huy quân sự của Lý Thường Kiệt, đường lối kháng chiến chủ động, sáng tạo và tinh thần đoàn kết, quyết tâm bảo vệ đất nước của quân dân nhà Lý. Đặc biệt, chiến thắng trên phòng tuyến sông Như Nguyệt đã khẳng định sức mạnh của Đại Việt trước một đội quân xâm lược lớn, đồng thời để lại nhiều bài học quý báu về nghệ thuật quân sự và bảo vệ chủ quyền dân tộc.",
+      "script": "Video minh họa diễn biến chiến dịch",
+      "question": ""
+    },
+    {
       "id": "nguyenlan1",
       "name": "nguyenlan1.mp4",
       "path": "videos/nguyenlan1.mp4",
       "campaign": "xiem",
-      "title": "Chống quân Nguyên lần 1",
+      "title": "Kháng chiến chống quân Nguyên lần 1",
       "date": "1258",
       "detail": "Cuộc kháng chiến chống quân Mông Cổ lần thứ nhất kết thúc thắng lợi vào năm 1258. Quân địch bị đánh đuổi khỏi Đại Việt, kinh thành Thăng Long được giải phóng, nền độc lập và chủ quyền đất nước được bảo vệ. Chiến thắng thể hiện sự lãnh đạo tài tình của nhà Trần, đặc biệt là tài năng chỉ huy của vua Trần Thái Tông và các tướng lĩnh. Đồng thời, chiến thắng còn khẳng định sức mạnh của tinh thần đoàn kết toàn dân, sự phối hợp giữa quân đội triều đình và nhân dân trong đấu tranh chống ngoại xâm. Đây là chiến thắng có ý nghĩa quan trọng, tạo niềm tin và củng cố sức mạnh của nhà Trần trong sự nghiệp bảo vệ Tổ quốc.",
       "script": "Video minh họa diễn biến chiến dịch",
@@ -625,22 +647,22 @@
       "name": "nguyenlan2.mp4",
       "path": "videos/nguyenlan2.mp4",
       "campaign": "xiem",
-      "title": "Rạch Gầm – Xoài Mút",
+      "title": "Kháng chiến chống quân Nguyên lần 2",
       "date": "1285",
       "detail": "Cuộc kháng chiến chống quân Mông Cổ lần thứ nhất kết thúc thắng lợi vào năm 1258. Quân địch bị đánh đuổi khỏi Đại Việt, kinh thành Thăng Long được giải phóng, nền độc lập và chủ quyền đất nước được bảo vệ. Chiến thắng thể hiện sự lãnh đạo tài tình của nhà Trần, đặc biệt là tài năng chỉ huy của vua Trần Thái Tông và các tướng lĩnh. Đồng thời, chiến thắng còn khẳng định sức mạnh của tinh thần đoàn kết toàn dân, sự phối hợp giữa quân đội triều đình và nhân dân trong đấu tranh chống ngoại xâm. Đây là chiến thắng có ý nghĩa quan trọng, tạo niềm tin và củng cố sức mạnh của nhà Trần trong sự nghiệp bảo vệ Tổ quốc.",
       "script": "Video minh họa diễn biến chiến dịch.",
       "question": ""
     },
     {
-      "id": "nguyenlan3",
+      "id": "lan3",
       "name": "lan3.mp4",
       "path": "videos/lan3.mp4",
       "campaign": "xiem",
-      "title": "",
+      "title": "Kháng chiến chống quân Nguyên lần 3",
       "date": "1785",
-      "detail": "Video tư liệu về chiến dịch Rạch Gầm – Xoài Mút.",
-      "script": "Video minh họa diễn biến chiến dịch Rạch Gầm – Xoài Mút.",
-      "question": "Địa hình và yếu tố bất ngờ được thể hiện thế nào trong video?"
+      "detail": "Năm 1279, sau khi thôn tính toàn bộ Trung Quốc, nhà Nguyên ráo riết chuẩn bị xâm lược Đại Việt nhằm mở rộng lãnh thổ xuống khu vực Đông Nam Á. Trước nguy cơ đó, nhà Trần khẩn trương chuẩn bị lực lượng và bàn kế hoạch chống giặc. Năm 1282, vua Trần tổ chức Hội nghị Bình Than để bàn việc quân sự, đồng thời giao Trần Quốc Tuấn (Trần Hưng Đạo) làm Quốc công tiết chế, thống lĩnh các lực lượng quân đội. Đầu năm 1285, Hội nghị Diên Hồng được tổ chức với sự tham gia của các bô lão trong cả nước. Trước câu hỏi nên hòa hay nên đánh, các bô lão đồng thanh thể hiện quyết tâm đánh giặc, góp phần khẳng định ý chí đoàn kết và quyết chiến của toàn dân.\n\nĐầu năm 1285, quân Nguyên mở cuộc tấn công quy mô lớn vào Đại Việt. Đạo quân chủ lực do Thoát Hoan chỉ huy tiến vào từ phía Bắc, trong khi đạo quân của Toa Đô từ phía Nam tiến ra, tạo thế gọng kìm nhằm tiêu diệt quân chủ lực nhà Trần. Trước thế tiến công mạnh mẽ của địch, Trần Hưng Đạo chủ động chỉ huy quân đội rút lui về Vạn Kiếp, sau đó rời Thăng Long để bảo toàn lực lượng. Triều đình và quân dân nhà Trần thực hiện kế sách “vườn không nhà trống”, sơ tán nhân dân, cất giấu lương thực, không để quân giặc có điều kiện khai thác nguồn tiếp tế tại những vùng chúng chiếm đóng. Đây là cách đánh chủ động, nhằm làm suy yếu đối phương và tạo điều kiện thuận lợi cho cuộc phản công.\n\nTrong thời gian quân Nguyên chiếm đóng Thăng Long, chúng gặp nhiều khó khăn về lương thực, hậu cần và liên tục bị quân dân Đại Việt chống trả. Quân đội nhà Trần từng bước củng cố lực lượng, chờ thời cơ phản công. Tháng 5 năm 1285, khi quân địch bắt đầu suy yếu, nhà Trần mở cuộc phản công mạnh mẽ trên nhiều hướng. Quân ta giành thắng lợi ở trận Hàm Tử, dưới sự chỉ huy của Trần Nhật Duật; tiếp đó, Trần Quang Khải chỉ huy quân đánh thắng lớn ở Chương Dương, góp phần giải phóng Thăng Long. Ở phía Nam, quân ta tiếp tục đánh bại đạo quân của Toa Đô tại Tây Kết, Toa Đô bị tiêu diệt. Các chiến thắng liên tiếp khiến quân Nguyên rơi vào thế thất bại, Thoát Hoan phải rút chạy về nước.\nCuối tháng 6 năm 1285, cuộc kháng chiến kết thúc thắng lợi, quân Nguyên bị đánh đuổi khỏi Đại Việt. Chiến thắng đã bảo vệ vững chắc nền độc lập, chủ quyền của đất nước, đồng thời khẳng định tài năng lãnh đạo, chỉ huy của Trần Hưng Đạo và các tướng lĩnh nhà Trần. Đặc biệt, thắng lợi còn thể hiện sức mạnh đoàn kết toàn dân, từ vua tôi, quân đội đến nhân dân trong cuộc đấu tranh bảo vệ Tổ quốc.\nCuộc kháng chiến năm 1285 để lại nhiều bài học quý giá về nghệ thuật quân sự: biết đánh giá đúng tình hình, chủ động bảo toàn lực lượng khi gặp bất lợi, kiên trì chờ thời cơ và kiên quyết phản công khi đối phương suy yếu. Câu chuyện cũng nhắc nhở chúng ta rằng trong cuộc sống, khi gặp khó khăn không nên nóng vội hay dễ dàng từ bỏ mục tiêu. Cần bình tĩnh quan sát, chuẩn bị chu đáo, lựa chọn cách làm phù hợp và kiên trì hành động để đạt được thành công.",
+      "script": "Video minh họa diễn biến chiến dịch.",
+      "question": ""
     }
   ]
 }
