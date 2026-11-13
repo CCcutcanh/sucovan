@@ -1095,7 +1095,7 @@ function edResources(){
       <div class="fld"><label for="videoPath">Đường dẫn video</label><input id="videoPath" type="text" placeholder="videos/bo-sung.mp4"></div></div>
       <button class="btn primary" id="addVideoPath">＋ Thêm đường dẫn video</button>
       <div class="small">Video đã tải lên (${(S.videos||[]).length})</div>
-      ${(S.videos||[]).length?(S.videos||[]).map((v,i)=>`<div class="resource-file"><span class="resource-file-type">🎬</span><span class="resource-file-name">${esc(v.name)}<small>${v.campaign==='thanh'?'Chiến dịch quân Thanh':'Chiến dịch quân Xiêm'} · ${esc(v.path||v.name)}</small></span><button class="btn danger" data-video-delete="${i}">🗑 Bỏ khỏi danh sách</button></div>`).join(''):'<p class="resource-empty">Chưa có video bổ sung. Hai video mặc định trong thư mục dự án luôn sẵn dùng.</p>'}
+      ${(S.videos||[]).length?(S.videos||[]).map((v,i)=>`<details class="video-info-editor"><summary>🎬 ${esc(v.title||v.name)} <span class="small">${esc(v.path||v.name)}</span></summary><div class="row2"><div class="fld"><label>Tiêu đề</label><input data-video-index="${i}" data-video-field="title" value="${esc(v.title||'')}"></div><div class="fld"><label>Niên đại</label><input data-video-index="${i}" data-video-field="date" value="${esc(v.date||'')}"></div></div><div class="fld"><label>Mô tả</label><textarea rows="3" data-video-index="${i}" data-video-field="detail">${esc(v.detail||'')}</textarea></div><div class="fld"><label>Lời dẫn</label><textarea rows="3" data-video-index="${i}" data-video-field="script">${esc(v.script||'')}</textarea></div><div class="fld"><label>Câu hỏi</label><textarea rows="2" data-video-index="${i}" data-video-field="question">${esc(v.question||'')}</textarea></div><button class="btn danger" data-video-delete="${i}">🗑 Bỏ khỏi danh sách</button></details>`).join(''):'<p class="resource-empty">Chưa có video. Thêm đường dẫn video trong thư mục videos để đưa video lên các TV.</p>'}
     </div>
   </div>`;
 }
@@ -1110,7 +1110,7 @@ function edData(){
   <div class="help">Không còn lưu dữ liệu trong bộ nhớ trình duyệt. Khi chạy trên web, museum-data.json được đọc cạnh file HTML. Khi mở trực tiếp bằng file://, hãy mở JSON bằng nút bên dưới. Dùng “Lưu ngay” để chọn hoặc cập nhật file JSON; nếu trình duyệt không hỗ trợ ghi file, nút sẽ tải JSON xuống để thay vào thư mục dự án.</div>
   <div class="card"><h3>Kết nối file dữ liệu</h3><p class="small">Chọn museum-data.json trên máy để nạp nội dung và cho phép lưu thay đổi trực tiếp vào file đó (trình duyệt Chromium mới).</p><button class="btn" id="openDataFile">📂 Mở museum-data.json để chỉnh sửa</button></div>
   <div class="card"><h3>Chủ đề mẫu</h3><p class="small">Nạp một chủ đề dựng sẵn. Nội dung hiện tại sẽ bị thay thế, hãy sao lưu trước nếu cần.</p><div style="display:flex;gap:8px;flex-wrap:wrap">${THEMES.map(th=>`<button class="btn" data-theme="${th.id}">${esc(th.name)}</button>`).join('')}</div></div>
-  <div class="card"><h3>Chia sẻ cho học sinh</h3><p class="small">Chép cả thư mục dự án, gồm HTML, CSS, JavaScript, museum-data.json, images, resources và video. Để chạy online, triển khai toàn bộ thư mục này lên Vercel.</p><button class="btn primary" id="exportHtml">Tải file HTML kèm CSS/JS</button></div>
+  <div class="card"><h3>Chia sẻ cho học sinh</h3><p class="small">Chép cả thư mục dự án, gồm HTML, CSS, JavaScript, museum-data.json, images, models, videos và resources. Giữ nguyên các thư mục media để mọi đường dẫn hoạt động. Để chạy online, triển khai toàn bộ thư mục này lên Vercel.</p><button class="btn primary" id="exportHtml">Tải file HTML kèm CSS/JS</button></div>
   <div class="card"><h3>Sao lưu dữ liệu</h3><p class="small">Xuất toàn bộ nội dung ra file .json để lưu hoặc chuyển sang máy khác. Khi nhập JSON, các đường dẫn media vẫn trỏ vào những file tương ứng trong thư mục dự án.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="exportJson">Xuất file sao lưu (.json)</button><label class="btn" style="cursor:pointer">Nhập file sao lưu<input type="file" id="importJson" accept=".json,application/json" hidden></label></div></div>
   <div class="card"><h3>Làm mới</h3><p class="small">Xoá sạch hiện vật để bắt đầu một bảo tàng trống cho chủ đề khác.</p><button class="btn danger" id="clearAll">Xoá hết hiện vật</button></div>
   </div></div>`;
@@ -1149,6 +1149,10 @@ function downloadAsset(url){
 const edBody=$('#edBody');
 edBody.addEventListener('input',e=>{
   const t=e.target,k=t.dataset.k,m=t.dataset.m,s=t.dataset.s;
+  if(t.dataset.videoField){
+    const video=(S.videos||[])[Number(t.dataset.videoIndex)];if(!video)return;
+    video[t.dataset.videoField]=t.value;queueSave();return;
+  }
   if(k){
     const it=S.items.find(i=>i.id===ed.id);if(!it)return;
     if(k==='type'&&isGalleryImage({type:t.value})&&!isGalleryImage(it)){
@@ -1214,7 +1218,8 @@ edBody.addEventListener('click',e=>{
       if(!/\.(mp4|webm|ogv|ogg)$/i.test(path))throw new Error('Video cần có đuôi .mp4, .webm, .ogv hoặc .ogg.');
       S.videos=S.videos||[];
       if(S.videos.some(video=>video.path===path&&video.campaign===campaign))throw new Error('Video này đã có trong chiến dịch.');
-      S.videos.push({id:uid(),name:path.split('/').pop(),path,campaign});
+      const name=path.split('/').pop();
+      S.videos.push({id:uid(),name,path,campaign,title:name.replace(/\.[^.]+$/,''),date:'',detail:'',script:'',question:''});
       save();renderEd();toast('Đã thêm đường dẫn video.');return;
     }catch(error){toast(error.message);return}
   }
@@ -1270,8 +1275,8 @@ edBody.addEventListener('click',e=>{
     const re=/(<script id="seed" type="application\/json">)[\s\S]*?(<\/script>)/;
     download(slug(S.meta.war)+'.html',SRC.replace(re,(m,a,b)=>a+json+b),'text/html');
     document.querySelectorAll('link[href$="museum-fixed.css"],script[src$="museum-fixed.js"]').forEach(asset=>downloadAsset(asset.href));
-    ['RGXM.mp4','NH-DD.mp4','phong-hien-vat-tay-son.png','phao.glb','sung.glb','tuong3d.glb','tuong3d2.glb','tuong3d3.glb'].forEach(name=>downloadAsset(new URL(name,location.href).href));
-    toast('Đã xuất HTML, CSS, JS, video và ảnh nền. Hãy giữ các file cùng thư mục và sao chép thêm images, resources, videos cùng mọi ảnh đang dùng.');
+    ['videos/RGXM.mp4','videos/NH-DD.mp4','videos/quannguyen.mp4','videos/ngoquyen938.mp4','images/phong-hien-vat-tay-son.png','models/phao.glb','models/sung.glb','models/coc.glb','models/thuyenchienxiem.glb','models/tuong3d.glb','models/tuong3d2.glb','models/tuong3d3.glb','models/tuong3d4.glb','models/tuong3d5.glb','models/tuong3d6.glb'].forEach(name=>downloadAsset(new URL(name,location.href).href));
+    toast('Đã xuất mã và media. Đặt các file tải xuống vào đúng thư mục images, models, videos và resources của dự án.');
   }
   if(t.closest('#resetSample')&&confirm('Khôi phục nội dung mẫu sẽ xoá toàn bộ nội dung hiện tại. Tiếp tục?')){S=norm(clone(DEFAULT));save();ed.id=S.items[0].id;applyMeta();renderEd();toast('Đã khôi phục nội dung mẫu.')}
   if(t.closest('#clearAll')&&confirm('Xoá toàn bộ hiện vật? Hãy chắc chắn bạn đã sao lưu.')){S.items=[];ed.id=null;save();renderEd();toast('Bảo tàng đã trống. Bấm "Thêm hiện vật" để bắt đầu.')}
@@ -1285,7 +1290,7 @@ else if(location.protocol==='file:'&&!STATIC_DATA)toast('Đang dùng nội dung 
 /* ====================== THAM QUAN 3D ĐI BỘ ====================== */
 const WALK_TYPES={
   gallery:{label:'Phòng tư liệu hình ảnh',icon:'🖼',center:[-14,0],color:0x4a1718},
-  artifacts:{label:'Phòng tư liệu hiện vật',icon:'🏺',center:[14,0],color:0x252a30},
+  artifacts:{label:'Phòng tư liệu hiện vật',icon:'🏺',center:[19.5,0],color:0x252a30},
   battle:{label:'Phòng sa hình',icon:'🗺',center:[0,-14],color:0x17332e},
   documents:{label:'Phòng tư liệu',icon:'📜',center:[0,14],color:0x39271a}
 };
@@ -1513,8 +1518,7 @@ function walkPlanter(x,z){
   walkSphere(.25,leaf,x,1.55,z,{x:.8,y:1.45,z:.8});
 }
 function walkPillar(x,z,mat){walkBox(.5,6.45,.5,mat,x,3.225,z);walkBox(.72,.22,.72,mat,x,6.46,z);walkBox(.67,.18,.67,mat,x,.1,z);}
-function walkTrimRoom(cx,cz,mat){
-  const w=12.2,d=12.2;
+function walkTrimRoom(cx,cz,mat,w=12.2,d=12.2){
   [.92,6.4].forEach(y=>{
     walkBox(w,.16,.14,mat,cx,y,cz-d/2+.12);walkBox(w,.16,.14,mat,cx,y,cz+d/2-.12);
     walkBox(.14,.16,d,mat,cx-w/2+.12,y,cz);walkBox(.14,.16,d,mat,cx+w/2-.12,y,cz);
@@ -1554,7 +1558,7 @@ function walkChainBarrier(cx,cz,axis){
 function walkBuildArchitecture(){
   const hallMat=walkMaterial(0xf5f4ef,.82,.01),roomMat=walkMaterial(0xf8f8f5,.86,.01),trim=walkMaterial(0xb18a4e,.38,.45),dark=walkMaterial(0x292724,.85,.04);
   walkFloor(14,14,0,0,'marble');
-  walkFloor(12,12,-14,0,'wood');walkFloor(12,12,14,0,'stone');walkFloor(12,12,0,-14,'grass');walkFloor(12,12,0,14,'wood');
+  walkFloor(12,12,-14,0,'wood');walkFloor(23,12,19.5,0,'stone');walkFloor(12,12,0,-14,'grass');walkFloor(12,12,0,14,'wood');
   // Four sides of the central hall, each with a generous open doorway.
   walkWallH(-7,-7,-1.85,hallMat);walkWallH(-7,1.85,7,hallMat);walkWallH(7,-7,-1.85,hallMat);walkWallH(7,1.85,7,hallMat);
   walkWallV(-7,-7,-1.85,hallMat);walkWallV(-7,1.85,7,hallMat);walkWallV(7,-7,-1.85,hallMat);walkWallV(7,1.85,7,hallMat);
@@ -1562,7 +1566,7 @@ function walkBuildArchitecture(){
   walkWallV(-20,-6,6,roomMat);walkWallH(-6,-20,-8,roomMat);walkWallH(6,-20,-8,roomMat);
   walkWallV(-8,-6,-1.85,roomMat);walkWallV(-8,1.85,6,roomMat);
   // Artifact room: doorway faces west.
-  walkWallV(20,-6,6,roomMat);walkWallH(-6,8,20,roomMat);walkWallH(6,8,20,roomMat);
+  walkWallV(31,-6,6,roomMat);walkWallH(-6,8,31,roomMat);walkWallH(6,8,31,roomMat);
   walkWallV(8,-6,-1.85,roomMat);walkWallV(8,1.85,6,roomMat);
   // Battle room: doorway faces south.
   walkWallV(-6,-20,-8,roomMat);walkWallV(6,-20,-8,roomMat);walkWallH(-20,-6,6,roomMat);
@@ -1577,9 +1581,9 @@ function walkBuildArchitecture(){
   walkGateway(-8,0,true);walkGateway(8,0,true);walkGateway(0,-8,false);walkGateway(0,8,false);
   [[-5.35,-5.35],[-5.35,5.35],[5.35,-5.35],[5.35,5.35]].forEach(([x,z])=>walkPlanter(x,z));
   // Dải phân cách giữa hai khu: cột trụ kim loại và dây xích võng.
-  walkChainBarrier(-14,0,'x');walkChainBarrier(14,0,'x');
-  walkChainBarrier(0,-14,'z');walkChainBarrier(0,14,'z');
-  walkSign('SẢNH TRUNG TÂM','RẠCH GẦM – XOÀI MÚT · 1785',0,3.1,-6.82,0,'#3a2119');
+  //walkChainBarrier(-14,0,'x');
+  //walkChainBarrier(0,-14,'z');walkChainBarrier(0,14,'z');
+  //walkSign('SẢNH TRUNG TÂM','RẠCH GẦM – XOÀI MÚT · 1785',0,3.1,-6.82,0,'#3a2119');
   walkSign('PHÒNG HÌNH ẢNH','TRANH · ẢNH · ĐỒ HỌA',-8.05,5.05,0,Math.PI/2,'#4b1719');
   walkSign('PHÒNG HIỆN VẬT','MÔ HÌNH 3D',8.05,5.05,0,-Math.PI/2,'#263039');
   walkSign('PHÒNG SA HÌNH','DIỄN BIẾN TRẬN ĐÁNH',0,5.05,-8.04,0,'#173d38');
@@ -1590,10 +1594,10 @@ function walkBuildArchitecture(){
   const cabinet={id:'museum-resource-cabinet',type:'tailieu',title:'📥 Tải tài liệu',date:'Kho tài liệu của bảo tàng',origin:'Chọn tệp để tải xuống',detail:'Kho tài liệu dùng chung cho khách tham quan.',text:'',isResourceCabinet:true};
   const cabinetHit=new THREE.Mesh(new THREE.PlaneGeometry(3.4,1.9),new THREE.MeshBasicMaterial({transparent:true,opacity:0.001,side:THREE.DoubleSide,depthWrite:false}));
   cabinetHit.position.set(0,3.45,19.69);cabinetHit.rotation.y=Math.PI;cabinetHit.userData.item=cabinet;W.scene.add(cabinetHit);W.targets.push(cabinetHit);
-  walkTrimRoom(-14,0,trim);walkTrimRoom(14,0,trim);walkTrimRoom(0,-14,trim);walkTrimRoom(0,14,trim);
+  walkTrimRoom(-14,0,trim);walkTrimRoom(19.5,0,trim,23.2,12.2);walkTrimRoom(0,-14,trim);walkTrimRoom(0,14,trim);
   // Low decorative panels, ceiling beams and wall sconces add a gallery-like scale.
   const panel=walkMaterial(0xe6e3db,.78,.01),panel2=walkMaterial(0xd5d1c7,.78,.01);
-  [-14,14].forEach(cx=>{[-4.5,-1.5,1.5,4.5].forEach(z=>walkBox(.12,2.1,.92,panel,cx<0?-19.78:19.78,1.15,z));[-4,0,4].forEach(z=>walkSconce(cx<0?-19.72:19.72,4.45,z,cx<0?Math.PI/2:-Math.PI/2));});
+  [-14,19.5].forEach(cx=>{[-4.5,-1.5,1.5,4.5].forEach(z=>walkBox(.12,2.1,.92,panel,cx<0?-19.78:30.78,1.15,z));[-4,0,4].forEach(z=>walkSconce(cx<0?-19.72:30.72,4.45,z,cx<0?Math.PI/2:-Math.PI/2));});
   [-14,14].forEach(cz=>{[-4.5,-1.5,1.5,4.5].forEach(x=>walkBox(.92,2.1,.12,panel,x,1.15,cz<0?-19.78:19.78));[-4,0,4].forEach(x=>walkSconce(x,4.45,cz<0?-19.72:19.72,cz<0?0:Math.PI));});
   // Floor medallion in the hall.
   const med=walkCylinder(2.15,2.15,.06,trim,0,.08,0,{seg:48});med.rotation.x=0;
@@ -1603,13 +1607,13 @@ function walkBuildArchitecture(){
   walkPointLight(-3.5,3.5,-3.5,0xffcf84,2.0,12);walkPointLight(3.5,3.5,-3.5,0xffcf84,2.0,12);walkPointLight(-3.5,3.5,3.5,0xffcf84,2.0,12);walkPointLight(3.5,3.5,3.5,0xffcf84,2.0,12);
   // Trần nền trắng sáng, có các dải LED dài chạy dọc theo từng phòng.
   const ceiling=walkMaterial(0xfafaf7,.92,.0,{side:THREE.DoubleSide});
-  [[0,0,14,14],[-14,0,12,12],[14,0,12,12],[0,-14,12,12],[0,14,12,12]].forEach(([x,z,w,d])=>{const m=new THREE.Mesh(new THREE.PlaneGeometry(w,d),ceiling);m.rotation.x=Math.PI/2;m.position.set(x,6.45,z);W.scene.add(m);});
+  [[0,0,14,14],[-14,0,12,12],[19.5,0,23,12],[0,-14,12,12],[0,14,12,12]].forEach(([x,z,w,d])=>{const m=new THREE.Mesh(new THREE.PlaneGeometry(w,d),ceiling);m.rotation.x=Math.PI/2;m.position.set(x,6.45,z);W.scene.add(m);});
   const ledMat=new THREE.MeshStandardMaterial({color:0xffffff,emissive:0xdff3ff,emissiveIntensity:2.4,roughness:.25});
-  [[0,0,10.5,.075],[0,0,.075,10.5],[-14,0,9.3,.075],[ -14,0,.075,9.3],[14,0,9.3,.075],[14,0,.075,9.3],[0,-14,9.3,.075],[0,-14,.075,9.3],[0,14,9.3,.075],[0,14,.075,9.3]].forEach(([x,z,w,d])=>walkBox(w,.035,d,ledMat,x,6.38,z,{cast:false}));
-  [[-14,0],[14,0],[0,-14],[0,14],[0,0]].forEach(([x,z])=>{walkPointLight(x,5.9,z,0xe7f5ff,1.8,11)});
+  [[0,0,10.5,.075],[0,0,.075,10.5],[-14,0,9.3,.075],[-14,0,.075,9.3],[19.5,0,20.3,.075],[19.5,0,.075,9.3],[0,-14,9.3,.075],[0,-14,.075,9.3],[0,14,9.3,.075],[0,14,.075,9.3]].forEach(([x,z,w,d])=>walkBox(w,.035,d,ledMat,x,6.38,z,{cast:false}));
+  [[-14,0],[19.5,0],[0,-14],[0,14],[0,0]].forEach(([x,z])=>{walkPointLight(x,5.9,z,0xe7f5ff,1.8,11)});
   W.rooms=[
     {id:'gallery',minX:-20,maxX:-7,minZ:-6,maxZ:6,label:WALK_TYPES.gallery.label},
-    {id:'artifacts',minX:7,maxX:20,minZ:-6,maxZ:6,label:WALK_TYPES.artifacts.label},
+    {id:'artifacts',minX:7,maxX:31,minZ:-6,maxZ:6,label:WALK_TYPES.artifacts.label},
     {id:'battle',minX:-6,maxX:6,minZ:-20,maxZ:-7,label:WALK_TYPES.battle.label},
     {id:'documents',minX:-6,maxX:6,minZ:7,maxZ:20,label:WALK_TYPES.documents.label},
     {id:'hall',minX:-7.4,maxX:7.4,minZ:-7.4,maxZ:7.4,label:'Sảnh trung tâm'}
@@ -1663,7 +1667,7 @@ function walkBuildGallery(){
 function walkPedestal(x,z,label,subtitle='HIỆN VẬT MÔ PHỎNG',facing=1, tilt=-.25){
   const stone=walkMaterial(0xaaa18c,.5,.24),gold=walkMaterial(0xb88b43,.35,.5),black=walkMaterial(0x3b2921,.58,.22);
   walkCylinder(.95,.95,.18,black,x,.24,z,{seg:32});walkCylinder(.81,.9,.12,gold,x,.39,z,{seg:32});walkBox(1.36,.95,1.36,stone,x,.91,z);walkBox(1.48,.09,1.48,gold,x,1.43,z);walkBox(1.48,.14,1.48,black,x,1.54,z);
-  const placard=new THREE.Mesh(new THREE.PlaneGeometry(1.35,.36),new THREE.MeshBasicMaterial({map:walkLabelTexture(label,subtitle,'#2c2924'),side:THREE.DoubleSide}));placard.rotation.set(tilt,facing<0?Math.PI:0,0);placard.position.set(x,1.8,z+.6*facing);W.scene.add(placard);
+  const placard=new THREE.Mesh(new THREE.PlaneGeometry(1.35,.36),new THREE.MeshBasicMaterial({map:walkLabelTexture(label,subtitle,'#2c2924'),side:THREE.DoubleSide}));placard.rotation.set(tilt,facing<0?Math.PI:0,0);placard.position.set(x,1.8,z+.7*facing);W.scene.add(placard);
 }
 function walkModelCannon(root){
   const rustCanvas=document.createElement('canvas');rustCanvas.width=512;rustCanvas.height=256;
@@ -1854,7 +1858,8 @@ function walkModelGun(root){
 }
 function walkModelGeneric(root,it){
   const metal=walkMaterial(0x8c7958,.38,.55),dark=walkMaterial(0x3d2b1c,.6,.22);
-  if(/thuyền|thuyen|tàu|tau|sông|song/i.test(it.title+' '+it.art))walkModelBoat(root);
+  if(it.art==='coc-bach-dang')walkModelBachDangStakes(root);
+  else if(/thuyền|thuyen|tàu|tau|sông|song/i.test(it.title+' '+it.art))walkModelBoat(root);
   else if(/co-tay-son|la-co/i.test(it.art||'')||/lá cờ|la co/i.test(it.title||''))walkModelTaySonFlag(root);
   else if(/tượng|tuong|tướng|tuong-quan|quan/i.test(it.title+' '+it.art))walkModelStatue(root);
   else if(/xe|bicycle|thồ|tho/i.test(it.title+' '+it.art))walkModelBicycle(root);
@@ -1865,6 +1870,15 @@ function walkModelGeneric(root,it){
   }else if(/gươm|guom|kiếm|kiem/i.test(it.title+' '+it.art)){
     walkCylinder(.06,.08,1.8,metal,0,1,0,{parent:root});walkBox(.5,.08,.12,dark,0,.35,0,{parent:root});
   }else walkModelCannon(root);
+}
+function walkModelBachDangStakes(root){
+  const wood=walkMaterial(0x51331f,.88,.04);
+  walkBox(1.18,.12,.82,wood,0,.08,0,{parent:root});
+  for(let row=0;row<3;row++)for(let column=0;column<3;column++){
+    const x=(column-1)*.34,z=(row-1)*.25;
+    const stake=walkCylinder(.025,.075,1.55,wood,x,.88,z,{parent:root,seg:8});
+    stake.rotation.z=(column-1)*-.06;
+  }
 }
 function walkModelTaySonFlag(root){
   const pole=walkMaterial(0x49301d,.66,.16),brass=walkMaterial(0xb28a45,.42,.58);
@@ -1908,13 +1922,12 @@ function walkBuildArtifacts(){
   const allItems=S.items.filter(i=>i.type==='daocu');
   const flagItem=allItems.find(it=>it.art==='co-tay-son'||/lá cờ|la co/i.test(it.title||''));
   if(flagItem){
-    const x=14,z=3.55;
-    walkPedestal(x,z,flagItem.title,flagItem.date||'THỜI KỲ TÂY SƠN',-1, .25);
-    const flag=new THREE.Group();flag.position.set(x,1.63,z);flag.userData.item=flagItem;walkModelGeneric(flag,flagItem);W.scene.add(flag);W.targets.push(flag);
-    walkPointLight(x,4,z,0xffd18a,1.1,5);
+    const displayX=15,displayZ=3.55,position=flagItem.position3D||{x:displayX,y:1.63,z:displayZ};
+    walkPedestal(displayX,displayZ,flagItem.title,flagItem.date||'THỜI KỲ TÂY SƠN',-1, .25);
+    const flag=new THREE.Group();flag.position.set(position.x,position.y,position.z);flag.rotation.y=Math.PI;flag.userData.item=flagItem;walkModelGeneric(flag,flagItem);W.scene.add(flag);W.targets.push(flag);
   }
-  walkSign('HIỆN VẬT TÂY SƠN','CHIẾN THẮNG QUÂN XIÊM',19.65,5.05,-4,-Math.PI/2,'#4a1718');
-  walkSign('HIỆN VẬT TÂY SƠN','CHIẾN THẮNG QUÂN THANH',19.65,5.05,4,-Math.PI/2,'#273c32');
+  walkSign('HIỆN VẬT TÂY SƠN','CHIẾN THẮNG QUÂN XIÊM',30.65,5.05,-4,-Math.PI/2,'#4a1718');
+  walkSign('HIỆN VẬT TÂY SƠN','CHIẾN THẮNG QUÂN THANH',30.65,5.05,4,-Math.PI/2,'#273c32');
 }
 
 function walkCannonCarriage(root){
@@ -1982,28 +1995,35 @@ function walkBuildTaySonDisplays(){
   }
   const statueItem=S.items.find(i=>i.type==='daocu'&&/tượng\s*quang trung/i.test(i.title||''));
   const statueDisplays=[
-    {path:'tuong3d.glb',title:'Tượng Quang Trung',subtitle:'THỜI KỲ TÂY SƠN',x:10.55,item:statueItem},
-    {path:'tuong3d2.glb',title:'Tượng Trần Hưng Đạo',subtitle:'NHÀ TRẦN',x:14,modelOptions:{removeNodeNames:['Cube_1']}},
-    {path:'tuong3d3.glb',title:'Tượng Ngô Quyền',subtitle:'NHÀ NGÔ',x:17.45,modelOptions:{rotationX:-.32}}
+    {path:'models/tuong3d.glb',title:'Tượng Quang Trung',subtitle:'THỜI KỲ TÂY SƠN',x:10.5,item:statueItem},
+    {path:'models/tuong3d4.glb',title:'Tượng Trần Hưng Đạo',subtitle:'NHÀ TRẦN',x:15,modelOptions:{rotationX:.25}},
+    {path:'models/tuong3d3.glb',title:'Tượng Ngô Quyền',subtitle:'NHÀ NGÔ',x:19.5,modelOptions:{rotationX:-.32}},
+    {path:'models/tuong3d5.glb',title:'Tượng Lý Thường Kiệt',subtitle:'NHÀ LÝ',x:24},
+    {path:'models/tuong3d6.glb',title:'Tượng Lê Hoàn',subtitle:'NHÀ TIỀN LÊ',x:28.5}
   ];
   statueDisplays.forEach(display=>{
-    const item=display.item||{
+    const item=display.item||S.items.find(it=>it.type==='daocu'&&it.title===display.title)||{
       id:display.path.replace('.glb',''),type:'daocu',title:display.title,date:'Mô hình minh họa',
       origin:'Mô hình 3D minh họa',detail:`Mô hình 3D ${display.title.toLowerCase()} được trưng bày trong phòng hiện vật.`,
       script:`Đây là ${display.title.toLowerCase()}, được giới thiệu qua mô hình 3D.`,question:'Quan sát mô hình và nêu điểm nổi bật của nhân vật lịch sử này.'
     };
-    walkPedestal(display.x,-3.55,display.title,display.subtitle);
-    const statue=new THREE.Group();statue.position.set(display.x,1.63,-3.55);statue.userData.item=item;W.scene.add(statue);
+    const position=item.position3D||{x:display.x,y:1.63,z:-3.55};
+    walkPedestal(display.x,-3.55,item.title||display.title,display.subtitle);
+    const statue=new THREE.Group();statue.position.set(position.x,position.y,position.z);statue.rotation.y=0;statue.userData.item=item;W.scene.add(statue);
     walkLoadGLB(display.path,statue,2.7,0x765333,.48,.62,()=>walkModelStatue(statue),display.modelOptions);
-    W.targets.push(statue);walkPointLight(display.x,4.7,-3.55,0xffd39a,1.0,5.5);
+    W.targets.push(statue);walkPointLight(position.x,position.y+3.07,position.z,0xffd39a,1.0,5.5);
   });
   // The opposite row holds the flag, cannon and matchlock.
-  walkBox(2.72,.32,1.58,wood,10.55,.2,3.55);
-  walkBox(2.78,.07,1.64,brass,10.55,.395,3.55);
-  walkBox(2.64,.045,1.5,velvet,10.55,.45,3.55);
-  const cannon=new THREE.Group();cannon.position.set(10.55,.49,3.55);cannon.rotation.y=-Math.PI/2;W.scene.add(cannon);
-  walkLoadGLB('phao.glb',cannon,1.85,0x815840,.16,.92,()=>walkModelCannon(cannon),{fitAxis:'z',rotationX:.24,baseOffset:.12,carriage:true});
-  plaque(10.55,2.55,'PHÁO THỜI TÂY SƠN','MÔ HÌNH TÁI DỰNG',1.8,1.04,Math.PI);
+  walkBox(2.72,.32,1.58,wood,10.5,.2,3.55);
+  walkBox(2.78,.07,1.64,brass,10.5,.395,3.55);
+  walkBox(2.64,.045,1.5,velvet,10.5,.45,3.55);
+  const cannonItem=S.items.find(it=>it.type==='daocu'&&it.art==='phao-tay-son');
+  const cannonPosition=cannonItem?.position3D||{x:10.5,y:.49,z:3.55};
+  const cannon=new THREE.Group();cannon.position.set(cannonPosition.x,cannonPosition.y,cannonPosition.z);cannon.rotation.y=-Math.PI/2;
+  if(cannonItem)cannon.userData.item=cannonItem;
+  W.scene.add(cannon);if(cannonItem)W.targets.push(cannon);
+  walkLoadGLB('models/phao.glb',cannon,1.85,0x815840,.16,.92,()=>walkModelCannon(cannon),{fitAxis:'z',rotationX:.24,baseOffset:.12,carriage:true});
+  plaque(10.5,2.55,(cannonItem?.title||'PHÁO THỜI TÂY SƠN').toLocaleUpperCase('vi'),cannonItem?.date||'MÔ HÌNH TÁI DỰNG',1.8,1.04,Math.PI);
   // Helmet under glass.
   // caseBase(17.1,-3.65,2.35,1.35);
   // const helmetMetal=walkMaterial(0x75634b,.32,.72),helmetDark=walkMaterial(0x3e3024,.5,.42);
@@ -2011,22 +2031,40 @@ function walkBuildTaySonDisplays(){
   // walkBox(.9,.07,.72,helmetDark,17.1,.91,-3.65);walkBox(.08,.34,.08,brass,17.1,1.42,-3.65);
   // plaque(17.1,.0,'MŨ TRẤN THỦ','TRANG BỊ QUÂN ĐỘI',1.7);
   // The matchlock rests horizontally on the same burgundy display case.
-  caseBase(17.1,3.55,3.5,1.9);
-  const gun=new THREE.Group();gun.position.set(17.1,.79,3.55);gun.rotation.y=Math.PI/2;W.scene.add(gun);
-  walkLoadGLB('sung.glb',gun,0.3,0x684323,0,.86,()=>walkModelGun(gun),{fitAxis:'x',preserveMaterials:true});
-  plaque(17.1,2.48,'SÚNG ĐIỂU THƯƠNG','VŨ KHÍ THỜI TÂY SƠN',2.1,.55,Math.PI);
+  caseBase(19.5,3.55,3.5,1.9);
+  const gunItem=S.items.find(it=>it.type==='daocu'&&it.art==='sung-dieu-thuong');
+  const gunPosition=gunItem?.position3D||{x:19.5,y:.79,z:3.55};
+  const gun=new THREE.Group();gun.position.set(gunPosition.x,gunPosition.y,gunPosition.z);gun.rotation.y=Math.PI/2;
+  if(gunItem)gun.userData.item=gunItem;
+  W.scene.add(gun);if(gunItem)W.targets.push(gun);
+  walkLoadGLB('models/sung.glb',gun,0.3,0x684323,0,.86,()=>walkModelGun(gun),{fitAxis:'x',preserveMaterials:true});
+  plaque(19.5,2.48,(gunItem?.title||'SÚNG ĐIỂU THƯƠNG').toLocaleUpperCase('vi'),gunItem?.date||'VŨ KHÍ THỜI TÂY SƠN',2.1,.55,Math.PI);
+  const stakeItem=S.items.find(it=>it.type==='daocu'&&it.art==='coc-bach-dang');
+  if(stakeItem){
+    walkPedestal(24,3.55,stakeItem.title,stakeItem.date||'MÔ HÌNH MINH HỌA',-1,.25);
+    const stakePosition=stakeItem.position3D||{x:24,y:1.63,z:3.55};
+    const stakes=new THREE.Group();stakes.position.set(stakePosition.x,stakePosition.y,stakePosition.z);stakes.rotation.y=Math.PI;stakes.userData.item=stakeItem;W.scene.add(stakes);W.targets.push(stakes);
+    walkLoadGLB('models/coc.glb',stakes,1.8,0x765333,.48,.7,()=>walkModelBachDangStakes(stakes),{preserveMaterials:true});
+  }
+  const boatItem=S.items.find(it=>it.type==='daocu'&&it.art==='thuyen-chien-xiem');
+  if(boatItem){
+    walkPedestal(28.5,3.55,boatItem.title,boatItem.date||'MÔ HÌNH MINH HỌA',-1,.25);
+    const boatPosition=boatItem.position3D||{x:28.5,y:1.63,z:3.55};
+    const boat=new THREE.Group();boat.position.set(boatPosition.x,boatPosition.y,boatPosition.z);boat.rotation.y=Math.PI;boat.userData.item=boatItem;W.scene.add(boat);W.targets.push(boat);
+    walkLoadGLB('models/thuyenchienxiem.glb',boat,1.05,0x765333,.48,.7,()=>walkModelBoat(boat),{preserveMaterials:true});
+  }
   // Reference photo mounted as a framed image on the back wall.
   const frame=walkMaterial(0xb88b48,.3,.6);
   //walkBox(4.7,2.8,.14,frameDark,19.68,2.75,0);
-  walkBox(.18,.12,4.82,frame,19.58,4.17,0);walkBox(.18,.12,4.82,frame,19.58,1.33,0);
-  walkBox(.12,2.85,.18,frame,19.58,2.75,-2.35);walkBox(.12,2.85,.18,frame,19.58,2.75,2.35);
+  walkBox(.18,.12,4.82,frame,30.58,4.17,0);walkBox(.18,.12,4.82,frame,30.58,1.33,0);
+  walkBox(.12,2.85,.18,frame,30.58,2.75,-2.35);walkBox(.12,2.85,.18,frame,30.58,2.75,2.35);
   const canvas=new THREE.Mesh(new THREE.PlaneGeometry(4.5,2.58),new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.DoubleSide}));
-  canvas.position.set(19.57,2.75,0);canvas.rotation.y=-Math.PI/2;W.scene.add(canvas);
-  const refImg=new Image();refImg.onload=()=>{const tex=new THREE.Texture(refImg);tex.colorSpace=THREE.SRGBColorSpace;tex.needsUpdate=true;canvas.material.map=tex;canvas.material.color.set(0xffffff);canvas.material.needsUpdate=true;};refImg.src='phong-hien-vat-tay-son.png';
+  canvas.position.set(30.57,2.75,0);canvas.rotation.y=-Math.PI/2;W.scene.add(canvas);
+  const refImg=new Image();refImg.onload=()=>{const tex=new THREE.Texture(refImg);tex.colorSpace=THREE.SRGBColorSpace;tex.needsUpdate=true;canvas.material.map=tex;canvas.material.color.set(0xffffff);canvas.material.needsUpdate=true;};refImg.src='images/phong-hien-vat-tay-son.png';
   // Warm spotlights and subtle brass posts evoke the museum reference.
-  [[10.55,3.55],[14,3.55],[17.1,3.55]].forEach(([x,z])=>walkPointLight(x,4.7,z,0xffd39a,1.0,5.5));
+  [[10.5,3.55],[15,3.55],[19.5,3.55],[24,3.55],[28.5,3.55]].forEach(([x,z])=>walkPointLight(x,4.7,z,0xffd39a,1.0,5.5));
   const postMat=walkMaterial(0xc49a51,.26,.7);
-  [[9.3,-5.55],[12.3,-5.55],[15.8,-5.55],[18.6,-5.55],[9.3,5.55],[12.3,5.55],[15.8,5.55],[18.6,5.55]].forEach(([x,z])=>{
+  [[9.3,-5.55],[13.2,-5.55],[17.1,-5.55],[21,-5.55],[24.9,-5.55],[29.4,-5.55],[9.3,5.55],[13.2,5.55],[17.1,5.55],[21,5.55],[24.9,5.55],[29.4,5.55]].forEach(([x,z])=>{
     walkCylinder(.055,.07,.68,postMat,x,.34,z,{seg:12});walkSphere(.12,postMat,x,.72,z,{x:1,y:1,z:1});
   });
 }
@@ -2308,31 +2346,41 @@ function walkBuildBattle(){
     walkSign(campaign.title,campaign.subtitle,campaign.x,2.55,-19.68,0,campaign.color);
     walkPointLight(campaign.x,3.8,-14,0xffd18a,.85,6);
   });
-  // Bốn TV treo tường: hai bên trái cho chiến dịch quân Xiêm, hai bên phải cho quân Thanh.
+  // Four evenly spaced TVs on each side wall.
   const tvFrame=walkMaterial(0x252a2e,.32,.58);W.tvScreens=[];W.tvVideoElements={};W.tvVideoTextures={};W.tvPreviewsLoaded=false;
-  [['xiem',-5.78,-17.2,Math.PI/2],['xiem',-5.78,-11.2,Math.PI/2],['thanh',5.78,-17.2,-Math.PI/2],['thanh',5.78,-11.2,-Math.PI/2]].forEach(([campaign,x,z,yaw],index)=>{
+  const videos=(S.videos||[]).filter(video=>video.path);
+  const tvSlots=[-18.35,-15.85,-13.35,-10.85].flatMap(z=>[
+    {x:-5.78,z,yaw:Math.PI/2,campaign:'xiem'},
+    {x:5.78,z,yaw:-Math.PI/2,campaign:'thanh'}
+  ]);
+  tvSlots.forEach((slot,index)=>{
+    const video=videos.length?videos[Math.floor(Math.random()*videos.length)]:{id:`video-placeholder-${index}`,title:'Video đang cập nhật',path:'',campaign:slot.campaign};
+    const {x,z,yaw}=slot;
     const root=new THREE.Group();root.position.set(x,3.15,z);root.rotation.y=yaw;
     const frame=new THREE.Mesh(new THREE.BoxGeometry(2.0,1.25,.13),tvFrame);root.add(frame);
-    const screenMat=new THREE.MeshBasicMaterial({map:walkTVTexture(campaign,index),side:THREE.DoubleSide});
-    const screen=new THREE.Mesh(new THREE.PlaneGeometry(1.82,1.07),screenMat);screen.position.z=.071;root.add(screen);W.tvScreens.push({campaign,mesh:screen});
-    const label=walkSign(campaign==='xiem'?'VIDEO SA HÌNH':'VIDEO SA HÌNH',campaign==='xiem'?'CHIẾN DỊCH QUÂN XIÊM':'CHIẾN DỊCH QUÂN THANH',x,2.36,z,yaw,campaign==='xiem'?'#4a1718':'#273c32');
-    const hit=new THREE.Mesh(new THREE.PlaneGeometry(2.1,1.38),new THREE.MeshBasicMaterial({transparent:true,opacity:.001,side:THREE.DoubleSide,depthWrite:false}));hit.position.copy(root.position);hit.rotation.y=yaw;hit.userData.item={id:'tv-'+campaign+'-'+index,type:'video',title:campaign==='xiem'?'Video sa hình – Kháng chiến chống quân Xiêm':'Video sa hình – Kháng chiến chống quân Thanh',campaign,isVideoScreen:true};W.scene.add(hit);W.targets.push(hit);W.scene.add(root);
+    const screenMat=new THREE.MeshBasicMaterial({map:walkTVTexture(video),side:THREE.DoubleSide});
+    const screen=new THREE.Mesh(new THREE.PlaneGeometry(1.82,1.07),screenMat);screen.position.z=.071;root.add(screen);W.tvScreens.push({videoId:video.id,campaign:slot.campaign,mesh:screen});
+    walkSign(video.title||video.name||'VIDEO SA HÌNH',video.date||'VIDEO TƯ LIỆU',x,2.36,z,yaw,slot.campaign==='xiem'?'#4a1718':'#273c32');
+    const hit=new THREE.Mesh(new THREE.PlaneGeometry(2.1,1.38),new THREE.MeshBasicMaterial({transparent:true,opacity:.001,side:THREE.DoubleSide,depthWrite:false}));hit.position.copy(root.position);hit.rotation.y=yaw;hit.userData.item={...video,id:`tv-${index}`,type:'video',campaign:video.campaign||slot.campaign,isVideoScreen:true,videoId:video.id};W.scene.add(hit);W.targets.push(hit);W.scene.add(root);
   });
 }
-function walkTVTexture(campaign,index){
-  // Load the first frame as a preview; E starts playback with audio.
-  if(W.tvVideoTextures[campaign])return W.tvVideoTextures[campaign];
+function walkTVTexture(videoItem){
+  if(W.tvVideoTextures[videoItem.id])return W.tvVideoTextures[videoItem.id];
+  if(!videoItem.path){
+    const canvas=document.createElement('canvas');canvas.width=512;canvas.height=300;const context=canvas.getContext('2d');
+    context.fillStyle='#24282b';context.fillRect(0,0,canvas.width,canvas.height);context.fillStyle='#ead8a8';context.font='bold 30px Georgia';context.textAlign='center';context.fillText('VIDEO ĐANG CẬP NHẬT',256,155);
+    const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;W.tvVideoTextures[videoItem.id]=texture;return texture;
+  }
   const video=document.createElement('video');
-  const file=campaign==='xiem'?'RGXM.mp4':'NH-DD.mp4';
-  video.src=new URL(file,location.href).href;
+  video.src=new URL(videoItem.path,location.href).href;
   video.muted=true;video.defaultMuted=true;video.volume=0;video.loop=true;video.playsInline=true;video.preload='none';
   video.setAttribute('muted','');video.setAttribute('playsinline','');video.setAttribute('webkit-playsinline','');
   video.style.position='fixed';video.style.width='1px';video.style.height='1px';video.style.opacity='0';video.style.pointerEvents='none';video.style.left='-10px';video.style.top='-10px';
-  document.body.appendChild(video);W.tvVideoElements[campaign]=video;
+  document.body.appendChild(video);W.tvVideoElements[videoItem.id]=video;
   const tex=new THREE.VideoTexture(video);tex.colorSpace=THREE.SRGBColorSpace;tex.minFilter=THREE.LinearFilter;tex.magFilter=THREE.LinearFilter;
-  W.tvVideoTextures[campaign]=tex;
+  W.tvVideoTextures[videoItem.id]=tex;
   video.addEventListener('loadeddata',()=>{tex.needsUpdate=true;},{once:true});
-  video.addEventListener('error',()=>console.error(`Không tải được video ${file} cho TV sa hình.`,video.error),{once:true});
+  video.addEventListener('error',()=>console.error(`Không tải được video ${videoItem.path} cho TV sa hình.`,video.error),{once:true});
   return tex;
 }
 function walkPrimeVideoPreviews(){
@@ -2429,7 +2477,7 @@ function walkInteract(){
   if(!W.active||!$('#walkIntro').hidden||!$('#walkDetail').hidden||!$('#walkImageZoom').hidden)return;
   const hit=walkFindHit();if(!hit){$('#walkPrompt').textContent='Hãy hướng tâm ngắm vào tranh, hiện vật, sa hình hoặc văn bản để mở nội dung.';return;}
   if(['xiem-4','thanh-4'].includes(hit.item.gallerySlot)){walkShowGalleryImage(hit.item);return;}
-  if(hit.item.isVideoScreen){walkPlayCampaignVideo(hit.item.campaign);return;}
+  if(hit.item.isVideoScreen){walkPlayCampaignVideo(hit.item.videoId);return;}
   walkOpenItem(hit.item);
 }
 function walkShowGalleryImage(it){
@@ -2443,18 +2491,19 @@ function walkCloseGalleryImage(){
   $('#walkImageZoom').hidden=true;$('#walkImageContent').replaceChildren();
   W.velocity.x=0;W.velocity.z=0;
 }
-function walkPlayCampaignVideo(campaign){
-  const video=W.tvVideoElements[campaign];
+function walkPlayCampaignVideo(videoId){
+  const metadata=(S.videos||[]).find(item=>item.id===videoId);
+  const video=W.tvVideoElements[videoId];
   if(!video){toast('Không tìm thấy video cho màn chiếu này.');return;}
-  Object.entries(W.tvVideoElements).forEach(([id,other])=>{if(id!==campaign){other.pause();other.muted=true;}});
+  Object.entries(W.tvVideoElements).forEach(([id,other])=>{if(id!==videoId){other.pause();other.muted=true;}});
   video.muted=false;video.volume=1;
   if(video.readyState>=1)video.currentTime=0;
   video.controls=true;
   video.style.position='relative';video.style.width='auto';video.style.height='auto';video.style.maxWidth='100%';video.style.maxHeight='42vh';
   video.style.opacity='1';video.style.pointerEvents='auto';video.style.left='auto';video.style.top='auto';video.style.background='#000';video.style.borderRadius='10px';
-  const label=campaign==='xiem'?'chiến dịch quân Xiêm':'chiến dịch quân Thanh';
+  const label=metadata?.title||metadata?.name||'Video sa hình';
   const content=$('#walkDetailContent');
-  content.innerHTML=`<span class="badge">📺 TV sa hình</span><h2>Video sa hình – Kháng chiến chống ${campaign==='xiem'?'quân Xiêm':'quân Thanh'}</h2><p class="meta">Video tư liệu cho ${label}</p><div id="walkActiveVideo" style="display:flex;justify-content:center"></div><div class="actions"><button id="walkDetailClose2">Đóng video</button></div>`;
+  content.innerHTML=`<span class="badge">📺 TV sa hình</span><h2>${esc(label)}</h2><p class="meta">${esc([metadata?.date,metadata?.name].filter(Boolean).join(' · '))}</p>${metadata?.detail?`<div class="body"><p>${esc(metadata.detail)}</p></div>`:''}${metadata?.question?`<div class="question"><b>Câu hỏi suy ngẫm</b><p>${esc(metadata.question)}</p></div>`:''}<div id="walkActiveVideo" style="display:flex;justify-content:center"></div><div class="actions"><button id="walkDetailClose2">Đóng video</button></div>`;
   content.querySelector('#walkActiveVideo').append(video);
   $('#walkDetail').hidden=false;
   $('#walkDetailClose2').onclick=walkCloseDetail;
@@ -2462,12 +2511,12 @@ function walkPlayCampaignVideo(campaign){
   if(document.pointerLockElement===$('#walkCanvas'))document.exitPointerLock?.();
   const playback=video.play();
   const showPlayback=()=>{
-    $('#walkPrompt').textContent=`Đang phát video ${label}. Nhấn E vào màn chiếu còn lại để đổi video.`;
-    toast(`Đang phát video ${label}.`);
+    $('#walkPrompt').textContent=`Đang phát video: ${label}.`;
+    toast(`Đang phát video: ${label}.`);
   };
   if(playback&&playback.then)playback.then(showPlayback).catch(error=>{
     if(error.name==='AbortError'&&!video.paused&&video.currentTime>0){showPlayback();return;}
-    console.error(`Không phát được video chiến dịch ${campaign}.`,error);
+    console.error(`Không phát được video ${videoId}.`,error);
     toast(`Không phát được video: ${error.message}`);
   });
 }

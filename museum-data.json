@@ -127,9 +127,14 @@
       "id": "la-co-tay-son",
       "type": "daocu",
       "title": "Lá cờ Tây Sơn",
+      "position3D": {
+        "x": 15,
+        "y": 1.63,
+        "z": 3.55
+      },
       "date": "Mô hình tái dựng theo hình ảnh tham khảo",
       "origin": "Họa tiết dựa trên hình ảnh tham khảo; chưa xác minh đây là mẫu cờ thống nhất của quân Tây Sơn",
-      "detail": "Mô hình lá cờ sử dụng nền đỏ, viền vàng và hình tròn vàng ở giữa, dựa trên hình ảnh tham khảo được cung cấp. Đây là cách tái hiện trực quan cho không gian trưng bày, không khẳng định mọi đơn vị Tây Sơn đều dùng cùng một mẫu cờ.",
+      "detail": "Cờ Tây Sơn là lá cờ gắn liền với phong trào khởi nghĩa Tây Sơn và triều đại Tây Sơn (1778–1802), do ba anh em Nguyễn Nhạc, Nguyễn Huệ và Nguyễn Lữ lãnh đạo. Hình ảnh thường được tái hiện là lá cờ nền đỏ, đôi khi có viền vàng hoặc hình tròn màu vàng ở giữa.\nMàu đỏ: Gắn với hình ảnh hào khí, tinh thần chiến đấu và phong trào khởi nghĩa Tây Sơn.\nViền vàng: Xuất hiện trong một số hình ảnh tái hiện lá cờ.\nHình tròn vàng: Có trong một phiên bản thường được gọi là cờ Quang Trung, tuy nhiên chưa có đủ bằng chứng lịch sử xác nhận đây là thiết kế nguyên bản.\nLá cờ Tây Sơn trở thành biểu tượng gắn với tinh thần đấu tranh, ý chí thống nhất đất nước và những chiến công hiển hách của phong trào Tây Sơn, đặc biệt là chiến thắng Ngọc Hồi – Đống Đa năm 1789.\nLưu ý lịch sử: Hình dạng chính xác của lá cờ Tây Sơn vẫn còn gây tranh luận. Hình ảnh cờ đỏ có vòng tròn vàng thường thấy ngày nay chưa được xác thực bằng tư liệu lịch sử đương thời.",
       "script": "Đây là mô hình lá cờ Tây Sơn được tái dựng theo hình ảnh tham khảo: nền đỏ, viền vàng và hình tròn vàng ở giữa. Màu sắc và biểu tượng giúp lá cờ nổi bật khi trưng bày, nhưng hiện vật này là mô phỏng minh họa, không phải khẳng định về một mẫu cờ thống nhất trong toàn quân Tây Sơn.",
       "question": "Một biểu tượng trên cờ có thể giúp tập hợp và nhận diện lực lượng như thế nào?",
       "img": "",
@@ -289,6 +294,11 @@
       "id": "thanh-tuong-quang-trung",
       "type": "daocu",
       "title": "Tượng Quang Trung",
+      "position3D": {
+        "x": 10.5,
+        "y": 1.63,
+        "z": -3.55
+      },
       "date": "Mô hình minh họa",
       "origin": "Mô phỏng hình khối, không phải hiện vật gốc",
       "detail": "tượng đài Hoàng đế Quang Trung – Nguyễn Huệ, vị anh hùng dân tộc có công lao to lớn trong sự nghiệp đấu tranh bảo vệ độc lập của đất nước. Tượng được khắc họa trong bộ giáp chiến uy nghiêm, một tay giơ cao, tay còn lại cầm vũ khí, thể hiện khí phách hiên ngang và tinh thần quyết đoán của người anh hùng.\nNguyễn Huệ sinh năm 1753, mất năm 1792, quê ở vùng Tây Sơn, phủ Quy Nhơn xưa, nay thuộc tỉnh Gia Lai. Ông là lãnh tụ phong trào Tây Sơn, nổi tiếng với chiến thắng Rạch Gầm – Xoài Mút năm 1785 và chiến thắng Ngọc Hồi – Đống Đa mùa xuân năm 1789, đánh tan quân Thanh xâm lược.\nTượng đài được đặt trên bệ đá đen vững chắc, phía sau là công trình kiến trúc mang nét truyền thống, tạo nên không gian trang nghiêm. Đây không chỉ là công trình tưởng niệm vị hoàng đế tài ba mà còn là biểu tượng của lòng yêu nước, tinh thần quật cường và ý chí bảo vệ độc lập dân tộc Việt Nam.",
@@ -302,6 +312,190 @@
       "inTour": true,
       "gallerySlot": "",
       "campaign": "thanh"
+    },
+    {
+      "id": "tran-hung-dao-statue",
+      "type": "daocu",
+      "title": "Tượng Trần Hưng Đạo",
+      "position3D": {
+        "x": 15,
+        "y": 1.63,
+        "z": -3.55
+      },
+      "date": "Khoảng 1228–1300",
+      "origin": "Mô hình 3D minh họa; thông tin nhân vật dựa trên sử liệu phổ biến.",
+      "detail": "Trần Hưng Đạo (1228–1300), tên thật là Trần Quốc Tuấn, là nhà quân sự, chính trị lỗi lạc và anh hùng dân tộc thời nhà Trần. Ông là con của An Sinh vương Trần Liễu, nổi tiếng với tài năng thao lược và lòng yêu nước. Ông được triều đình giao trọng trách Quốc công Tiết chế, thống lĩnh quân đội Đại Việt trong ba cuộc kháng chiến chống quân Mông – Nguyên (1258, 1285, 1287–1288). Với tài năng quân sự xuất chúng, ông góp công lớn vào những chiến thắng vang dội, đặc biệt là chiến thắng Bạch Đằng năm 1288, góp phần bảo vệ nền độc lập dân tộc.",
+      "script": "Đây là tượng Trần Hưng Đạo, tên thật là Trần Quốc Tuấn, một danh tướng tiêu biểu của nhà Trần. Ông có vai trò quan trọng trong các cuộc kháng chiến chống quân Nguyên – Mông. Chiến thắng Bạch Đằng năm 1288 gắn với nghệ thuật quân sự tài tình và sức mạnh đoàn kết của quân dân Đại Việt.",
+      "question": "Địa hình sông nước và sự phối hợp của quân dân đã góp phần như thế nào vào chiến thắng Bạch Đằng năm 1288?",
+      "img": "",
+      "art": "",
+      "text": "",
+      "phases": "",
+      "hotspots": "",
+      "inTour": true,
+      "gallerySlot": "",
+      "campaign": ""
+    },
+    {
+      "id": "ngo-quyen-statue",
+      "type": "daocu",
+      "title": "Tượng Ngô Quyền",
+      "position3D": {
+        "x": 19.5,
+        "y": 1.63,
+        "z": -3.55
+      },
+      "date": "898–944",
+      "origin": "Mô hình 3D minh họa; thông tin nhân vật dựa trên sử liệu phổ biến.",
+      "detail": "Ngô Quyền (898–944) là vị anh hùng dân tộc, quê ở Đường Lâm (nay thuộc Hà Nội). Ông là người có tài năng quân sự và chí lớn, từng là tướng dưới quyền Dương Đình Nghệ, được giao trấn giữ Ái Châu. Năm 937, sau khi Dương Đình Nghệ bị Kiều Công Tiễn sát hại, Ngô Quyền đã tập hợp lực lượng, tiến quân tiêu diệt Kiều Công Tiễn và chuẩn bị chống quân Nam Hán xâm lược. Năm 938, ông lãnh đạo quân dân ta giành chiến thắng vang dội trên sông Bạch Đằng, đánh bại quân Nam Hán, chấm dứt hơn một nghìn năm Bắc thuộc. Năm 939, ông xưng vương, chọn Cổ Loa làm kinh đô, xây dựng chính quyền độc lập và trị vì đến năm 944. Ông được lịch sử ghi nhận là người mở đầu thời kỳ độc lập, tự chủ lâu dài của dân tộc Việt Nam.",
+      "script": "Đây là tượng Ngô Quyền, người lãnh đạo quân dân ta đánh bại quân Nam Hán trên sông Bạch Đằng năm 938. Chiến thắng này chấm dứt thời kỳ Bắc thuộc kéo dài và mở ra bước ngoặt quan trọng cho nền tự chủ của đất nước. Năm 939, Ngô Quyền lên ngôi và đóng đô ở Cổ Loa.",
+      "question": "Vì sao chiến thắng Bạch Đằng năm 938 được xem là bước ngoặt trong lịch sử nước ta?",
+      "img": "",
+      "art": "",
+      "text": "",
+      "phases": "",
+      "hotspots": "",
+      "inTour": true,
+      "gallerySlot": "",
+      "campaign": ""
+    },
+    {
+      "id": "ly-thuong-kiet-statue",
+      "type": "daocu",
+      "title": "Tượng Lý Thường Kiệt",
+      "position3D": {
+        "x": 24,
+        "y": 1.63,
+        "z": -3.55
+      },
+      "date": "1019–1105",
+      "origin": "Mô hình 3D minh họa; thông tin nhân vật dựa trên sử liệu phổ biến.",
+      "detail": "Lý Thường Kiệt (1019–1105), tên thật là Ngô Tuấn, là danh tướng thời Lý. Ông giữ vai trò quan trọng trong cuộc kháng chiến chống quân Tống thế kỷ XI, đặc biệt trong các chiến dịch năm 1075–1077. Bài thơ Nam quốc sơn hà thường được gắn với cuộc kháng chiến này và trở thành biểu tượng về ý chí bảo vệ đất nước. Mô hình tái hiện nhân vật lịch sử, không phải hiện vật gốc.",
+      "script": "Đây là tượng Lý Thường Kiệt, danh tướng thời Lý. Ông có vai trò quan trọng trong cuộc kháng chiến chống quân Tống năm 1075–1077. Cuộc kháng chiến thể hiện khả năng chủ động tổ chức phòng thủ và ý chí bảo vệ nền độc lập của Đại Việt.",
+      "question": "Những yếu tố nào giúp quân dân nhà Lý bảo vệ Đại Việt trước cuộc tiến công của quân Tống?",
+      "img": "",
+      "art": "",
+      "text": "",
+      "phases": "",
+      "hotspots": "",
+      "inTour": true,
+      "gallerySlot": "",
+      "campaign": ""
+    },
+    {
+      "id": "le-hoan-statue",
+      "type": "daocu",
+      "title": "Tượng Lê Hoàn",
+      "position3D": {
+        "x": 28.5,
+        "y": 1.63,
+        "z": -3.55
+      },
+      "date": "941–1005",
+      "origin": "Mô hình 3D minh họa; thông tin nhân vật dựa trên sử liệu phổ biến.",
+      "detail": "Lê Hoàn, tức vua Lê Đại Hành (941–1005), là vị hoàng đế đầu tiên của nhà Tiền Lê. Năm 981, ông trực tiếp tổ chức kháng chiến chống quân Tống xâm lược, bảo vệ nền độc lập của Đại Cồ Việt. Sau chiến thắng, ông củng cố chính quyền và tiếp tục xây dựng đất nước. Mô hình tái hiện nhân vật lịch sử, không phải hiện vật gốc.",
+      "script": "Đây là tượng Lê Hoàn, tức vua Lê Đại Hành, người lãnh đạo cuộc kháng chiến chống quân Tống năm 981. Chiến thắng góp phần bảo vệ nền độc lập của Đại Cồ Việt và khẳng định năng lực tổ chức, chỉ huy của nhà Tiền Lê.",
+      "question": "Những quyết định nào của Lê Hoàn đã góp phần giúp Đại Cồ Việt chống lại cuộc tiến công của quân Tống năm 981?",
+      "img": "",
+      "art": "",
+      "text": "",
+      "phases": "",
+      "hotspots": "",
+      "inTour": true,
+      "gallerySlot": "",
+      "campaign": ""
+    },
+    {
+      "id": "phao-thoi-tay-son",
+      "type": "daocu",
+      "title": "Đại bác thời Tây Sơn",
+      "position3D": {
+        "x": 10.5,
+        "y": 0.49,
+        "z": 3.55
+      },
+      "date": "Cuối thế kỷ XVIII (mô hình minh họa)",
+      "origin": "Mô hình 3D minh họa; không phải hiện vật gốc hay một khẩu pháo lịch sử đã được xác định.",
+      "detail": "Đại bác thời Tây Sơn là loại vũ khí hỏa lực hạng nặng được sử dụng trong quân đội Tây Sơn vào cuối thế kỷ XVIII. Đây là loại pháo có nòng lớn, thường được chế tạo bằng đồng hoặc gang, sử dụng thuốc súng để phóng đạn đi xa. Đại bác là một trong những loại hỏa khí quan trọng, thể hiện trình độ chế tạo và sử dụng vũ khí của quân đội Tây Sơn trong giai đoạn này. Đại bác giữ vai trò quan trọng trong lực lượng pháo binh Tây Sơn, được sử dụng trong các hoạt động quân sự trên bộ và đường thủy. Hỏa lực pháo binh góp phần tăng cường sức mạnh chiến đấu, hỗ trợ các lực lượng bộ binh và thủy quân.",
+      "script": "Đây là mô hình pháo trưng bày theo chủ đề Tây Sơn. Pháo là hỏa khí hạng nặng, có thể hỗ trợ lực lượng trong chiến đấu. Mô hình giúp hình dung một loại vũ khí thời kỳ này, nhưng không đại diện cho một khẩu pháo lịch sử cụ thể.",
+      "question": "Pháo có thể hỗ trợ lực lượng trên chiến trường như thế nào, và việc bố trí pháo cần lưu ý điều gì?",
+      "img": "images/daibac.png",
+      "art": "phao-tay-son",
+      "text": "",
+      "phases": "",
+      "hotspots": "",
+      "inTour": true,
+      "gallerySlot": "",
+      "campaign": ""
+    },
+    {
+      "id": "sung-dieu-thuong",
+      "type": "daocu",
+      "title": "Súng điểu thương",
+      "position3D": {
+        "x": 19.5,
+        "y": 0.79,
+        "z": 3.55
+      },
+      "date": "Mô hình minh họa thời Tây Sơn",
+      "origin": "Mô hình 3D minh họa; chưa xác định mẫu súng lịch sử cụ thể.",
+      "detail": "Súng điểu thương là một loại súng hỏa mai (súng sử dụng cơ chế dây cháy chậm) được sử dụng trong quân đội thời phong kiến Việt Nam, trong đó có thời Tây Sơn (cuối thế kỷ XVIII). Tên gọi điểu thương thường được liên hệ với hình dáng và cơ chế hoạt động của loại súng này. Đây là một trong những loại vũ khí bộ binh sử dụng thuốc súng, thể hiện sự phát triển của kỹ thuật quân sự thời kỳ đó. Súng điểu thương thuộc nhóm hỏa khí, góp phần thể hiện sự phát triển của vũ khí và kỹ thuật quân sự trong thời kỳ Tây Sơn. Quân đội Tây Sơn sử dụng nhiều loại hỏa khí bên cạnh các loại binh khí truyền thống, cho thấy sự đa dạng trong trang bị quân sự thời bấy giờ.",
+      "script": "Đây là mô hình súng điểu thương trưng bày theo chủ đề Tây Sơn. Súng là một loại hỏa khí cá nhân, bên cạnh những vũ khí truyền thống khác. Mô hình dùng để minh họa, không khẳng định là một khẩu súng lịch sử cụ thể.",
+      "question": "Việc sử dụng hỏa khí cá nhân có thể làm thay đổi cách tổ chức và tác chiến của quân đội ra sao?",
+      "img": "images/sungdieuthuong.png",
+      "art": "sung-dieu-thuong",
+      "text": "",
+      "phases": "",
+      "hotspots": "",
+      "inTour": true,
+      "gallerySlot": "",
+      "campaign": ""
+    },
+    {
+      "id": "coc-bach-dang",
+      "type": "daocu",
+      "title": "Cọc Bạch Đằng",
+      "position3D": {
+        "x": 24,
+        "y": 1.63,
+        "z": 3.55
+      },
+      "date": "Mô hình minh họa trận Bạch Đằng",
+      "origin": "Mô hình 3D minh họa; không phải cọc gỗ khảo cổ hay hiện vật gốc.",
+      "detail": "Mô hình tái hiện những hàng cọc gỗ được bố trí dưới lòng sông Bạch Đằng. Trong chiến thắng năm 938, Ngô Quyền tận dụng thủy triều và địa hình để nhử, chặn đánh quân Nam Hán. Trận Bạch Đằng năm 1288 dưới sự chỉ huy của Trần Hưng Đạo cũng gắn với thế trận cọc và cách phối hợp lực lượng trên sông. Mô hình mang tính minh họa, không xác định một bãi cọc hay hiện vật khảo cổ cụ thể.",
+      "script": "Đây là mô hình cọc Bạch Đằng. Những hàng cọc được bố trí kết hợp với địa hình và thủy triều, góp phần tạo thế trận trên sông trong các chiến thắng Bạch Đằng. Mô hình minh họa cách bố trí, không phải hiện vật khảo cổ cụ thể.",
+      "question": "Thủy triều và địa hình sông đã được tận dụng như thế nào trong trận Bạch Đằng?",
+      "img": "",
+      "art": "coc-bach-dang",
+      "text": "",
+      "phases": "",
+      "hotspots": "",
+      "inTour": true,
+      "gallerySlot": "",
+      "campaign": ""
+    },
+    {
+      "id": "thuyen-chien-xiem",
+      "type": "daocu",
+      "title": "Thuyền chiến quân Xiêm",
+      "position3D": {
+        "x": 28.5,
+        "y": 1.63,
+        "z": 3.55
+      },
+      "date": "Mô hình minh họa chiến dịch 1784–1785",
+      "origin": "Mô hình 3D minh họa; chưa xác định đây là mẫu thuyền lịch sử cụ thể.",
+      "detail": "Mô hình thuyền chiến gợi nhắc lực lượng thủy quân Xiêm tiến vào vùng Gia Định cuối năm 1784. Trong trận Rạch Gầm – Xoài Mút năm 1785, quân Tây Sơn dưới sự chỉ huy của Nguyễn Huệ đã tận dụng địa hình sông nước, tổ chức phục kích và đánh bại lực lượng đối phương. Mô hình dùng để minh họa, không khẳng định hình dáng chính xác của một loại thuyền lịch sử.",
+      "script": "Đây là mô hình thuyền chiến gắn với chiến dịch quân Xiêm năm 1784–1785. Trong trận Rạch Gầm – Xoài Mút, Nguyễn Huệ đã tận dụng địa hình sông nước để tổ chức trận phục kích, đánh bại thủy quân đối phương. Mô hình không đại diện cho một mẫu thuyền cụ thể.",
+      "question": "Địa hình sông nước đã ảnh hưởng thế nào đến ưu thế của thủy quân Xiêm và cách đánh của quân Tây Sơn?",
+      "img": "",
+      "art": "thuyen-chien-xiem",
+      "text": "",
+      "phases": "",
+      "hotspots": "",
+      "inTour": true,
+      "gallerySlot": "",
+      "campaign": "xiem"
     },
     {
       "id": "iujqnqbk",
@@ -381,5 +575,72 @@
       "path": "resources/nguyênnhânthắnglợi.docx"
     }
   ],
-  "videos": []
+  "videos": [
+    {
+      "id": "video-rgxm",
+      "name": "RGXM.mp4",
+      "path": "videos/RGXM.mp4",
+      "campaign": "xiem",
+      "title": "Rạch Gầm – Xoài Mút",
+      "date": "1785",
+      "detail": "Video tư liệu về chiến dịch Rạch Gầm – Xoài Mút.",
+      "script": "Video minh họa diễn biến chiến dịch Rạch Gầm – Xoài Mút.",
+      "question": "Địa hình và yếu tố bất ngờ được thể hiện thế nào trong video?"
+    },
+    {
+      "id": "video-nhdd",
+      "name": "NH-DD.mp4",
+      "path": "videos/NH-DD.mp4",
+      "campaign": "thanh",
+      "title": "Ngọc Hồi – Đống Đa",
+      "date": "1789",
+      "detail": "Video tư liệu về chiến thắng Ngọc Hồi – Đống Đa.",
+      "script": "Video minh họa chiến dịch tiến quân ra Bắc và chiến thắng quân Thanh.",
+      "question": "Yếu tố thời cơ được thể hiện ra sao trong video?"
+    },
+    {
+      "id": "video-ngo-quyen-938",
+      "name": "ngoquyen938.mp4",
+      "path": "videos/ngoquyen938.mp4",
+      "campaign": "thanh",
+      "title": "Ngô Quyền và chiến thắng Bạch Đằng",
+      "date": "938",
+      "detail": "Video tư liệu về Ngô Quyền và chiến thắng Bạch Đằng năm 938.Chiến thắng Bạch Đằng năm 938 đã đập tan âm mưu xâm lược của quân Nam Hán, bảo vệ vững chắc nền độc lập của dân tộc. Đây là bước ngoặt lớn trong lịch sử Việt Nam, chấm dứt thời kỳ hơn một nghìn năm Bắc thuộc và mở ra thời kỳ độc lập, tự chủ lâu dài cho đất nước. Chiến thắng cũng khẳng định tài năng quân sự, sự sáng tạo và khả năng nắm bắt thời cơ của Ngô Quyền. Đặc biệt, chiến thắng còn thể hiện lòng yêu nước, tinh thần đoàn kết và ý chí kiên cường của nhân dân ta trong sự nghiệp đấu tranh bảo vệ Tổ quốc. Qua đó, các thế hệ sau càng thêm tự hào về truyền thống dân tộc và có trách nhiệm gìn giữ nền độc lập mà cha ông đã dày công xây dựng.\nNăm 938 là một dấu mốc quan trọng trong lịch sử dân tộc Việt Nam. Sau hơn một nghìn năm chịu sự thống trị của các triều đại phong kiến phương Bắc, nhân dân ta luôn đấu tranh để giành lại quyền tự chủ. Năm 937, Dương Đình Nghệ bị Kiều Công Tiễn sát hại. Lo sợ trước sức mạnh của Ngô Quyền, Kiều Công Tiễn đã cầu cứu vua Nam Hán. Nhân cơ hội đó, vua Nam Hán sai con trai là Hoằng Tháo chỉ huy quân theo đường biển tiến vào xâm lược nước ta.\n\nTrước tình hình nguy cấp, Ngô Quyền nhanh chóng đưa quân từ Ái Châu ra Bắc để chuẩn bị chống giặc. Ông quyết định chọn sông Bạch Đằng làm nơi quyết chiến vì nhận thấy đây là con sông có thủy triều lên xuống mạnh, thuận lợi cho việc xây dựng trận địa. Ngô Quyền cho quân đóng những cọc gỗ lớn, đầu nhọn và bịt sắt xuống lòng sông, bố trí ở những vị trí hiểm yếu. Khi nước triều lên, bãi cọc bị che khuất; khi nước rút, đầu cọc nhô lên khỏi mặt nước. Bên cạnh đó, ông còn bố trí quân mai phục hai bên bờ sông để chờ thời cơ tấn công.\n\nKhi quân Nam Hán tiến vào sông Bạch Đằng, Ngô Quyền cho quân dùng thuyền nhỏ ra khiêu chiến rồi giả vờ rút lui để dụ địch tiến sâu vào trận địa. Quân Nam Hán tưởng quân ta yếu thế nên đuổi theo. Lúc này, thủy triều đang lên cao nên bãi cọc vẫn chìm dưới nước, khiến quân địch không phát hiện được nguy hiểm. Khi thủy triều bắt đầu rút, quân ta quay lại phản công mạnh mẽ. Những chiến thuyền lớn của quân Nam Hán mắc vào bãi cọc, nhiều thuyền bị hư hại, lật và chìm xuống sông. Quân ta từ nhiều phía đồng loạt tấn công khiến quân địch rơi vào tình trạng hỗn loạn. Kết quả, Hoằng Tháo cùng nhiều binh lính bị tiêu diệt, quân Nam Hán thất bại hoàn toàn.",
+      "script": "Video minh họa chiến thắng Bạch Đằng năm 938.",
+      "question": "Thủy triều và địa hình sông được tận dụng thế nào trong trận Bạch Đằng?"
+    },
+    {
+      "id": "nguyenlan1",
+      "name": "nguyenlan1.mp4",
+      "path": "videos/nguyenlan1.mp4",
+      "campaign": "xiem",
+      "title": "Chống quân Nguyên lần 1",
+      "date": "1258",
+      "detail": "Cuộc kháng chiến chống quân Mông Cổ lần thứ nhất kết thúc thắng lợi vào năm 1258. Quân địch bị đánh đuổi khỏi Đại Việt, kinh thành Thăng Long được giải phóng, nền độc lập và chủ quyền đất nước được bảo vệ. Chiến thắng thể hiện sự lãnh đạo tài tình của nhà Trần, đặc biệt là tài năng chỉ huy của vua Trần Thái Tông và các tướng lĩnh. Đồng thời, chiến thắng còn khẳng định sức mạnh của tinh thần đoàn kết toàn dân, sự phối hợp giữa quân đội triều đình và nhân dân trong đấu tranh chống ngoại xâm. Đây là chiến thắng có ý nghĩa quan trọng, tạo niềm tin và củng cố sức mạnh của nhà Trần trong sự nghiệp bảo vệ Tổ quốc.",
+      "script": "Video minh họa diễn biến chiến dịch",
+      "question": ""
+    },
+    {
+      "id": "nguyenlan2",
+      "name": "nguyenlan2.mp4",
+      "path": "videos/nguyenlan2.mp4",
+      "campaign": "xiem",
+      "title": "Rạch Gầm – Xoài Mút",
+      "date": "1285",
+      "detail": "Cuộc kháng chiến chống quân Mông Cổ lần thứ nhất kết thúc thắng lợi vào năm 1258. Quân địch bị đánh đuổi khỏi Đại Việt, kinh thành Thăng Long được giải phóng, nền độc lập và chủ quyền đất nước được bảo vệ. Chiến thắng thể hiện sự lãnh đạo tài tình của nhà Trần, đặc biệt là tài năng chỉ huy của vua Trần Thái Tông và các tướng lĩnh. Đồng thời, chiến thắng còn khẳng định sức mạnh của tinh thần đoàn kết toàn dân, sự phối hợp giữa quân đội triều đình và nhân dân trong đấu tranh chống ngoại xâm. Đây là chiến thắng có ý nghĩa quan trọng, tạo niềm tin và củng cố sức mạnh của nhà Trần trong sự nghiệp bảo vệ Tổ quốc.",
+      "script": "Video minh họa diễn biến chiến dịch.",
+      "question": ""
+    },
+    {
+      "id": "nguyenlan3",
+      "name": "lan3.mp4",
+      "path": "videos/lan3.mp4",
+      "campaign": "xiem",
+      "title": "",
+      "date": "1785",
+      "detail": "Video tư liệu về chiến dịch Rạch Gầm – Xoài Mút.",
+      "script": "Video minh họa diễn biến chiến dịch Rạch Gầm – Xoài Mút.",
+      "question": "Địa hình và yếu tố bất ngờ được thể hiện thế nào trong video?"
+    }
+  ]
 }
