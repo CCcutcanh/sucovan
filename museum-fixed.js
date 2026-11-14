@@ -1388,37 +1388,95 @@ function walkMakeUI(){
   $('#walkImageZoom').addEventListener('click',e=>{if(e.target.id==='walkImageZoom')walkCloseGalleryImage()});
   root.querySelectorAll('[data-wroom]').forEach(b=>b.addEventListener('click',()=>walkTeleport(b.dataset.wroom)));
   // Joystick cảm ứng: kéo núm theo hướng muốn đi, thả tay để dừng.
-  const stickBase=$('#walkJoystickBase'),stickKnob=$('#walkJoystickKnob');
-  let stickPointer=null;
-  const stickApply=e=>{
-    const rect=stickBase.getBoundingClientRect(),radius=rect.width*.5,max=radius*.62;
-    let dx=e.clientX-(rect.left+radius),dy=e.clientY-(rect.top+radius);
+  // Dùng cả Pointer Events và Touch Events để chạy được trên mọi trình duyệt điện thoại.
+  const stickHost=$('#walkJoystick'),stickBase=$('#walkJoystickBase'),stickKnob=$('#walkJoystickKnob');
+  const touchById=(list,id)=>{for(const t of list)if(t.identifier===id)return t;return null};
+  let stickPointer=null,stickTouch=null;
+  const stickApply=(clientX,clientY)=>{
+    if(!stickBase)return;
+    const rect=stickBase.getBoundingClientRect();
+    if(!rect.width)return;
+    const radius=rect.width*.5,max=radius*.62;
+    let dx=clientX-(rect.left+radius),dy=clientY-(rect.top+radius);
     const dist=Math.hypot(dx,dy);
     if(dist>max){dx=dx/dist*max;dy=dy/dist*max}
     W.stick.x=dx/max;W.stick.y=-dy/max;
     if(stickKnob)stickKnob.style.transform=`translate(${dx.toFixed(1)}px,${dy.toFixed(1)}px)`;
   };
-  if(stickBase){
-    stickBase.addEventListener('pointerdown',e=>{
+  if(stickHost){
+    stickHost.addEventListener('contextmenu',e=>e.preventDefault());
+    stickHost.addEventListener('pointerdown',e=>{
+      if(stickTouch!==null)return;
+      if(e.pointerType==='mouse'&&e.button!==0)return;
       e.preventDefault();stickPointer=e.pointerId;
-      try{stickBase.setPointerCapture(e.pointerId)}catch(_){}
-      stickApply(e);
+      try{stickHost.setPointerCapture(e.pointerId)}catch(_){}
+      stickApply(e.clientX,e.clientY);
     });
-    stickBase.addEventListener('pointermove',e=>{if(e.pointerId!==stickPointer)return;e.preventDefault();stickApply(e)});
-    ['pointerup','pointercancel','lostpointercapture'].forEach(type=>stickBase.addEventListener(type,e=>{
+    window.addEventListener('pointermove',e=>{
+      if(e.pointerId!==stickPointer||stickTouch!==null)return;
+      e.preventDefault();stickApply(e.clientX,e.clientY);
+    },{passive:false});
+    ['pointerup','pointercancel'].forEach(type=>window.addEventListener(type,e=>{
       if(e.pointerId!==stickPointer)return;
       stickPointer=null;walkStickReset();
     }));
+    // Touch Events: trình duyệt điện thoại luôn gửi sự kiện này kể cả khi ngón tay ra ngoài vòng tròn.
+    stickHost.addEventListener('touchstart',e=>{
+      if(stickTouch!==null)return;
+      const t=e.changedTouches[0];if(!t)return;
+      e.preventDefault();
+      stickTouch=t.identifier;stickApply(t.clientX,t.clientY);
+    },{passive:false});
+    stickHost.addEventListener('touchmove',e=>{
+      if(stickTouch===null)return;
+      const t=touchById(e.touches,stickTouch);if(!t)return;
+      e.preventDefault();stickApply(t.clientX,t.clientY);
+    },{passive:false});
+    ['touchend','touchcancel'].forEach(type=>stickHost.addEventListener(type,e=>{
+      for(const t of e.changedTouches)if(t.identifier===stickTouch){stickTouch=null;walkStickReset();return}
+    },{passive:true}));
   }
-  $('#walkCanvas').addEventListener('click',()=>{if(!W.active||!$('#walkIntro').hidden||!$('#walkDetail').hidden)return;if(document.pointerLockElement!==$('#walkCanvas'))walkRequestLock();else walkInteract()});
-  $('#walkCanvas').addEventListener('pointerdown',e=>{if(e.pointerType==='touch'){W.touchX=e.clientX;W.touchY=e.clientY;}});
-  $('#walkCanvas').addEventListener('pointermove',e=>{
-    if(e.pointerType==='touch'&&W.active&&$('#walkIntro').hidden&&$('#walkDetail').hidden){
-      if(W.touchX!=null){W.yaw-= (e.clientX-W.touchX)*.006;W.pitch=Math.max(-1.1,Math.min(1.1,W.pitch-(e.clientY-W.touchY)*.004));walkApplyLook();}
-      W.touchX=e.clientX;W.touchY=e.clientY;
-    }
+  $('#walkCanvas').addEventListener('click',()=>{
+    if(WALK_TOUCH)return;
+    if(!W.active||!$('#walkIntro').hidden||!$('#walkDetail').hidden)return;
+    if(document.pointerLockElement!==$('#walkCanvas'))walkRequestLock();else walkInteract();
   });
-  $('#walkCanvas').addEventListener('pointerup',()=>{W.touchX=null;W.touchY=null});
+  // Vuốt để nhìn quanh: nhận cả pointer events và touch events, giữ nguyên khi ngón tay ra ngoài canvas.
+  const lookSurface=$('#walk3d');
+  const lookBlocked=()=>!W.active||!$('#walkIntro').hidden||!$('#walkDetail').hidden||!$('#walkImageZoom').hidden||W.battleRunning;
+  const lookTargetBlocked=target=>!!target.closest('.walk-mobile,.walk-top,.walk-battle-panel,.walk-detail,.walk-overlay,.walk-image-zoom');
+  const lookAt=(x,y)=>{
+    if(W.touchX!=null){W.yaw-=(x-W.touchX)*.006;W.pitch=Math.max(-1.1,Math.min(1.1,W.pitch-(y-W.touchY)*.004));walkApplyLook();}
+    W.touchX=x;W.touchY=y;
+  };
+  const lookEnd=()=>{W.touchX=null;W.touchY=null;lookPointer=null;lookTouchId=null};
+  let lookPointer=null,lookTouchId=null,lookTouchSeen=false;
+  lookSurface.addEventListener('pointerdown',e=>{
+    if(e.pointerType!=='touch'||lookTouchSeen||lookBlocked())return;
+    if(lookTargetBlocked(e.target))return;
+    lookPointer=e.pointerId;W.touchX=e.clientX;W.touchY=e.clientY;
+  });
+  lookSurface.addEventListener('pointermove',e=>{
+    if(e.pointerId!==lookPointer||lookTouchSeen)return;
+    if(lookBlocked()){lookEnd();return}
+    lookAt(e.clientX,e.clientY);
+  });
+  ['pointerup','pointercancel'].forEach(type=>lookSurface.addEventListener(type,e=>{if(e.pointerId===lookPointer)lookEnd()}));
+  lookSurface.addEventListener('touchstart',e=>{
+    lookTouchSeen=true;
+    if(lookBlocked()||lookTouchId!==null)return;
+    const t=e.changedTouches[0];if(!t||lookTargetBlocked(e.target))return;
+    lookTouchId=t.identifier;W.touchX=t.clientX;W.touchY=t.clientY;
+  },{passive:true});
+  lookSurface.addEventListener('touchmove',e=>{
+    if(lookTouchId===null||lookBlocked())return;
+    const t=touchById(e.touches,lookTouchId);if(!t)return;
+    if(e.cancelable)e.preventDefault();
+    lookAt(t.clientX,t.clientY);
+  },{passive:false});
+  ['touchend','touchcancel'].forEach(type=>lookSurface.addEventListener(type,e=>{
+    for(const t of e.changedTouches)if(t.identifier===lookTouchId){lookEnd();return}
+  },{passive:true}));
   $('#walkDetailContent').addEventListener('click',e=>{
     if(e.target.closest('#walkSpeak'))walkSpeak(W.current);
     if(e.target.closest('#walkReplay'))walkPlayBattle();
