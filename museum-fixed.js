@@ -39,12 +39,15 @@ const TYPES={
   daocu:{label:'Đạo cụ',wing:'Phòng đạo cụ',icon:'🎖'},
   anh:{label:'Ảnh',wing:'Phòng ảnh tư liệu',icon:'📷'},
   tailieu:{label:'Tư liệu',wing:'Phòng tư liệu',icon:'📜'},
+  tulieuanh:{label:'Ảnh tư liệu',wing:'Phòng tư liệu',icon:'🖼'},
   dohoa:{label:'Đồ họa phân tích',wing:'Phòng phân tích',icon:'📊'},
   phim:{label:'Phim sa hình',wing:'Phòng chiếu phim',icon:'🎬'}
 };
-const ORDER=['tranh','tailieu','anh','dohoa','sahinh','phim','daocu'];
+const ORDER=['tranh','tailieu','tulieuanh','anh','dohoa','sahinh','phim','daocu'];
 const FX=[['curtain','Màn nhung'],['iris','Mở vòng tròn'],['fade','Mờ dần'],['wipe','Lật trang'],['random','Ngẫu nhiên']];
 const MAX_GALLERY_IMAGES=8;
+const MAX_DOCUMENT_IMAGES=8;
+const MAX_DOCUMENT_SETS=8;
 const GALLERY_SLOTS=[
   {id:'xiem-1',wall:'xiem',label:'Tường phía Xiêm · vị trí 1',position:[-18,2.5,-5.72],yaw:0},
   {id:'xiem-2',wall:'xiem',label:'Tường phía Xiêm · vị trí 2',position:[-14,2.5,-5.72],yaw:0},
@@ -56,6 +59,8 @@ const GALLERY_SLOTS=[
   {id:'thanh-4',wall:'thanh',label:'Tường đối diện lối vào · phía Thanh',position:[-19.65,2.5,1.8],yaw:Math.PI/2}
 ];
 const isGalleryImage=item=>['tranh','anh','dohoa'].includes(item?.type);
+// Ảnh tư liệu nằm trên bàn trưng bày của phòng tư liệu, tách khỏi 8 vị trí treo tường ở phòng ảnh.
+const isDocumentImage=item=>item?.type==='tulieuanh';
 function firstAvailableGallerySlot(items,preferredWall='xiem'){
   const occupied=new Set(items.filter(isGalleryImage).map(item=>item.gallerySlot).filter(Boolean));
   return GALLERY_SLOTS.find(slot=>slot.wall===preferredWall&&!occupied.has(slot.id))
@@ -482,7 +487,13 @@ Sau khi mất chỗ dựa quân sự, Nguyễn Ánh rời vùng Long Hồ – M�
 Lưu ý: tài liệu có thể ghi khác nhau về quân số, số thuyền và ngày diễn ra trận đánh.`,
  script:`Trong chưa đầy một ngày, quân Tây Sơn phá tan thủy binh Xiêm ở Rạch Gầm – Xoài Mút.
 Chiêu Tăng, Chiêu Sương cùng một số tàn quân chạy qua Chân Lạp về Xiêm. Nguyễn Ánh mất chỗ dựa quân sự và phải tiếp tục lẩn trốn, cầu viện.`,
- question:'Vì sao thất bại ở Rạch Gầm – Xoài Mút khiến Nguyễn Ánh mất chỗ dựa quân sự?',img:'',phases:'',hotspots:'',inTour:true}
+ question:'Vì sao thất bại ở Rạch Gầm – Xoài Mút khiến Nguyễn Ánh mất chỗ dựa quân sự?',img:'',phases:'',hotspots:'',inTour:true},
+{id:'tulieu-cau-vien',type:'tulieuanh',title:'Tranh vẽ Nguyễn Ánh cầu viện quân Xiêm',date:'Tháng 3 năm Giáp Thìn, 1784',origin:'Tranh vẽ tư liệu; nên đối chiếu lại nguồn gốc',detail:'Sau nhiều lần thất bại trước Tây Sơn, Nguyễn Ánh sang Xiêm cầu viện. Cuối năm 1784, quân Xiêm do Chiêu Tăng và Chiêu Sương chỉ huy kéo vào Gia Định, mở đầu cuộc xâm lược bị chặn đứng tại Rạch Gầm – Xoài Mút.',script:'',question:'',img:'images/cauvien.png',art:'',text:'',phases:'',hotspots:'',inTour:false,gallerySlot:''},
+{id:'tulieu-chien-luoc',type:'tulieuanh',title:'Lược đồ chiến thắng Rạch Gầm – Xoài Mút',date:'Đồ họa minh họa, 1785',origin:'Sơ đồ khái quát, không theo tỉ lệ',detail:'Lược đồ thể hiện thế trận chặn đầu, khóa đuôi của thủy binh Tây Sơn trên khúc sông Tiền, kết hợp pháo binh hai bờ và lực lượng ém ở cù lao Thới Sơn.',script:'',question:'',img:'images/chien-luoc.jpg',art:'',text:'',phases:'',hotspots:'',inTour:false,gallerySlot:''},
+{id:'tulieu-hoa-cong',type:'tulieuanh',title:'Hỏa công trên sông Tiền',date:'Tranh minh họa, 1785',origin:'Hình minh họa mẫu, có thể thay bằng ảnh tư liệu thật',detail:'Hỏa công là cách đánh hiệu quả với đoàn thuyền gỗ đi sát nhau trong khúc sông hẹp: một thuyền cháy có thể làm cháy lan sang nhiều thuyền khác.',script:'',question:'',img:'images/hoa-cong.jpg',art:'',text:'',phases:'',hotspots:'',inTour:false,gallerySlot:''},
+{id:'tulieu-thuy-binh',type:'tulieuanh',title:'Tranh minh họa trận Rạch Gầm – Xoài Mút',date:'Tranh minh họa, 1785',origin:'Hình minh họa mẫu, có thể thay bằng ảnh tư liệu thật',detail:'Thủy binh Tây Sơn ém quân trong các rạch nhỏ và sau những cù lao, ẩn dưới tán cây rậm hai bờ sông, chờ đoàn thuyền Xiêm lọt vào trận địa.',script:'',question:'',img:'images/thuy-binh.jpg',art:'',text:'',phases:'',hotspots:'',inTour:false,gallerySlot:''},
+{id:'tulieu-dai-bac',type:'tulieuanh',title:'Đại bác trên thuyền chiến Tây Sơn',date:'Vũ khí, thế kỷ XVIII',origin:'Hình minh họa mẫu, nên thay bằng ảnh hiện vật thật',detail:'Đại bác được bố trí trên thuyền chiến và tại các vị trí phòng thủ, góp phần tạo hỏa lực mạnh trong các trận đánh của quân Tây Sơn.',script:'',question:'',img:'images/dai-bac.jpg',art:'',text:'',phases:'',hotspots:'',inTour:false,gallerySlot:''},
+{id:'tulieu-y-nghia',type:'tulieuanh',title:'Ý nghĩa của chiến thắng',date:'Tóm lược tư liệu',origin:'Tổng hợp từ sách giáo khoa và báo chí, nên thay bằng văn bản gốc',detail:'Hai chiến thắng Rạch Gầm – Xoài Mút và Ngọc Hồi – Đống Đa thể hiện tài chỉ huy của Nguyễn Huệ – Quang Trung, nghệ thuật tận dụng địa hình, thời cơ và sức mạnh đoàn kết của nhân dân.',script:'',question:'',img:'images/y-nghia.jpg',art:'',text:'',phases:'',hotspots:'',inTour:false,gallerySlot:''}
 ]};
 
 const THANH={
@@ -494,7 +505,10 @@ items:[
 {id:'thanh-quang-trung',campaign:'thanh',type:'tailieu',title:'Nguyễn Huệ – Hoàng đế Quang Trung',date:'1753 – 1792',origin:'Tư liệu khái quát; nên đối chiếu với nguồn lịch sử',detail:'Nguyễn Huệ là một trong những thủ lĩnh của phong trào Tây Sơn. Trước khi lên ngôi, ông thường được gọi là Bắc Bình Vương. Cuối năm 1788, ông lên ngôi Hoàng đế, lấy niên hiệu Quang Trung, trực tiếp chỉ huy cuộc tiến quân ra Bắc chống quân Thanh.',text:'Nguyễn Huệ, thường được gọi là Bắc Bình Vương trước khi lên ngôi, là nhà lãnh đạo chính trị và quân sự của phong trào Tây Sơn. Cuối năm 1788, ông lên ngôi Hoàng đế, lấy niên hiệu Quang Trung.\nCùng Nguyễn Nhạc và Nguyễn Lữ, ông là một trong những lãnh đạo tiêu biểu của phong trào Tây Sơn. Chiến dịch chống quân Thanh năm 1788–1789 thể hiện năng lực tổ chức và chỉ huy của ông.',script:'Nguyễn Huệ, thường được gọi là Bắc Bình Vương trước khi lên ngôi, là một lãnh đạo của phong trào Tây Sơn. Cuối năm 1788, ông lên ngôi Hoàng đế, lấy niên hiệu Quang Trung, rồi trực tiếp chỉ huy chiến dịch chống quân Thanh.',question:'Những quyết định nào cho thấy năng lực tổ chức và chỉ huy của Quang Trung?',img:'',art:'',phases:'',hotspots:'',inTour:true},
 {id:'thanh-ket-qua',campaign:'thanh',type:'tailieu',title:'Kết quả và ý nghĩa chiến thắng',date:'Tết Kỷ Dậu, 1789',origin:'Tư liệu khái quát; nên đối chiếu với nguồn lịch sử',detail:'Chiến thắng Ngọc Hồi – Đống Đa đánh bại cuộc tiến công của quân Thanh và đưa Quang Trung tiến vào Thăng Long.',text:'Quân Tây Sơn đánh tan hệ thống đồn lũy của quân Thanh ở phía nam Thăng Long; quân Thanh rút chạy và Quang Trung tiến vào kinh thành.\nChiến thắng bảo vệ nền độc lập, thể hiện khả năng tổ chức hành quân và tiến công táo bạo, đồng thời trở thành dấu mốc tiêu biểu trong lịch sử chống ngoại xâm.',script:'Chiến thắng Ngọc Hồi – Đống Đa làm tan vỡ hệ thống phòng thủ của quân Thanh ở phía nam Thăng Long. Quân Thanh rút chạy, Quang Trung tiến vào kinh thành. Thắng lợi bảo vệ nền độc lập và trở thành dấu mốc tiêu biểu trong lịch sử dân tộc.',question:'Địa hình và thời cơ đã được tận dụng ra sao trong chiến dịch?',img:'',art:'',phases:'',hotspots:'',inTour:true},
 {id:'thanh-bai-hoc',campaign:'thanh',type:'tailieu',title:'Bài học về chiến lược và thời cơ',date:'Liên hệ lịch sử',origin:'Tư liệu người dùng cung cấp; các số liệu Tết Mậu Thân cần đối chiếu nguồn',detail:'Nghệ thuật tổ chức lực lượng, tạo bất ngờ và phối hợp nhiều mũi tiến công thường được nhắc đến khi nghiên cứu các chiến dịch lịch sử.',text:'Bài học về xây dựng chiến lược, nắm thời cơ và phối hợp lực lượng được vận dụng, phát triển trong những bối cảnh lịch sử khác nhau.\nMột liên hệ là Tổng tiến công và nổi dậy Tết Mậu Thân 1968. Tư liệu bạn cung cấp nêu đợt tiến công đồng loạt bắt đầu đêm 30 rạng sáng 31/1, diễn ra từ vĩ tuyến 17 đến Cà Mau, với mục tiêu tại 6 thành phố, 44 thị xã và hàng trăm quận lỵ. Tài liệu đó cũng nêu bối cảnh Hoa Kỳ đưa hơn 50 vạn quân vào miền Nam; cần kiểm tra mốc và cách tính quân số trước khi trích dẫn.\nĐây là cuộc chiến khác về thời đại, lực lượng và mục tiêu, không nên xem là cùng một trận đánh hay cùng điều kiện với Ngọc Hồi – Đống Đa.',script:'Lịch sử cho thấy việc chuẩn bị chiến lược, nắm thời cơ và phối hợp lực lượng luôn quan trọng. Có thể liên hệ đến Tết Mậu Thân năm 1968, nhưng cần đặt mỗi sự kiện trong hoàn cảnh riêng, không đồng nhất hai cuộc chiến.',question:'Khi rút ra bài học lịch sử, vì sao cần phân biệt bối cảnh của từng cuộc chiến và kiểm tra số liệu?',img:'',art:'',phases:'',hotspots:'',inTour:true},
-{id:'thanh-tuong-quang-trung',campaign:'thanh',type:'daocu',title:'Tượng Quang Trung',date:'Mô hình minh họa',origin:'Mô phỏng hình khối, không phải hiện vật gốc',detail:'Mô hình tượng trưng cho người chỉ huy chiến dịch Ngọc Hồi – Đống Đa.',text:'',script:'',question:'Những phẩm chất nào của người chỉ huy được thể hiện qua chiến dịch?',img:'',art:'',phases:'',hotspots:'',inTour:true}
+{id:'thanh-vi-sao-thang',campaign:'thanh',type:'tailieu',title:'Vì sao quân Thanh thất bại?',date:'Tết Kỷ Dậu, 1789',origin:'Tư liệu tổng hợp; nên đối chiếu với nguồn chính sử',detail:'Quân Thanh đông nhưng phải dàn trải lực lượng, chủ quan và mất cảnh giác trong dịp Tết. Quân Tây Sơn hành quân thần tốc, tiến công nhiều hướng, phối hợp chặt chẽ và được nhân dân địa phương ủng hộ nên đã giành thắng lợi nhanh chóng.',script:'Quân Thanh thất bại trước hết vì chủ quan, kiêu ngạo. Tướng Tôn Sĩ Nghị cùng quân lính cho rằng quân Tây Sơn còn ở xa, nên không đề phòng trong dịp Tết Kỷ Dậu.\nThứ hai, quân Thanh phải dàn trải lực lượng để giữ nhiều đồn lũy từ Thăng Long đến biên giới, trong khi quân Tây Sơn tập trung đánh vào những vị trí then chốt như Ngọc Hồi và Đống Đa.\nThứ ba, quân Tây Sơn hành quân thần tốc, giữ bí mật và phối hợp nhiều mũi tiến công cùng lúc, khiến quân Thanh không kịp ứng cứu cho nhau.\nCuối cùng, nhân dân các địa phương đã ủng hộ quân Tây Sơn, góp lương thực, dẫn đường và tham gia chiến đấu, làm nên sức mạnh tổng hợp của cuộc kháng chiến.',question:'Những yếu tố nào quyết định thắng lợi nhanh chóng của quân Tây Sơn trước quân Thanh?',text:'- Quân Thanh chủ quan, mất cảnh giác trong dịp Tết.\n- Lực lượng quân Thanh bị dàn trải, khó ứng cứu lẫn nhau.\n- Quân Tây Sơn hành quân thần tốc, giữ bí mật, tiến công nhiều hướng.\n- Nhân dân địa phương ủng hộ, góp sức cùng quân Tây Sơn.',phases:'',hotspots:'',inTour:true},
+{id:'thanh-tuong-quang-trung',campaign:'thanh',type:'daocu',title:'Tượng Quang Trung',date:'Mô hình minh họa',origin:'Mô phỏng hình khối, không phải hiện vật gốc',detail:'Mô hình tượng trưng cho người chỉ huy chiến dịch Ngọc Hồi – Đống Đa.',text:'',script:'',question:'Những phẩm chất nào của người chỉ huy được thể hiện qua chiến dịch?',img:'',art:'',phases:'',hotspots:'',inTour:true},
+{id:'tulieu-quan-tay-son',campaign:'thanh',type:'tulieuanh',title:'Tranh vẽ trận Đống Đa',date:'Mùng 5 Tết Kỷ Dậu, 1789',origin:'Tranh vẽ tư liệu; nên đối chiếu lại nguồn gốc',detail:'Đạo quân của Đô đốc Long tiến công đồn Đống Đa, góp phần làm tan vỡ hệ thống phòng thủ của quân Thanh ở phía nam Thăng Long trong những ngày đầu xuân Kỷ Dậu.',text:'',script:'',question:'',img:'images/quantayson.png',art:'',phases:'',hotspots:'',inTour:false,gallerySlot:''},
+{id:'tulieu-luoc-do-tay-son',campaign:'thanh',type:'tulieuanh',title:'Lược đồ chiến thắng của nghĩa quân Tây Sơn',date:'Cuối năm 1788 – đầu năm 1789',origin:'Sơ đồ khái quát, không theo tỉ lệ',detail:'Lược đồ khái quát các hướng tiến quân của nghĩa quân Tây Sơn từ căn cứ Tam Điệp ra Bắc, đánh vào các đồn lũy phòng thủ của quân Thanh.',text:'',script:'',question:'',img:'images/thanh-hanh-quan.jpg',art:'',phases:'',hotspots:'',inTour:false,gallerySlot:''}
 ]};
 
 const XIEM_IDS=new Set(XIEM.items.map(item=>item.id));
@@ -695,10 +709,14 @@ function renderHall(){
   const present=ORDER.filter(t=>S.items.some(i=>i.type===t));
   if(hallFilter!=='all'&&!present.includes(hallFilter))hallFilter='all';
   $('#chips').innerHTML=present.length>1?`<button class="chip ${hallFilter==='all'?'on':''}" data-f="all">Tất cả (${S.items.length})</button>`+present.map(t=>`<button class="chip ${hallFilter===t?'on':''}" data-f="${t}">${TYPES[t].icon} ${TYPES[t].label}</button>`).join(''):'';
-  const html=ORDER.filter(t=>hallFilter==='all'||hallFilter===t).map(t=>{
-    const arr=S.items.filter(i=>i.type===t);if(!arr.length)return'';
-    return `<section class="wing"><h2><span>${TYPES[t].icon}</span>${TYPES[t].wing}</h2><div class="row">${arr.map(exhibitHTML).join('')}</div></section>`;
-  }).join('');
+  const wings=[];
+  ORDER.filter(t=>hallFilter==='all'||hallFilter===t).forEach(t=>{
+    const arr=S.items.filter(i=>i.type===t);if(!arr.length)return;
+    const wing=TYPES[t].wing,last=wings[wings.length-1];
+    if(last&&last.wing===wing){last.items.push(...arr);if(!last.icon)last.icon=TYPES[t].icon}
+    else wings.push({wing,icon:TYPES[t].icon,items:[...arr]});
+  });
+  const html=wings.map(w=>`<section class="wing"><h2><span>${w.icon}</span>${w.wing}</h2><div class="row">${w.items.map(exhibitHTML).join('')}</div></section>`).join('');
   $('#hallBody').innerHTML=html||'<p class="empty">Bảo tàng chưa có hiện vật nào. Bấm "Quản lý" để thêm tranh, sa hình, đạo cụ, ảnh hoặc tư liệu.</p>';
 }
 
@@ -707,7 +725,7 @@ function stageHTML(it){
   switch(it.type){
     case 'tranh':return `<div class="bigframe" id="zoomable" title="Nhấn để phóng to"><div class="art">${artHTML(it)}</div></div><p class="hint">Nhấn vào tranh để phóng to</p>`;
     case 'dohoa':return `<div class="dgframe" id="zoomable" title="Nhấn để phóng to"><div class="art">${artHTML(it)}</div></div><p class="hint">Nhấn vào đồ họa để phóng to</p>`;
-    case 'anh':return `<figure class="photo" id="photo"><div class="art">${artHTML(it)}</div><figcaption>${esc(it.title)}</figcaption></figure><button class="chip" id="toneBtn">Xem ảnh màu gốc</button>`;
+    case 'anh':case 'tulieuanh':return `<figure class="photo" id="photo"><div class="art">${artHTML(it)}</div><figcaption>${esc(it.title)}</figcaption></figure><button class="chip" id="toneBtn">Xem ảnh màu gốc</button>`;
     case 'tailieu':{
       let body=lines(it.text);if(!body.length&&!it.img)body=lines(it.detail);
       const files=(S.resources||[]).map((file,index)=>`<div class="resource-file"><span class="resource-file-type">📄</span><span class="resource-file-name">${esc(file.name)}<small>${esc(file.type||'Tài liệu')}</small></span><button type="button" class="btn resource-download-btn" data-resource-index="${index}">⬇ Tải xuống</button></div>`).join('');
@@ -1020,10 +1038,11 @@ function edItems(){
   const list=S.items.map(x=>`<li class="${x.id===ed.id?'on':''}" data-id="${esc(x.id)}"><span>${TYPES[x.type].icon}</span><span class="nm">${esc(x.title||'(chưa đặt tên)')}</span><span class="ctl"><button data-act="up" title="Lên trên">↑</button><button data-act="down" title="Xuống dưới">↓</button><button data-act="del" title="Xoá">🗑</button></span></li>`).join('');
   const galleryItems=S.items.filter(isGalleryImage),hungCount=galleryItems.filter(item=>GALLERY_SLOTS.some(slot=>slot.id===item.gallerySlot)).length,unhungCount=galleryItems.length-hungCount;
   const galleryStatus=`Ảnh đang treo: ${hungCount}/${MAX_GALLERY_IMAGES}${unhungCount?` · ${unhungCount} ảnh chưa treo`:''}. Tối đa ${MAX_GALLERY_IMAGES} vị trí treo.`;
-  return `<div class="ed-split"><div class="ed-list"><button class="btn primary" id="addItem">+ Thêm hiện vật</button><p class="small" style="margin-top:10px">${galleryStatus}</p><p class="small">Thứ tự trong danh sách cũng là thứ tự khi tham quan tự động. Mọi chỉnh sửa được lưu ngay.</p><ul>${list||'<li class="small">Chưa có hiện vật.</li>'}</ul></div><div class="ed-form" id="edForm">${it?formHTML(it):'<p class="small">Chọn một hiện vật bên trái để sửa, hoặc bấm "Thêm hiện vật".</p>'}</div></div>`;
+  const documentImageStatus=`Ảnh tư liệu trên bàn phòng tư liệu: ${S.items.filter(isDocumentImage).length}/${MAX_DOCUMENT_IMAGES}.`;
+  return `<div class="ed-split"><div class="ed-list"><button class="btn primary" id="addItem">+ Thêm hiện vật</button><p class="small" style="margin-top:10px">${galleryStatus}</p><p class="small">${documentImageStatus}</p><p class="small">Thứ tự trong danh sách cũng là thứ tự khi tham quan tự động. Mọi chỉnh sửa được lưu ngay.</p><ul>${list||'<li class="small">Chưa có hiện vật.</li>'}</ul></div><div class="ed-form" id="edForm">${it?formHTML(it):'<p class="small">Chọn một hiện vật bên trái để sửa, hoặc bấm "Thêm hiện vật".</p>'}</div></div>`;
 }
 function formHTML(it){
-  const isMap=it.type==='sahinh',isDoc=it.type==='tailieu',isGallery=isGalleryImage(it),hs=parseHot(it.hotspots);
+  const isMap=it.type==='sahinh',isDoc=it.type==='tailieu',isDocImage=isDocumentImage(it),isGallery=isGalleryImage(it),hs=parseHot(it.hotspots);
   const galleryItems=S.items.filter(isGalleryImage),hungCount=galleryItems.filter(item=>GALLERY_SLOTS.some(slot=>slot.id===item.gallerySlot)).length;
   const takenSlots=new Set(S.items.filter(item=>item.id!==it.id&&isGalleryImage(item)).map(item=>item.gallerySlot).filter(Boolean));
   const galleryPosition=isGallery?`<div class="fld"><label>Vị trí treo trong phòng hình ảnh (${hungCount}/${MAX_GALLERY_IMAGES} vị trí đang dùng)</label><select data-k="gallerySlot"><option value="" ${it.gallerySlot?'':'selected'}>Chọn vị trí treo ảnh</option>${GALLERY_SLOTS.map(slot=>`<option value="${slot.id}" ${it.gallerySlot===slot.id?'selected':''} ${takenSlots.has(slot.id)?'disabled':''}>${esc(slot.label)}${takenSlots.has(slot.id)?' · đã có ảnh':''}</option>`).join('')}</select><p class="small">Mỗi vị trí chỉ treo một ảnh. Có tối đa ${MAX_GALLERY_IMAGES} vị trí, chia đều trên hai tường đối diện.${!it.gallerySlot?' Ảnh này chưa được treo; chọn một vị trí còn trống.':''}</p></div>`:'';
@@ -1044,6 +1063,7 @@ function formHTML(it){
       <div><label for="imgPath">Tên file ảnh trong thư mục dự án</label><input type="text" id="imgPath" value="${esc(/^data:/i.test(it.img||'')?'':it.img)}" placeholder="images/ten-anh.jpg"><p class="small" style="margin:8px 0">Chép ảnh vào thư mục images rồi nhập đường dẫn tương đối, ví dụ images/rach-gam.jpg. Không tải ảnh lên trình duyệt.</p>${it.img?'<button class="btn sm danger" id="imgDel">Bỏ ảnh khỏi hiện vật</button>':''}</div>
     </div></div>
   ${galleryPosition}
+  ${isDocImage?`<div class="help">Đây là ảnh tư liệu trưng bày trên bàn bên trái của phòng tư liệu (3D). Ảnh này không chiếm vị trí treo tường ở phòng ảnh. Hiện có ${S.items.filter(isDocumentImage).length}/${MAX_DOCUMENT_IMAGES} ảnh tư liệu.</div>`:''}
   ${isDoc?`<div class="fld"><label>Nội dung tư liệu (mỗi dòng là một đoạn, hiện trên tờ giấy tư liệu)</label><textarea data-k="text" style="min-height:140px">${esc(it.text)}</textarea></div>`:''}
   <div class="fld"><label>Mô tả chi tiết (hiện ở khung thông tin bên phải, mỗi dòng là một đoạn)</label><textarea data-k="detail">${esc(it.detail)}</textarea></div>
   <div class="fld"><label>Kịch bản thuyết minh (mỗi dòng là một đoạn, hiện thành phụ đề và đọc to khi tham quan tự động)</label><textarea data-k="script" style="min-height:130px">${esc(it.script)}</textarea></div>
@@ -1294,7 +1314,7 @@ const WALK_TYPES={
   battle:{label:'Phòng sa hình',icon:'🗺',center:[0,-14],color:0x17332e},
   documents:{label:'Phòng tư liệu',icon:'📜',center:[0,14],color:0x39271a}
 };
-const W={active:false,ready:false,loopRunning:false,renderer:null,scene:null,camera:null,root:null,targets:[],solids:[],rooms:[],keys:{},velocity:{x:0,z:0},yaw:0,pitch:0,last:0,ray:null,centerRay:null,current:null,activeCampaign:'xiem',promptAt:0,promptText:'',statusText:'',screenCanvas:null,screenTexture:null,screenLast:0,tvScreens:[],tvVideoElements:{},tvVideoTextures:{},tvPreviewsLoaded:false,ships:[],battleFleet:[],battleArmy:[],battleShots:[],battleEffects:[],battleMuzzles:[],battleGroup:null,battleCampaignGroups:{},battleOriginalFov:null,battleElapsed:0,battlePaused:false,battleRunning:false,battleSiegeTriggered:false,battleStart:0,battlePhase:-1,wasLocked:false};
+const W={active:false,ready:false,loopRunning:false,renderer:null,scene:null,camera:null,root:null,targets:[],solids:[],rooms:[],keys:{},stick:{x:0,y:0},velocity:{x:0,z:0},yaw:0,pitch:0,last:0,ray:null,centerRay:null,current:null,activeCampaign:'xiem',promptAt:0,promptText:'',statusText:'',screenCanvas:null,screenTexture:null,screenLast:0,tvScreens:[],tvVideoElements:{},tvVideoTextures:{},tvPreviewsLoaded:false,ships:[],battleFleet:[],battleArmy:[],battleShots:[],battleEffects:[],battleMuzzles:[],battleGroup:null,battleCampaignGroups:{},battleOriginalFov:null,battleElapsed:0,battlePaused:false,battleRunning:false,battleSiegeTriggered:false,battleStart:0,battlePhase:-1,wasLocked:false};
 const WALK_BATTLE_SCENES=[
   {title:'Chọn khúc sông làm trận địa',caption:'Quân Xiêm có khoảng 5 vạn người và 300 thuyền; Tây Sơn khoảng 2 vạn. Nguyễn Huệ chọn đoạn sông Tiền từ Rạch Gầm đến Xoài Mút, nơi cù lao và hai bờ giúp che giấu quân mai phục.'},
   {title:'Nhử quân Xiêm tiến sâu',caption:'Một thuyền Tây Sơn ra khiêu chiến rồi giả thua rút lui. Đội thuyền Xiêm đuổi theo, tiến vào khúc sông đã được chuẩn bị.'},
@@ -1311,6 +1331,11 @@ const WALK_THANH_SCENES=[
   {title:'Quân Thanh tan rã, Tôn Sĩ Nghị bỏ chạy',caption:'Hai hướng tiến công phối hợp khiến hệ thống phòng thủ sụp đổ; quân Thanh rút chạy khỏi Thăng Long.'},
   {title:'Quang Trung tiến vào Thăng Long',caption:'Trưa mùng 5 Tết Kỷ Dậu, quân Tây Sơn giải phóng Thăng Long và giành thắng lợi quyết định.'}
 ];
+const WALK_TOUCH=matchMedia('(hover:none) and (pointer:coarse)').matches;
+function walkStickReset(){
+  W.stick.x=0;W.stick.y=0;
+  const knob=$('#walkJoystickKnob');if(knob)knob.style.transform='';
+}
 function walkMakeUI(){
   const old=$('#walk3d');if(old)return;
   const root=document.createElement('div');root.id='walk3d';root.hidden=true;
@@ -1321,7 +1346,7 @@ function walkMakeUI(){
       <div class="walk-tools"><button id="walkHome">← Sảnh chính</button><button id="walkIntroBtn">Hướng dẫn</button></div>
     </div>
     <div class="walk-cross" aria-hidden="true">+</div>
-    <div id="walkPrompt" class="walk-prompt">Nhấn “Bắt đầu tham quan”, sau đó nhấp vào cảnh 3D để điều khiển góc nhìn.</div>
+    <div id="walkPrompt" class="walk-prompt">Nhấn “Bắt đầu tham quan”, sau đó dùng WASD hoặc joystick để đi và kéo chuột/vuốt màn hình để nhìn quanh.</div>
     <aside id="walkBattlePanel" class="walk-battle-panel" hidden aria-live="polite">
       <div class="walk-battle-heading"><span id="walkBattleCount">TRẬN RẠCH GẦM – XOÀI MÚT</span><button type="button" data-battle-control="close" aria-label="Đóng phần tái hiện">Đóng</button></div>
       <div class="walk-battle-track" id="walkBattleTrack"></div>
@@ -1330,9 +1355,9 @@ function walkMakeUI(){
     </aside>
     <div class="walk-help">Di chuyển: <b>W A S D</b> hoặc phím mũi tên · Nhìn quanh: <b>di chuyển chuột</b> · Tương tác: <b>E</b> hoặc nhấp chuột khi ngắm hiện vật · <b>Esc</b>: nhả chuột</div>
     <div class="walk-status" id="walkStatus">Đang ở sảnh trung tâm</div>
-    <div class="walk-mobile"><div class="walk-pad"><button data-hold="w" aria-label="Tiến">▲</button><button data-hold="a" aria-label="Sang trái">◀</button><button data-hold="s" aria-label="Lùi">▼</button><button data-hold="d" aria-label="Sang phải">▶</button></div><div class="walk-turn"><button data-turn="-1" aria-label="Quay trái">↶</button><button data-turn="1" aria-label="Quay phải">↷</button></div></div>
+    <div class="walk-mobile"><div class="walk-joystick" id="walkJoystick" role="application" aria-label="Joystick di chuyển: kéo để đi theo hướng đã chọn"><div class="walk-joystick-base" id="walkJoystickBase"><div class="walk-joystick-knob" id="walkJoystickKnob"></div></div><span class="walk-joystick-label">Di chuyển</span></div></div>
     <button class="walk-interact" id="walkInteract">✦ Tương tác</button>
-    <div class="walk-overlay" id="walkIntro"><div class="walk-card"><p class="eyebrow">Không gian trưng bày tương tác</p><h2>Khám phá bảo tàng bằng góc nhìn người tham quan</h2><p>Bước qua sảnh trung tâm để tự do đi vào bốn phòng. Tranh được treo trên tường; hiện vật đặt trên bệ trưng bày; sa hình có thể tái hiện diễn biến trận đánh; phòng tư liệu có các văn bản để đọc.</p><div><span class="walk-pill">WASD / phím mũi tên</span><span class="walk-pill">Chuột để nhìn quanh</span><span class="walk-pill">E để tương tác</span></div><p class="small">Một số hiện vật 3D là mô hình minh họa; các tượng tiêu biểu được dựng từ mô hình 3D riêng. Giáo viên có thể cập nhật hiện vật, mô tả và thuyết minh qua mục “Quản lý”.</p><div class="walk-buttons"><button class="primary" id="walkBegin">Bắt đầu tham quan 3D</button><button id="walkBack">Quay lại giao diện danh mục</button></div></div></div>
+    <div class="walk-overlay" id="walkIntro"><div class="walk-card"><p class="eyebrow">Không gian trưng bày tương tác</p><h2>Khám phá bảo tàng bằng góc nhìn người tham quan</h2><p>Bước qua sảnh trung tâm để tự do đi vào bốn phòng. Tranh được treo trên tường; hiện vật đặt trên bệ trưng bày; sa hình có thể tái hiện diễn biến trận đánh; phòng tư liệu có các văn bản để đọc.</p><div><span class="walk-pill">WASD / phím mũi tên</span><span class="walk-pill">Chuột để nhìn quanh</span><span class="walk-pill">E để tương tác</span><span class="walk-pill">Điện thoại: joystick để đi, vuốt để nhìn quanh</span></div><p class="small">Một số hiện vật 3D là mô hình minh họa; các tượng tiêu biểu được dựng từ mô hình 3D riêng. Giáo viên có thể cập nhật hiện vật, mô tả và thuyết minh qua mục “Quản lý”.</p><div class="walk-buttons"><button class="primary" id="walkBegin">Bắt đầu tham quan 3D</button><button id="walkBack">Quay lại giao diện danh mục</button></div></div></div>
     <aside class="walk-detail" id="walkDetail" hidden><button class="close" id="walkDetailClose" aria-label="Đóng">×</button><div id="walkDetailContent"></div></aside>
     <div class="walk-image-zoom" id="walkImageZoom" hidden role="dialog" aria-modal="true" aria-label="Ảnh phóng to"><button class="walk-image-close" id="walkImageClose" aria-label="Đóng ảnh">×</button><div class="walk-image-content" id="walkImageContent"></div></div>
   `;
@@ -1362,14 +1387,29 @@ function walkMakeUI(){
   $('#walkImageClose').onclick=walkCloseGalleryImage;
   $('#walkImageZoom').addEventListener('click',e=>{if(e.target.id==='walkImageZoom')walkCloseGalleryImage()});
   root.querySelectorAll('[data-wroom]').forEach(b=>b.addEventListener('click',()=>walkTeleport(b.dataset.wroom)));
-  root.querySelectorAll('[data-hold]').forEach(b=>{
-    const k=b.dataset.hold;const on=e=>{e.preventDefault();W.keys[k]=true};const off=e=>{e.preventDefault();W.keys[k]=false};
-    b.addEventListener('pointerdown',on);b.addEventListener('pointerup',off);b.addEventListener('pointercancel',off);b.addEventListener('pointerleave',off);
-  });
-  root.querySelectorAll('[data-turn]').forEach(b=>{
-    let timer=null;const start=e=>{e.preventDefault();const s=+b.dataset.turn;W.keys[s<0?'turnL':'turnR']=true};const end=e=>{e.preventDefault();W.keys.turnL=false;W.keys.turnR=false};
-    b.addEventListener('pointerdown',start);b.addEventListener('pointerup',end);b.addEventListener('pointercancel',end);b.addEventListener('pointerleave',end);
-  });
+  // Joystick cảm ứng: kéo núm theo hướng muốn đi, thả tay để dừng.
+  const stickBase=$('#walkJoystickBase'),stickKnob=$('#walkJoystickKnob');
+  let stickPointer=null;
+  const stickApply=e=>{
+    const rect=stickBase.getBoundingClientRect(),radius=rect.width*.5,max=radius*.62;
+    let dx=e.clientX-(rect.left+radius),dy=e.clientY-(rect.top+radius);
+    const dist=Math.hypot(dx,dy);
+    if(dist>max){dx=dx/dist*max;dy=dy/dist*max}
+    W.stick.x=dx/max;W.stick.y=-dy/max;
+    if(stickKnob)stickKnob.style.transform=`translate(${dx.toFixed(1)}px,${dy.toFixed(1)}px)`;
+  };
+  if(stickBase){
+    stickBase.addEventListener('pointerdown',e=>{
+      e.preventDefault();stickPointer=e.pointerId;
+      try{stickBase.setPointerCapture(e.pointerId)}catch(_){}
+      stickApply(e);
+    });
+    stickBase.addEventListener('pointermove',e=>{if(e.pointerId!==stickPointer)return;e.preventDefault();stickApply(e)});
+    ['pointerup','pointercancel','lostpointercapture'].forEach(type=>stickBase.addEventListener(type,e=>{
+      if(e.pointerId!==stickPointer)return;
+      stickPointer=null;walkStickReset();
+    }));
+  }
   $('#walkCanvas').addEventListener('click',()=>{if(!W.active||!$('#walkIntro').hidden||!$('#walkDetail').hidden)return;if(document.pointerLockElement!==$('#walkCanvas'))walkRequestLock();else walkInteract()});
   $('#walkCanvas').addEventListener('pointerdown',e=>{if(e.pointerType==='touch'){W.touchX=e.clientX;W.touchY=e.clientY;}});
   $('#walkCanvas').addEventListener('pointermove',e=>{
@@ -1410,7 +1450,7 @@ function walkMakeUI(){
     W.keys[e.key.toLowerCase()]=false;
     if(e.key.startsWith('Arrow'))W.keys[({ArrowUp:'w',ArrowDown:'s',ArrowLeft:'a',ArrowRight:'d'})[e.key]]=false;
   });
-  window.addEventListener('blur',()=>{W.keys={};W.velocity.x=0;W.velocity.z=0;});
+  window.addEventListener('blur',()=>{W.keys={};walkStickReset();W.velocity.x=0;W.velocity.z=0;});
 }
 function walkOpen(){
   if(T.on)endTour();stopNarration();
@@ -1426,7 +1466,7 @@ function walkLeave(){
   if(!$('#walkDetail').hidden)walkCloseDetail();
   if(!$('#walkImageZoom').hidden)walkCloseGalleryImage();
   if(document.pointerLockElement===$('#walkCanvas'))document.exitPointerLock?.();
-  W.active=false;W.battleRunning=false;W.keys={};$('#walk3d').hidden=true;$('#walkIntro').hidden=true;$('#walkDetail').hidden=true;
+  W.active=false;W.battleRunning=false;W.keys={};walkStickReset();$('#walk3d').hidden=true;$('#walkIntro').hidden=true;$('#walkDetail').hidden=true;
   document.body.dataset.view=cur.view||'entry';
 }
 function walkRequestLock(){
@@ -1440,11 +1480,13 @@ function walkInit(){
     W.renderer=new T3.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:'high-performance'});
     W.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.25));W.renderer.setSize(window.innerWidth,window.innerHeight,false);
     W.renderer.outputColorSpace=T3.SRGBColorSpace;W.renderer.toneMapping=T3.ACESFilmicToneMapping;W.renderer.toneMappingExposure=1.14;
-    W.renderer.shadowMap.enabled=true;W.renderer.shadowMap.type=T3.PCFSoftShadowMap;W.renderer.shadowMap.autoUpdate=false;W.renderer.shadowMap.needsUpdate=true;
+    // Tắt đổ bóng để mọi bề mặt, nhất là các bức tường, sáng và rõ ràng hơn.
+    W.renderer.shadowMap.enabled=false;
     W.scene=new T3.Scene();W.scene.background=new T3.Color(0x100b0a);W.scene.fog=new T3.FogExp2(0x100b0a,.0082);
     W.camera=new T3.PerspectiveCamera(72,window.innerWidth/window.innerHeight,.1,100);W.camera.position.set(0,1.8,2.5);W.yaw=0;W.pitch=0;W.camera.rotation.order='YXZ';
     W.scene.add(new T3.HemisphereLight(0xf9e8cf,0x241711,1.35));W.scene.add(new T3.AmbientLight(0xffe9c9,.28));
-    const key=new T3.DirectionalLight(0xffd7a0,2.0);key.position.set(-5,12,7);key.castShadow=true;key.shadow.mapSize.set(1024,1024);key.shadow.camera.left=-25;key.shadow.camera.right=25;key.shadow.camera.top=25;key.shadow.camera.bottom=-25;W.scene.add(key);
+    const key=new T3.DirectionalLight(0xffd7a0,2.0);key.position.set(-5,12,7);key.castShadow=false;W.scene.add(key);
+    const fill=new T3.DirectionalLight(0xd8e6ff,.45);fill.position.set(6,8,-6);fill.castShadow=false;W.scene.add(fill);
     W.targets=[];W.solids=[];W.ships=[];W.rooms=[];
     walkBuildArchitecture();walkBuildGallery();walkBuildArtifacts();walkBuildTaySonDisplays();walkBuildBattle();walkBuildDocuments();walkBuildAtmosphere();
     W.ray=new T3.Raycaster();W.centerRay=new T3.Vector2(0,0);W.ready=true;W.last=performance.now();
@@ -1661,8 +1703,8 @@ function walkBuildGallery(){
     const slot=GALLERY_SLOTS.find(candidate=>candidate.id===it.gallerySlot);
     walkCreatePicture(it,slot.position,slot.yaw,2.25,1.68);
   });
-  walkSign('KHÁNG CHIẾN CHỐNG XIÊM','RẠCH GẦM – XOÀI MÚT',-14,4.2,-5.8,2*Math.PI,'#4a1718');
-  walkSign('KHÁNG CHIẾN CHỐNG THANH','NGỌC HỒI – ĐỐNG ĐA',-14,4.2,5.8,Math.PI,'#273c32');
+  walkSign('KHÁNG CHIẾN CHỐNG XÂM LƯỢC','THẾ KỈ X-XVIII',-14,4.2,-5.8,2*Math.PI,'#4a1718');
+  walkSign('KHÁNG CHIẾN CHỐNG XÂM LƯỢC','THẾ KỈ X-XVIII',-14,4.2,5.8,Math.PI,'#273c32');
 }
 function walkPedestal(x,z,label,subtitle='HIỆN VẬT MÔ PHỎNG',facing=1, tilt=-.25){
   const stone=walkMaterial(0xaaa18c,.5,.24),gold=walkMaterial(0xb88b43,.35,.5),black=walkMaterial(0x3b2921,.58,.22);
@@ -1943,6 +1985,7 @@ function walkCannonCarriage(root){
 }
 function walkLoadGLB(path,target,height,color,metalness,roughness,fallback,options={}){
   const loader=new THREE.GLTFLoader();
+  if(THREE.MeshoptDecoder)loader.setMeshoptDecoder(THREE.MeshoptDecoder);
   loader.load(new URL(path,location.href).href,gltf=>{
     const model=gltf.scene,fitAxis=options.fitAxis||'y';
     (options.removeNodeNames||[]).forEach(name=>model.getObjectByName(name)?.removeFromParent());
@@ -2096,6 +2139,28 @@ function walkBattleGround(group,groundColor,campaign){
   geometry.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));geometry.computeVertexNormals();
   const surface=new THREE.Mesh(geometry,new THREE.MeshStandardMaterial({map:texture,vertexColors:true,roughness:.98,side:THREE.DoubleSide}));
   surface.rotation.x=-Math.PI/2;surface.position.y=.02;surface.receiveShadow=true;group.add(surface);
+  // Thành đất quanh sa bàn: kéo mép địa hình xuống sát sàn, để mô hình là một khối đặc chứ không phải tấm phẳng lơ lửng.
+  const segX=36,segZ=64,perimeter=[],vertexAt=(ix,iz)=>iz*(segX+1)+ix;
+  for(let iz=0;iz<=segZ;iz++)perimeter.push(vertexAt(0,iz));
+  for(let ix=1;ix<=segX;ix++)perimeter.push(vertexAt(ix,segZ));
+  for(let iz=segZ-1;iz>=0;iz--)perimeter.push(vertexAt(segX,iz));
+  for(let ix=segX-1;ix>=1;ix--)perimeter.push(vertexAt(ix,0));
+  const skirtVertices=[],skirtIndices=[];
+  perimeter.forEach(index=>{
+    const x=positions.getX(index),z=-positions.getY(index),top=positions.getZ(index)+.02;
+    skirtVertices.push(x,top,z,x,0,z);
+  });
+  perimeter.forEach((_,order)=>{
+    const next=(order+1)%perimeter.length,a=order*2,b=a+1,c=next*2,d=c+1;
+    skirtIndices.push(a,b,c,b,d,c);
+  });
+  const skirtGeometry=new THREE.BufferGeometry();
+  skirtGeometry.setAttribute('position',new THREE.Float32BufferAttribute(skirtVertices,3));
+  skirtGeometry.setIndex(skirtIndices);skirtGeometry.computeVertexNormals();
+  const skirt=new THREE.Mesh(skirtGeometry,new THREE.MeshStandardMaterial({color:new THREE.Color(groundColor).multiplyScalar(.55),roughness:.96,metalness:.02,side:THREE.DoubleSide}));
+  skirt.receiveShadow=true;group.add(skirt);
+  // Bệ gỗ mỏng dưới chân sa bàn, tạo điểm tiếp xúc rõ với sàn.
+  walkBox(6.12,.09,12.02,new THREE.MeshStandardMaterial({color:0x2f241a,roughness:.82,metalness:.05}),0,.045,0,{parent:group});
 }
 function walkBattleTree(group,x,z,size=1){
   const bark=walkMaterial(0x554a38,.92,.01),canopy=walkMaterial(0x465440,.97,.01);
@@ -2134,7 +2199,7 @@ function walkBattleBoat(group,x,z,color){
   boat.userData.team=team;group.add(boat);return boat;
 }
 function walkRiverRelief(group){
-  const water=new THREE.Shape();water.moveTo(-3.02,-.78);water.bezierCurveTo(-1.8,-1.02,-1.3,-.28,-.22,-.38);water.bezierCurveTo(.92,-.49,1.62,-.9,3.02,-.62);water.lineTo(3.02,.66);water.bezierCurveTo(1.8,.42,.93,.94,-.13,.82);water.bezierCurveTo(-1.32,.72,-1.82,.23,-3.02,.48);water.closePath();
+  const water=new THREE.Shape();water.moveTo(-2.92,-.78);water.bezierCurveTo(-1.8,-1.02,-1.3,-.28,-.22,-.38);water.bezierCurveTo(.92,-.49,1.62,-.9,2.92,-.62);water.lineTo(2.92,.66);water.bezierCurveTo(1.8,.42,.93,.94,-.13,.82);water.bezierCurveTo(-1.32,.72,-1.82,.23,-2.92,.48);water.closePath();
   const riverGeometry=new THREE.ShapeGeometry(water,24);riverGeometry.rotateX(-Math.PI/2);
   const river=new THREE.Mesh(riverGeometry,new THREE.MeshPhysicalMaterial({color:0x557d83,roughness:.27,metalness:.12,clearcoat:.36,clearcoatRoughness:.3}));river.position.y=.12;river.receiveShadow=true;group.add(river);
   const shoal=new THREE.Shape();shoal.moveTo(-.9,-.1);shoal.quadraticCurveTo(-.6,-.34,-.1,-.3);shoal.quadraticCurveTo(.55,-.26,.95,-.02);shoal.quadraticCurveTo(.63,.28,.08,.3);shoal.quadraticCurveTo(-.58,.28,-.9,-.1);shoal.closePath();
@@ -2159,7 +2224,10 @@ function walkRiverRelief(group){
     const right=addBoat(2.72,z,'tayson','ambush-right',i,Math.PI);right.visible=false;
   }
   [-1,1].forEach(side=>{
-    const cannon=new THREE.Group();cannon.position.set(0,.19,side*1.33);cannon.rotation.y=side<0?Math.PI/2:-Math.PI/2;cannon.scale.setScalar(.34);walkModelCannon(cannon);group.add(cannon);
+    const cannonZ=side*1.33,cannon=new THREE.Group();
+    // Hạ pháo xuống đúng mặt đất thay vì lơ lửng trên sa bàn.
+    cannon.position.set(0,walkBattleGroundHeight(0,cannonZ,'xiem')+.012,cannonZ);
+    cannon.rotation.y=side<0?Math.PI/2:-Math.PI/2;cannon.scale.setScalar(.34);walkModelCannon(cannon);group.add(cannon);
     const flash=new THREE.Mesh(new THREE.SphereGeometry(.16,12,10),new THREE.MeshBasicMaterial({color:0xffb33b,transparent:true,opacity:0,depthWrite:false}));
     flash.position.set(0,.55,side*.98);group.add(flash);W.battleMuzzles.push(flash);
   });
@@ -2335,12 +2403,16 @@ function walkThanhRelief(group){
   }
 }
 function walkBuildBattle(){
+  //const tableWood=walkMaterial(0x493323,.66,.12),tableBrass=walkMaterial(0xb88b48,.3,.58);
+  
   const campaigns=[
     {id:'xiem',x:-2.82,title:'RẠCH GẦM – XOÀI MÚT',subtitle:'CHIẾN DỊCH CHỐNG QUÂN XIÊM',color:'#4a1718',build:walkRiverRelief},
     {id:'thanh',x:2.82,title:'NGỌC HỒI – ĐỐNG ĐA',subtitle:'CHIẾN DỊCH CHỐNG QUÂN THANH',color:'#273c32',build:walkThanhRelief}
   ];
   campaigns.forEach(campaign=>{
     const item=S.items.find(it=>it.type==='sahinh'&&(it.campaign||'xiem')===campaign.id)||{id:'map-'+campaign.id,campaign:campaign.id,type:'sahinh',title:campaign.title,detail:campaign.subtitle};
+    //battleDisplayTable(campaign.x,-14);
+    // Y của cả sa bàn: 0 = chân mô hình chạm sàn; tăng/giảm số này nếu muốn nâng/hạ cả khối.
     const group=new THREE.Group();group.position.set(campaign.x,0,-14);group.scale.set(.76,.76,.76);group.userData.item=item;group.userData.campaign=campaign.id;W.battleCampaignGroups[campaign.id]=group;W.scene.add(group);W.targets.push(group);
     walkBattleGround(group,campaign.id==='xiem'?0x535b4b:0x6b5d4c,campaign.id);campaign.build(group);
     walkSign(campaign.title,campaign.subtitle,campaign.x,2.55,-19.68,0,campaign.color);
@@ -2393,25 +2465,33 @@ function walkUpdateScreen(t){
   try{const svg=filmFrame(Math.max(0,Math.min(5.95,t)));const url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml;charset=utf-8'}));const im=new Image();im.onload=()=>{const ctx=W.screenCanvas.getContext('2d');ctx.clearRect(0,0,800,450);ctx.drawImage(im,0,0,800,450);W.screenTexture.needsUpdate=true;URL.revokeObjectURL(url)};im.onerror=()=>URL.revokeObjectURL(url);im.src=url;}catch(e){}
 }
 function walkBuildDocuments(){
-  const items=S.items.filter(i=>i.type==='tailieu');
   const wood=walkMaterial(0x493323,.66,.12),dark=walkMaterial(0x231913,.62,.2),brass=walkMaterial(0xa98243,.38,.5);
-  const byCampaign={xiem:[],thanh:[]};items.forEach(it=>byCampaign[it.campaign==='thanh'?'thanh':'xiem'].push(it));
-  const displayItems={
-    xiem:byCampaign.xiem.length?byCampaign.xiem:[{id:'document-xiem-placeholder',campaign:'xiem',type:'tailieu',title:'Tư liệu kháng chiến chống Xiêm',text:'Tài liệu về trận Rạch Gầm – Xoài Mút.'}],
-    thanh:byCampaign.thanh.length?byCampaign.thanh:[{id:'document-thanh-placeholder',campaign:'thanh',type:'tailieu',title:'Tư liệu kháng chiến chống Thanh',text:'Tài liệu về chiến thắng Ngọc Hồi – Đống Đa.'}]
-  };
-  Object.entries(displayItems).forEach(([campaign,group])=>{
-    const centerX=campaign==='xiem'?-3:3,ink=campaign==='xiem'?'#4a1718':'#273c32';
-    walkBox(2.25,.18,5.25,dark,centerX,.59,14.5);
-    walkBox(2.1,.12,5.1,wood,centerX,.74,14.5);
-    walkBox(2.2,.055,5.2,brass,centerX,.84,14.5);
-    [-.82,.82].forEach(dx=>[-1.95,1.95].forEach(dz=>walkBox(.16,.58,.16,dark,centerX+dx,.29,14.5+dz)));
-    walkSign(campaign==='xiem'?'HỒ SƠ CHỐNG QUÂN XIÊM':'HỒ SƠ CHỐNG QUÂN THANH',campaign==='xiem'?'RẠCH GẦM – XOÀI MÚT':'NGỌC HỒI – ĐỐNG ĐA',centerX,3.8,19.66,Math.PI,ink);
-    const columns=group.length>3?2:1,rows=Math.ceil(group.length/columns),pageW=columns===1?1.55:.86,pageD=rows>2?.9:1.15;
+  // Bàn bên trái trưng bày các ảnh tư liệu (loại tulieuanh), bàn bên phải trưng bày 8 tập hồ sơ.
+  // Ảnh ở đây độc lập với 8 ảnh treo tường của phòng ảnh, nên có thể sửa riêng trong museum-data.json.
+  const allDocumentImages=S.items.filter(isDocumentImage);
+  if(allDocumentImages.length>MAX_DOCUMENT_IMAGES)console.warn(`Chỉ trưng bày ${MAX_DOCUMENT_IMAGES} ảnh tư liệu đầu tiên trên bàn tư liệu.`);
+  const imageItems=allDocumentImages.slice(0,MAX_DOCUMENT_IMAGES);
+  const allDocuments=S.items.filter(it=>it.type==='tailieu');
+  if(allDocuments.length>MAX_DOCUMENT_SETS)console.warn(`Chỉ trưng bày ${MAX_DOCUMENT_SETS} tập hồ sơ đầu tiên trên bàn tư liệu.`);
+  const documentItems=allDocuments.slice(0,MAX_DOCUMENT_SETS);
+  const displays=[
+    {items:imageItems,centerX:-3,title:'HÌNH ẢNH TƯ LIỆU',sub:`${imageItems.length} BỘ ẢNH · HAI CHIẾN THẮNG`,ink:'#4a1718'},
+    {items:documentItems,centerX:3,title:'HỒ SƠ TƯ LIỆU',sub:`${documentItems.length} TẬP HỒ SƠ · HAI CHIẾN THẮNG`,ink:'#273c32'}
+  ];
+  displays.forEach(({items:group,centerX,title,sub,ink})=>{
+    // Bàn được mở rộng để xếp gọn 8 bộ ảnh/hồ sơ trên mỗi bàn mà vẫn giữ lối đi xung quanh.
+    walkBox(3,.18,5.9,dark,centerX,.59,14.5,{solid:true});
+    walkBox(2.85,.12,5.75,wood,centerX,.74,14.5);
+    walkBox(2.95,.055,5.85,brass,centerX,.84,14.5);
+    [-1.18,1.18].forEach(dx=>[-2.35,2.35].forEach(dz=>walkBox(.16,.58,.16,dark,centerX+dx,.29,14.5+dz)));
+    walkSign(title,sub,centerX,3.8,19.66,Math.PI,ink);
+    const columns=group.length>4?2:1,rows=Math.max(1,Math.ceil(group.length/columns));
+    const pageW=columns===1?1.5:1.04,pageD=columns===1?1.125:.78;
+    const colStep=1.28,rowStep=rows>3?1.33:1.42;
     group.forEach((it,index)=>{
       const col=index%columns,row=Math.floor(index/columns);
-      const x=centerX+(col-(columns-1)/2)*1.02,z=14.5+(row-(rows-1)/2)*1.36;
-      const root=new THREE.Group();root.position.set(x,.86,z);root.userData.item=it;
+      const x=centerX+(col-(columns-1)/2)*colStep,z=14.5+(row-(rows-1)/2)*rowStep;
+      const root=new THREE.Group();root.position.set(x,.872,z);root.userData.item=it;
       for(let sheet=2;sheet>0;sheet--){
         const backing=new THREE.Mesh(new THREE.PlaneGeometry(pageW,pageD),new THREE.MeshBasicMaterial({color:sheet===2?0xc4b798:0xd5c8aa,side:THREE.DoubleSide}));
         backing.rotation.x=-Math.PI/2;backing.position.set(-sheet*.02,.006+sheet*.005,sheet*.018);root.add(backing);
@@ -2419,7 +2499,7 @@ function walkBuildDocuments(){
       const page=new THREE.Mesh(new THREE.PlaneGeometry(pageW,pageD),new THREE.MeshBasicMaterial({map:walkTextureForItem(it),side:THREE.DoubleSide}));
       page.rotation.x=-Math.PI/2;page.position.y=.022;root.add(page);W.scene.add(root);W.targets.push(root);
     });
-    walkPointLight(centerX,3.8,14.5,0xffd18a,1.0,5.5);
+    walkPointLight(centerX,3.5,14.5,0xffd18a,1.15,6.8);
   });
 }
 function walkBuildAtmosphere(){
@@ -2443,9 +2523,10 @@ function walkInBounds(x,z){return W.rooms.some(r=>x>=r.minX&&x<=r.maxX&&z>=r.min
 function walkCollision(x,z){const r=.32;return W.solids.some(b=>x+r>b.minX&&x-r<b.maxX&&z+r>b.minZ&&z-r<b.maxZ);}
 function walkMove(dt){
   if(!W.active||!W.camera||!$('#walkIntro').hidden||!$('#walkDetail').hidden||!$('#walkImageZoom').hidden){W.velocity.x=0;W.velocity.z=0;return;}
-  if(document.pointerLockElement!==$('#walkCanvas')&&(W.keys.turnL||W.keys.turnR)){W.yaw+=(W.keys.turnL?1:0)*dt*1.7-(W.keys.turnR?1:0)*dt*1.7;walkApplyLook();}
-  let f=(W.keys.w||W.keys.arrowup?1:0)-(W.keys.s||W.keys.arrowdown?1:0),r=(W.keys.d||W.keys.arrowright?1:0)-(W.keys.a||W.keys.arrowleft?1:0);
-  const len=Math.hypot(f,r);if(len){f/=len;r/=len;}
+  const stick=W.stick||{x:0,y:0};
+  let f=(W.keys.w||W.keys.arrowup?1:0)-(W.keys.s||W.keys.arrowdown?1:0)+stick.y,
+      r=(W.keys.d||W.keys.arrowright?1:0)-(W.keys.a||W.keys.arrowleft?1:0)+stick.x;
+  const len=Math.hypot(f,r);if(len>1){f/=len;r/=len}
   const speed=W.keys.shift?6:4.1;
   const targetX=len?(-Math.sin(W.yaw)*f+Math.cos(W.yaw)*r)*speed:0;
   const targetZ=len?(-Math.cos(W.yaw)*f-Math.sin(W.yaw)*r)*speed:0;
@@ -2468,7 +2549,7 @@ function walkUpdatePrompt(now){
   if(walkLocationLabel()===WALK_TYPES.battle.label)walkPrimeVideoPreviews();
   if(now-W.promptAt<50)return;W.promptAt=now;
   const hit=walkFindHit();W.current=hit?hit.item:null;
-  const prompt=hit?'E / nhấp chuột  ·  '+hit.item.title+'  ·  '+(hit.item.isVideoScreen?'Phát video':'Mở thuyết minh'):document.pointerLockElement===$('#walkCanvas')?'Di chuyển bằng WASD · Ngắm vào vật thể để tương tác':'Nhấp vào cảnh 3D để bật điều khiển góc nhìn';
+  const prompt=hit?(WALK_TOUCH?'Chạm “Tương tác”':'E / nhấp chuột')+'  ·  '+hit.item.title+'  ·  '+(hit.item.isVideoScreen?'Phát video':'Mở thuyết minh'):WALK_TOUCH?'Kéo joystick để đi · Vuốt màn hình để nhìn quanh':document.pointerLockElement===$('#walkCanvas')?'Di chuyển bằng WASD · Ngắm vào vật thể để tương tác':'Nhấp vào cảnh 3D để bật điều khiển góc nhìn';
   if(prompt!==W.promptText){const p=$('#walkPrompt');p.textContent=prompt;p.style.borderColor=hit?'rgba(255,212,110,.9)':'rgba(230,196,122,.45)';W.promptText=prompt;}
   const status=walkLocationLabel()+(W.battleRunning?' · Đang tái hiện trận đánh':'');
   if(status!==W.statusText){$('#walkStatus').textContent=status;W.statusText=status;}
@@ -2579,7 +2660,7 @@ function walkStopBattle(){
   $('#walkPrompt').textContent='Kết thúc tái hiện. Hãy quan sát sa hình hoặc mở một hiện vật để xem nội dung chi tiết.';
 }
 function walkPlayBattle(){
-  $('#walkDetail').hidden=true;W.activeCampaign=W.current?.campaign||'xiem';W.battleRunning=true;W.battleStart=performance.now();W.battlePhase=-1;W.battlePaused=false;W.battleElapsed=0;
+  $('#walkDetail').hidden=true;walkStickReset();W.activeCampaign=W.current?.campaign||'xiem';W.battleRunning=true;W.battleStart=performance.now();W.battlePhase=-1;W.battlePaused=false;W.battleElapsed=0;
   W.battleGroup=W.battleCampaignGroups[W.activeCampaign]||W.battleGroup;
   W.ships.forEach(ship=>{ship.mesh.visible=ship.campaign===W.activeCampaign;if(ship.mesh.visible){ship.mesh.position.x=ship.bx;ship.mesh.position.z=ship.bz;}});
   Object.entries(W.battleCampaignGroups).forEach(([id,group])=>{group.visible=id===W.activeCampaign;});
@@ -2597,7 +2678,7 @@ function walkPlayBattle(){
   }
 }
 function walkUpdateBattle(now,dt){
-  if(!W.battleRunning)return;W.renderer.shadowMap.needsUpdate=true;
+  if(!W.battleRunning)return;
   if(W.activeCampaign==='xiem'){
     if(!W.battlePaused)W.battleElapsed+=dt;
     const t=W.battleElapsed,phase=Math.min(5,Math.floor(t/4));

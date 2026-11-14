@@ -90,11 +90,15 @@
     toast.classList.add('show');
   };
   try{
-    const [THREE,{GLTFLoader}]=await Promise.all([
+    const [THREE,{GLTFLoader},meshoptModule]=await Promise.all([
       import('three'),
-      import('https://cdn.jsdelivr.net/npm/three@0.159.0/examples/jsm/loaders/GLTFLoader.js')
+      import('https://cdn.jsdelivr.net/npm/three@0.159.0/examples/jsm/loaders/GLTFLoader.js'),
+      // Trình giải nén meshopt là tùy chọn: nếu CDN lỗi, ứng dụng vẫn chạy với mô hình dự phòng.
+      import('https://cdn.jsdelivr.net/npm/three@0.159.0/examples/jsm/libs/meshopt_decoder.module.js')
+        .catch(error=>{console.warn('Không tải được MeshoptDecoder; các mô hình nén meshopt sẽ dùng mô hình dự phòng.',error);return null})
     ]);
-    window.THREE=Object.assign({},THREE,{GLTFLoader});
+    const MeshoptDecoder=meshoptModule?.MeshoptDecoder||null;
+    window.THREE=Object.assign({},THREE,{GLTFLoader,MeshoptDecoder});
     const app=document.createElement('script');
     app.src='museum-fixed.js';
     app.onerror=()=>{
