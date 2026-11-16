@@ -1342,7 +1342,7 @@ function walkMakeUI(){
   root.innerHTML=`
     <canvas id="walkCanvas" aria-label="Không gian bảo tàng ba chiều"></canvas>
     <div class="walk-top"><div class="walk-brand">🏛 ${esc(S.meta.war)}</div>
-      <div class="walk-rooms"><button data-wroom="gallery">🖼 Phòng ảnh</button><button data-wroom="artifacts">🏺 Hiện vật</button><button data-wroom="battle">🗺 Sa hình</button><button data-wroom="documents">📜 Tư liệu</button></div>
+      <div class="walk-rooms"><button data-wroom="gallery">🖼 Phòng tranh</button><button data-wroom="artifacts">🏺 Hiện vật</button><button data-wroom="battle">🗺 Sa hình</button><button data-wroom="documents">📜 Tư liệu</button></div>
       <div class="walk-tools"><button id="walkHome">← Sảnh chính</button><button id="walkIntroBtn">Hướng dẫn</button></div>
     </div>
     <div class="walk-cross" aria-hidden="true">+</div>
@@ -2615,7 +2615,7 @@ function walkUpdatePrompt(now){
 function walkInteract(){
   if(!W.active||!$('#walkIntro').hidden||!$('#walkDetail').hidden||!$('#walkImageZoom').hidden)return;
   const hit=walkFindHit();if(!hit){$('#walkPrompt').textContent='Hãy hướng tâm ngắm vào tranh, hiện vật, sa hình hoặc văn bản để mở nội dung.';return;}
-  if(['xiem-4','thanh-4'].includes(hit.item.gallerySlot)){walkShowGalleryImage(hit.item);return;}
+  //if(['xiem-4','thanh-4'].includes(hit.item.gallerySlot)){walkShowGalleryImage(hit.item);return;}
   if(hit.item.isVideoScreen){walkPlayCampaignVideo(hit.item.videoId);return;}
   walkOpenItem(hit.item);
 }

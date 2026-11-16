@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Bảo tàng ảo",
+    "title": "Không gian 3D",
     "war": "Các cuộc kháng chiến chống ngoại xâm từ thế kỉ X đến thế kỉ XVIII",
     "subtitle": "Kháng chiến chống quân Nam Hán, Kháng chiến chống quân Tống Lần 1 và 2, Kháng chiến chống quân Mông - Nguyên lần 1,2 và 3, kháng chiến chống quân Xiêm và kháng chiến chống quân Thanh",
     "welcome": "Khám phá hai chiến dịch chống ngoại xâm của Việt Nam từ thế kỉ thứ X đến thế kỉ XVIII.",
@@ -202,7 +202,7 @@
       "id": "thanh-hanh-quan",
       "type": "tranh",
       "title": "Kháng chiến chống quân Xiêm",
-      "date": "Cuối năm 1788 – đầu năm 1789",
+      "date": "Năm 1785",
       "origin": "Sơ đồ khái quát, không theo tỉ lệ",
       "detail": "Năm 1784, Nguyễn Ánh cầu viện quân Xiêm. Quân Xiêm đưa khoảng 5 vạn quân tiến vào Gia Định. Trước tình hình đó, Nguyễn Huệ được giao chỉ huy quân Tây Sơn chống giặc. Tháng 1/1785, ông tổ chức trận quyết chiến trên sông Tiền tại khu vực Rạch Gầm – Xoài Mút. Quân Xiêm bị đánh bại nặng nề, phần lớn lực lượng bị tiêu diệt hoặc tan rã. Chiến thắng đã đập tan âm mưu xâm lược của quân Xiêm và khẳng định tài năng quân sự của Nguyễn Huệ.",
       "script": "",
@@ -532,7 +532,7 @@
     {
       "id": "in8hwtq8",
       "type": "tranh",
-      "title": "Kháng chiến chống quân Nguyên lần 1",
+      "title": "Kháng chiến chống quân Nguyên lần 2",
       "date": "1285",
       "origin": "",
       "detail": "Năm 1285, nhà Nguyên huy động lực lượng lớn do Thoát Hoan và Toa Đô chỉ huy tiến vào Đại Việt. Trước thế mạnh của địch, quân dân nhà Trần chủ động rút lui, thực hiện kế sách vườn không nhà trống để bảo toàn lực lượng và làm suy yếu quân địch. Khi thời cơ đến, quân Trần tổ chức phản công, giành thắng lợi tại Hàm Tử, Chương Dương, Tây Kết và giải phóng Thăng Long. Quân Nguyên thất bại, phải rút chạy về nước.",
@@ -567,7 +567,7 @@
       "id": "abbbadb",
       "type": "tranh",
       "title": "Kháng chiến chống Thanh",
-      "date": "1289",
+      "date": "1789",
       "origin": "",
       "detail": "Cuối năm 1788, lợi dụng sự cầu viện của Lê Chiêu Thống, nhà Thanh đưa khoảng 29 vạn quân tiến vào nước ta. Trước tình hình đó, Nguyễn Huệ lên ngôi hoàng đế, lấy niên hiệu Quang Trung và trực tiếp chỉ huy quân Tây Sơn tiến ra Bắc. Trong những ngày đầu xuân Kỷ Dậu 1789, quân Tây Sơn liên tiếp giành thắng lợi tại Hà Hồi, Ngọc Hồi và Đống Đa. Quân Thanh thất bại nặng nề, Tôn Sĩ Nghị phải bỏ chạy, Thăng Long được giải phóng. Chiến thắng đã bảo vệ nền độc lập dân tộc, thể hiện tài năng quân sự và tinh thần quyết chiến của vua Quang Trung cùng quân dân Tây Sơn.",
       "script": "",
@@ -637,7 +637,7 @@
     {
       "id": "tulieu-thuy-binh",
       "type": "tulieuanh",
-      "title": "Kháng chiến chống quân Mông Cổ",
+      "title": "KHÁNG CHIẾN CHỐNG QUÂN MÔNG CỔ",
       "date": "1257–1258",
       "origin": "",
       "detail": "Giữa thế kỷ XIII, đế quốc Mông Cổ đang mở rộng thế lực và tiến hành nhiều cuộc chinh phục lớn. Sau khi tiến xuống khu vực Vân Nam, quân Mông Cổ tiếp tục hướng sự chú ý đến Đại Việt nhằm tạo bàn đạp tiến công Nam Tống.\n\nCuối năm 1257, quân Mông Cổ do Ngột Lương Hợp Thai chỉ huy tiến vào nước ta. Trước sức mạnh của đối phương, quân dân nhà Trần tổ chức chống trả tại Bình Lệ Nguyên. Tuy nhiên, trước ưu thế của kỵ binh Mông Cổ, quân ta chủ động rút lui để bảo toàn lực lượng.\n\nQuân Mông Cổ tiến vào Thăng Long nhưng gặp phải kế sách rút lui chiến lược của nhà Trần. Triều đình và nhân dân thực hiện chủ trương không để đối phương khai thác được nguồn lương thực, hậu cần tại những khu vực đã rút đi.\n\nSau một thời gian, quân Mông Cổ rơi vào tình trạng khó khăn do thiếu lương thực và không thể duy trì sức chiến đấu lâu dài. Nhận thấy thời cơ thuận lợi, quân dân nhà Trần tổ chức phản công tại Đông Bộ Đầu vào tháng 1 năm 1258. Cuộc phản công giành thắng lợi, buộc quân Mông Cổ phải rút khỏi Đại Việt.\n\nChiến thắng năm 1258 có ý nghĩa đặc biệt quan trọng, đánh bại cuộc xâm lược đầu tiên của quân Mông Cổ, bảo vệ nền độc lập của Đại Việt và tạo tiền đề cho những thắng lợi tiếp theo trong các cuộc kháng chiến thời Trần.",
@@ -655,7 +655,7 @@
     {
       "id": "tulieu-quan-tay-son",
       "type": "tulieuanh",
-      "title": "Kháng chiến chống quân Mông-Nguyên lần 1",
+      "title": "KHÁNG CHIẾN CHỐNG QUÂN NGUYÊN LẦN 1",
       "date": "1285",
       "origin": "",
       "detail": "Sau thất bại năm 1258, nhà Nguyên tiếp tục âm mưu xâm lược Đại Việt. Năm 1285, quân Nguyên huy động lực lượng lớn, chia thành nhiều hướng tiến vào nước ta. Đạo quân phía Bắc do Thoát Hoan chỉ huy, trong khi đạo quân phía Nam do Toa Đô chỉ huy tiến ra từ khu vực Champa.\n\nTrước tình hình đó, nhà Trần tổ chức Hội nghị Bình Than năm 1282 để bàn kế hoạch chống giặc và Hội nghị Diên Hồng năm 1285 để thể hiện quyết tâm bảo vệ đất nước. Trần Quốc Tuấn được giao trọng trách Quốc công tiết chế, thống lĩnh quân đội.\n\nTrong giai đoạn đầu, quân Nguyên có ưu thế về lực lượng và liên tục tiến công. Quân dân nhà Trần chủ động rút lui, thực hiện kế sách vườn không nhà trống nhằm hạn chế khả năng khai thác lương thực của đối phương. Triều đình vẫn bảo toàn được lực lượng chủ lực và tiếp tục tổ chức các hoạt động kháng chiến.\n\nKhi quân Nguyên suy yếu và không thể phối hợp hiệu quả giữa hai đạo quân, nhà Trần chuyển sang phản công. Các chiến thắng quan trọng tại Hàm Tử, Chương Dương và Tây Kết đã làm thay đổi hoàn toàn cục diện chiến tranh. Quân ta từng bước giải phóng Thăng Long và đánh bại các lực lượng chủ lực của địch.\n\nCuối cùng, quân Nguyên thất bại, Thoát Hoan phải rút chạy về nước, Toa Đô bị tiêu diệt. Chiến thắng năm 1285 khẳng định sức mạnh đoàn kết toàn dân và tài năng lãnh đạo của triều Trần trong sự nghiệp bảo vệ độc lập dân tộc.",
@@ -674,8 +674,8 @@
       "id": "tulieu-luoc-do-tay-son",
       "type": "tulieuanh",
       "title": "Trần Hưng Đạo",
-      "date": "",
-      "origin": "Sơ đồ khái quát, không theo tỉ lệ",
+      "date": "1228-1300",
+      "origin": "",
       "detail": "Trần Hưng Đạo, tên thật là Trần Quốc Tuấn, là vị tướng có đóng góp quyết định trong ba cuộc kháng chiến chống quân Mông – Nguyên của Đại Việt. Ông được lịch sử ghi nhận là một nhà quân sự xuất sắc, có tầm nhìn chiến lược và khả năng tổ chức chiến tranh toàn diện.\n\nTrong cuộc kháng chiến lần thứ ba, ông tiếp tục giữ vai trò Quốc công tiết chế, trực tiếp chỉ đạo các hoạt động quân sự trên phạm vi cả nước. Ông hiểu rằng quân Nguyên tuy mạnh nhưng có điểm yếu lớn về hậu cần, đặc biệt khi phải duy trì lực lượng trong thời gian dài trên lãnh thổ Đại Việt.\n\nVì vậy, chiến lược của ông tập trung vào việc bảo toàn lực lượng, làm suy yếu quân địch và lựa chọn thời cơ quyết chiến. Sau khi đoàn thuyền lương của Trương Văn Hổ bị đánh bại tại Vân Đồn, quân Nguyên rơi vào tình trạng thiếu lương thực và buộc phải rút lui.\n\nTrần Hưng Đạo nhận định hướng rút quân trên sông Bạch Đằng là cơ hội để giành thắng lợi quyết định. Ông tổ chức lực lượng, phối hợp giữa thủy quân và bộ binh, tận dụng địa hình và thủy triều để đánh bại đội quân của Ô Mã Nhi.\n\nChiến thắng Bạch Đằng năm 1288 là đỉnh cao trong sự nghiệp quân sự của Trần Hưng Đạo. Ông không chỉ góp phần bảo vệ nền độc lập mà còn để lại nhiều bài học quý báu về nghệ thuật lãnh đạo, tổ chức lực lượng và phát huy sức mạnh toàn dân.",
       "script": "",
       "question": "",
@@ -691,7 +691,7 @@
     {
       "id": "tulieu-dai-bac",
       "type": "tulieuanh",
-      "title": "Kháng chiến chống quân Xiêm",
+      "title": "KHÁNG CHIẾN CHỐNG QUÂN XIÊM",
       "date": "",
       "origin": "",
       "detail": "Cuối thế kỷ XVIII, tình hình chính trị ở Đàng Trong diễn biến phức tạp. Nguyễn Ánh sau nhiều lần thất bại trước phong trào Tây Sơn đã cầu viện quân Xiêm để khôi phục thế lực. Lợi dụng cơ hội này, vua Xiêm đưa một lực lượng lớn quân thủy và quân bộ tiến vào Gia Định vào năm 1784.\n\nTrước tình hình đó, nghĩa quân Tây Sơn tổ chức chống trả và từng bước rút lui để bảo toàn lực lượng. Đầu năm 1785, Nguyễn Huệ được giao nhiệm vụ tiến quân vào Nam, trực tiếp chỉ huy cuộc kháng chiến chống quân Xiêm.\n\nSau khi nghiên cứu địa hình khu vực sông Tiền, Nguyễn Huệ lựa chọn đoạn sông từ Rạch Gầm đến Xoài Mút, thuộc khu vực Mỹ Tho, làm nơi quyết chiến. Đây là khu vực có nhiều cù lao, kênh rạch và địa hình thuận lợi cho việc bố trí lực lượng.\n\nNgày 19 tháng 1 năm 1785, quân Xiêm tiến vào khu vực Rạch Gầm – Xoài Mút và rơi vào trận địa đã được chuẩn bị. Quân Tây Sơn đồng loạt tiến công, phối hợp lực lượng thủy quân và bộ binh, khiến đội hình chiến thuyền của đối phương nhanh chóng tan rã. Quân Xiêm chịu tổn thất nặng nề, nhiều binh lính bị tiêu diệt, số còn lại phải tháo chạy.\n\nChiến thắng Rạch Gầm – Xoài Mút đã đập tan cuộc xâm lược của quân Xiêm, bảo vệ nền độc lập và chủ quyền của đất nước. Đây được xem là một trong những chiến thắng thủy chiến tiêu biểu nhất trong lịch sử chống ngoại xâm của dân tộc Việt Nam.",
@@ -709,7 +709,7 @@
     {
       "id": "tulieu-y-nghia",
       "type": "tulieuanh",
-      "title": "Kháng chiến chống Thanh",
+      "title": "KHÁNG CHIẾN CHỐNG QUÂN THANH",
       "date": "",
       "origin": "",
       "detail": "Cuối năm 1788, lợi dụng tình hình chính trị rối ren ở Đại Việt, vua Lê Chiêu Thống cầu cứu nhà Thanh nhằm khôi phục quyền lực. Nhân cơ hội này, vua Càn Long sai Tôn Sĩ Nghị chỉ huy một lực lượng quân Thanh lớn tiến vào nước ta, nhanh chóng chiếm đóng Thăng Long.\n\nTrước tình hình nguy cấp, Nguyễn Huệ quyết định tiến quân ra Bắc để đánh đuổi quân xâm lược. Ngày 22 tháng 12 năm 1788, ông lên ngôi hoàng đế tại Phú Xuân, lấy niên hiệu Quang Trung và lập tức tổ chức cuộc hành quân thần tốc ra Bắc.\n\nTrên đường tiến quân, Quang Trung tuyển thêm binh lính, củng cố lực lượng và động viên tinh thần quân sĩ. Đến cuối tháng 1 năm 1789, quân Tây Sơn bắt đầu triển khai các cuộc tiến công quyết định vào hệ thống phòng thủ của quân Thanh.\n\nĐêm mồng 3 Tết Kỷ Dậu, quân Tây Sơn đánh chiếm đồn Hà Hồi. Rạng sáng mồng 5 Tết, quân ta đồng loạt tiến công đồn Ngọc Hồi và đồn Khương Thượng – Đống Đa. Đạo quân do Quang Trung trực tiếp chỉ huy tiến công vào Ngọc Hồi, trong khi các cánh quân khác phối hợp đánh vào những vị trí quan trọng quanh Thăng Long.\n\nQuân Thanh bị bất ngờ trước tốc độ và sức mạnh của cuộc tiến công. Các cứ điểm phòng thủ lần lượt thất thủ, Tôn Sĩ Nghị phải bỏ chạy về nước, quân Thanh tan rã.\n\nChiến thắng Ngọc Hồi – Đống Đa đã kết thúc thắng lợi cuộc kháng chiến chống quân Thanh, bảo vệ nền độc lập và chủ quyền dân tộc. Đây là một trong những chiến công vang dội nhất trong lịch sử chống ngoại xâm của Việt Nam, thể hiện tài năng quân sự xuất chúng của Hoàng đế Quang Trung và sức mạnh đoàn kết của nhân dân.",
