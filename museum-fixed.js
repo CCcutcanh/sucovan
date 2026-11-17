@@ -48,6 +48,10 @@ const FX=[['curtain','Màn nhung'],['iris','Mở vòng tròn'],['fade','Mờ d�
 const MAX_GALLERY_IMAGES=8;
 const MAX_DOCUMENT_IMAGES=8;
 const MAX_DOCUMENT_SETS=8;
+// Hàng hiện vật đối diện trong phòng hiện vật (không tính 5 tượng): 4 hiện vật cách đều nhau,
+// hai đầu trùng với hai đầu hàng tượng. Thứ tự: pháo · cờ Tây Sơn · cọc Bạch Đằng · thuyền chiến.
+// Đổi vị trí/giãn cách chỉ cần sửa mảng này (giữ nguyên 4 phần tử, tăng dần).
+const ARTIFACT_ROW_X=[10.5,16.5,22.5,28.5];
 const GALLERY_SLOTS=[
   {id:'xiem-1',wall:'xiem',label:'Tường phía Xiêm · vị trí 1',position:[-18,2.5,-5.72],yaw:0},
   {id:'xiem-2',wall:'xiem',label:'Tường phía Xiêm · vị trí 2',position:[-14,2.5,-5.72],yaw:0},
@@ -488,11 +492,11 @@ Lưu ý: tài liệu có thể ghi khác nhau về quân số, số thuyền và
  script:`Trong chưa đầy một ngày, quân Tây Sơn phá tan thủy binh Xiêm ở Rạch Gầm – Xoài Mút.
 Chiêu Tăng, Chiêu Sương cùng một số tàn quân chạy qua Chân Lạp về Xiêm. Nguyễn Ánh mất chỗ dựa quân sự và phải tiếp tục lẩn trốn, cầu viện.`,
  question:'Vì sao thất bại ở Rạch Gầm – Xoài Mút khiến Nguyễn Ánh mất chỗ dựa quân sự?',img:'',phases:'',hotspots:'',inTour:true},
-{id:'tulieu-cau-vien',type:'tulieuanh',title:'Tranh vẽ Nguyễn Ánh cầu viện quân Xiêm',date:'Tháng 3 năm Giáp Thìn, 1784',origin:'Tranh vẽ tư liệu; nên đối chiếu lại nguồn gốc',detail:'Sau nhiều lần thất bại trước Tây Sơn, Nguyễn Ánh sang Xiêm cầu viện. Cuối năm 1784, quân Xiêm do Chiêu Tăng và Chiêu Sương chỉ huy kéo vào Gia Định, mở đầu cuộc xâm lược bị chặn đứng tại Rạch Gầm – Xoài Mút.',script:'',question:'',img:'images/cauvien.png',art:'',text:'',phases:'',hotspots:'',inTour:false,gallerySlot:''},
-{id:'tulieu-chien-luoc',type:'tulieuanh',title:'Lược đồ chiến thắng Rạch Gầm – Xoài Mút',date:'Đồ họa minh họa, 1785',origin:'Sơ đồ khái quát, không theo tỉ lệ',detail:'Lược đồ thể hiện thế trận chặn đầu, khóa đuôi của thủy binh Tây Sơn trên khúc sông Tiền, kết hợp pháo binh hai bờ và lực lượng ém ở cù lao Thới Sơn.',script:'',question:'',img:'images/chien-luoc.jpg',art:'',text:'',phases:'',hotspots:'',inTour:false,gallerySlot:''},
-{id:'tulieu-hoa-cong',type:'tulieuanh',title:'Hỏa công trên sông Tiền',date:'Tranh minh họa, 1785',origin:'Hình minh họa mẫu, có thể thay bằng ảnh tư liệu thật',detail:'Hỏa công là cách đánh hiệu quả với đoàn thuyền gỗ đi sát nhau trong khúc sông hẹp: một thuyền cháy có thể làm cháy lan sang nhiều thuyền khác.',script:'',question:'',img:'images/hoa-cong.jpg',art:'',text:'',phases:'',hotspots:'',inTour:false,gallerySlot:''},
+{id:'tulieu-cau-vien',type:'tulieuanh',title:'Tranh vẽ Nguyễn Ánh cầu viện quân Xiêm',date:'Tháng 3 năm Giáp Thìn, 1784',origin:'Tranh vẽ tư liệu; nên đối chiếu lại nguồn gốc',detail:'Sau nhiều lần thất bại trước Tây Sơn, Nguyễn Ánh sang Xiêm cầu viện. Cuối năm 1784, quân Xiêm do Chiêu Tăng và Chiêu Sương chỉ huy kéo vào Gia Định, mở đầu cuộc xâm lược bị chặn đứng tại Rạch Gầm – Xoài Mút.',script:'',question:'',img:'images/cauvien.webp',art:'',text:'',phases:'',hotspots:'',inTour:false,gallerySlot:''},
+{id:'tulieu-chien-luoc',type:'tulieuanh',title:'Lược đồ chiến thắng Rạch Gầm – Xoài Mút',date:'Đồ họa minh họa, 1785',origin:'Sơ đồ khái quát, không theo tỉ lệ',detail:'Lược đồ thể hiện thế trận chặn đầu, khóa đuôi của thủy binh Tây Sơn trên khúc sông Tiền, kết hợp pháo binh hai bờ và lực lượng ém ở cù lao Thới Sơn.',script:'',question:'',img:'images/chien-luoc.webp',art:'',text:'',phases:'',hotspots:'',inTour:false,gallerySlot:''},
+{id:'tulieu-hoa-cong',type:'tulieuanh',title:'Hỏa công trên sông Tiền',date:'Tranh minh họa, 1785',origin:'Hình minh họa mẫu, có thể thay bằng ảnh tư liệu thật',detail:'Hỏa công là cách đánh hiệu quả với đoàn thuyền gỗ đi sát nhau trong khúc sông hẹp: một thuyền cháy có thể làm cháy lan sang nhiều thuyền khác.',script:'',question:'',img:'images/hoa-cong.webp',art:'',text:'',phases:'',hotspots:'',inTour:false,gallerySlot:''},
 {id:'tulieu-thuy-binh',type:'tulieuanh',title:'Tranh minh họa trận Rạch Gầm – Xoài Mút',date:'Tranh minh họa, 1785',origin:'Hình minh họa mẫu, có thể thay bằng ảnh tư liệu thật',detail:'Thủy binh Tây Sơn ém quân trong các rạch nhỏ và sau những cù lao, ẩn dưới tán cây rậm hai bờ sông, chờ đoàn thuyền Xiêm lọt vào trận địa.',script:'',question:'',img:'images/thuy-binh.jpg',art:'',text:'',phases:'',hotspots:'',inTour:false,gallerySlot:''},
-{id:'tulieu-dai-bac',type:'tulieuanh',title:'Đại bác trên thuyền chiến Tây Sơn',date:'Vũ khí, thế kỷ XVIII',origin:'Hình minh họa mẫu, nên thay bằng ảnh hiện vật thật',detail:'Đại bác được bố trí trên thuyền chiến và tại các vị trí phòng thủ, góp phần tạo hỏa lực mạnh trong các trận đánh của quân Tây Sơn.',script:'',question:'',img:'images/dai-bac.jpg',art:'',text:'',phases:'',hotspots:'',inTour:false,gallerySlot:''},
+{id:'tulieu-dai-bac',type:'tulieuanh',title:'Đại bác trên thuyền chiến Tây Sơn',date:'Vũ khí, thế kỷ XVIII',origin:'Hình minh họa mẫu, nên thay bằng ảnh hiện vật thật',detail:'Đại bác được bố trí trên thuyền chiến và tại các vị trí phòng thủ, góp phần tạo hỏa lực mạnh trong các trận đánh của quân Tây Sơn.',script:'',question:'',img:'images/dai-bac.webp',art:'',text:'',phases:'',hotspots:'',inTour:false,gallerySlot:''},
 {id:'tulieu-y-nghia',type:'tulieuanh',title:'Ý nghĩa của chiến thắng',date:'Tóm lược tư liệu',origin:'Tổng hợp từ sách giáo khoa và báo chí, nên thay bằng văn bản gốc',detail:'Hai chiến thắng Rạch Gầm – Xoài Mút và Ngọc Hồi – Đống Đa thể hiện tài chỉ huy của Nguyễn Huệ – Quang Trung, nghệ thuật tận dụng địa hình, thời cơ và sức mạnh đoàn kết của nhân dân.',script:'',question:'',img:'images/y-nghia.jpg',art:'',text:'',phases:'',hotspots:'',inTour:false,gallerySlot:''}
 ]};
 
@@ -507,8 +511,8 @@ items:[
 {id:'thanh-bai-hoc',campaign:'thanh',type:'tailieu',title:'Bài học về chiến lược và thời cơ',date:'Liên hệ lịch sử',origin:'Tư liệu người dùng cung cấp; các số liệu Tết Mậu Thân cần đối chiếu nguồn',detail:'Nghệ thuật tổ chức lực lượng, tạo bất ngờ và phối hợp nhiều mũi tiến công thường được nhắc đến khi nghiên cứu các chiến dịch lịch sử.',text:'Bài học về xây dựng chiến lược, nắm thời cơ và phối hợp lực lượng được vận dụng, phát triển trong những bối cảnh lịch sử khác nhau.\nMột liên hệ là Tổng tiến công và nổi dậy Tết Mậu Thân 1968. Tư liệu bạn cung cấp nêu đợt tiến công đồng loạt bắt đầu đêm 30 rạng sáng 31/1, diễn ra từ vĩ tuyến 17 đến Cà Mau, với mục tiêu tại 6 thành phố, 44 thị xã và hàng trăm quận lỵ. Tài liệu đó cũng nêu bối cảnh Hoa Kỳ đưa hơn 50 vạn quân vào miền Nam; cần kiểm tra mốc và cách tính quân số trước khi trích dẫn.\nĐây là cuộc chiến khác về thời đại, lực lượng và mục tiêu, không nên xem là cùng một trận đánh hay cùng điều kiện với Ngọc Hồi – Đống Đa.',script:'Lịch sử cho thấy việc chuẩn bị chiến lược, nắm thời cơ và phối hợp lực lượng luôn quan trọng. Có thể liên hệ đến Tết Mậu Thân năm 1968, nhưng cần đặt mỗi sự kiện trong hoàn cảnh riêng, không đồng nhất hai cuộc chiến.',question:'Khi rút ra bài học lịch sử, vì sao cần phân biệt bối cảnh của từng cuộc chiến và kiểm tra số liệu?',img:'',art:'',phases:'',hotspots:'',inTour:true},
 {id:'thanh-vi-sao-thang',campaign:'thanh',type:'tailieu',title:'Vì sao quân Thanh thất bại?',date:'Tết Kỷ Dậu, 1789',origin:'Tư liệu tổng hợp; nên đối chiếu với nguồn chính sử',detail:'Quân Thanh đông nhưng phải dàn trải lực lượng, chủ quan và mất cảnh giác trong dịp Tết. Quân Tây Sơn hành quân thần tốc, tiến công nhiều hướng, phối hợp chặt chẽ và được nhân dân địa phương ủng hộ nên đã giành thắng lợi nhanh chóng.',script:'Quân Thanh thất bại trước hết vì chủ quan, kiêu ngạo. Tướng Tôn Sĩ Nghị cùng quân lính cho rằng quân Tây Sơn còn ở xa, nên không đề phòng trong dịp Tết Kỷ Dậu.\nThứ hai, quân Thanh phải dàn trải lực lượng để giữ nhiều đồn lũy từ Thăng Long đến biên giới, trong khi quân Tây Sơn tập trung đánh vào những vị trí then chốt như Ngọc Hồi và Đống Đa.\nThứ ba, quân Tây Sơn hành quân thần tốc, giữ bí mật và phối hợp nhiều mũi tiến công cùng lúc, khiến quân Thanh không kịp ứng cứu cho nhau.\nCuối cùng, nhân dân các địa phương đã ủng hộ quân Tây Sơn, góp lương thực, dẫn đường và tham gia chiến đấu, làm nên sức mạnh tổng hợp của cuộc kháng chiến.',question:'Những yếu tố nào quyết định thắng lợi nhanh chóng của quân Tây Sơn trước quân Thanh?',text:'- Quân Thanh chủ quan, mất cảnh giác trong dịp Tết.\n- Lực lượng quân Thanh bị dàn trải, khó ứng cứu lẫn nhau.\n- Quân Tây Sơn hành quân thần tốc, giữ bí mật, tiến công nhiều hướng.\n- Nhân dân địa phương ủng hộ, góp sức cùng quân Tây Sơn.',phases:'',hotspots:'',inTour:true},
 {id:'thanh-tuong-quang-trung',campaign:'thanh',type:'daocu',title:'Tượng Quang Trung',date:'Mô hình minh họa',origin:'Mô phỏng hình khối, không phải hiện vật gốc',detail:'Mô hình tượng trưng cho người chỉ huy chiến dịch Ngọc Hồi – Đống Đa.',text:'',script:'',question:'Những phẩm chất nào của người chỉ huy được thể hiện qua chiến dịch?',img:'',art:'',phases:'',hotspots:'',inTour:true},
-{id:'tulieu-quan-tay-son',campaign:'thanh',type:'tulieuanh',title:'Tranh vẽ trận Đống Đa',date:'Mùng 5 Tết Kỷ Dậu, 1789',origin:'Tranh vẽ tư liệu; nên đối chiếu lại nguồn gốc',detail:'Đạo quân của Đô đốc Long tiến công đồn Đống Đa, góp phần làm tan vỡ hệ thống phòng thủ của quân Thanh ở phía nam Thăng Long trong những ngày đầu xuân Kỷ Dậu.',text:'',script:'',question:'',img:'images/quantayson.png',art:'',phases:'',hotspots:'',inTour:false,gallerySlot:''},
-{id:'tulieu-luoc-do-tay-son',campaign:'thanh',type:'tulieuanh',title:'Lược đồ chiến thắng của nghĩa quân Tây Sơn',date:'Cuối năm 1788 – đầu năm 1789',origin:'Sơ đồ khái quát, không theo tỉ lệ',detail:'Lược đồ khái quát các hướng tiến quân của nghĩa quân Tây Sơn từ căn cứ Tam Điệp ra Bắc, đánh vào các đồn lũy phòng thủ của quân Thanh.',text:'',script:'',question:'',img:'images/thanh-hanh-quan.jpg',art:'',phases:'',hotspots:'',inTour:false,gallerySlot:''}
+{id:'tulieu-quan-tay-son',campaign:'thanh',type:'tulieuanh',title:'Tranh vẽ trận Đống Đa',date:'Mùng 5 Tết Kỷ Dậu, 1789',origin:'Tranh vẽ tư liệu; nên đối chiếu lại nguồn gốc',detail:'Đạo quân của Đô đốc Long tiến công đồn Đống Đa, góp phần làm tan vỡ hệ thống phòng thủ của quân Thanh ở phía nam Thăng Long trong những ngày đầu xuân Kỷ Dậu.',text:'',script:'',question:'',img:'images/quantayson.webp',art:'',phases:'',hotspots:'',inTour:false,gallerySlot:''},
+{id:'tulieu-luoc-do-tay-son',campaign:'thanh',type:'tulieuanh',title:'Lược đồ chiến thắng của nghĩa quân Tây Sơn',date:'Cuối năm 1788 – đầu năm 1789',origin:'Sơ đồ khái quát, không theo tỉ lệ',detail:'Lược đồ khái quát các hướng tiến quân của nghĩa quân Tây Sơn từ căn cứ Tam Điệp ra Bắc, đánh vào các đồn lũy phòng thủ của quân Thanh.',text:'',script:'',question:'',img:'images/thanh-hanh-quan.webp',art:'',phases:'',hotspots:'',inTour:false,gallerySlot:''}
 ]};
 
 const XIEM_IDS=new Set(XIEM.items.map(item=>item.id));
@@ -1295,7 +1299,7 @@ edBody.addEventListener('click',e=>{
     const re=/(<script id="seed" type="application\/json">)[\s\S]*?(<\/script>)/;
     download(slug(S.meta.war)+'.html',SRC.replace(re,(m,a,b)=>a+json+b),'text/html');
     document.querySelectorAll('link[href$="museum-fixed.css"],script[src$="museum-fixed.js"]').forEach(asset=>downloadAsset(asset.href));
-    ['videos/RGXM.mp4','videos/NH-DD.mp4','videos/quannguyen.mp4','videos/ngoquyen938.mp4','images/phong-hien-vat-tay-son.png','models/phao.glb','models/sung.glb','models/coc.glb','models/thuyenchienxiem.glb','models/tuong3d.glb','models/tuong3d2.glb','models/tuong3d3.glb','models/tuong3d4.glb','models/tuong3d5.glb','models/tuong3d6.glb'].forEach(name=>downloadAsset(new URL(name,location.href).href));
+    ['videos/RGXM.mp4','videos/NH-DD.mp4','videos/ngoquyen938.mp4','images/phong-hien-vat-tay-son.webp','models/phao.glb','models/coc.glb','models/thuyenchienxiem.glb','models/tuong3d.glb','models/tuong3d3.glb','models/tuong3d4.glb','models/tuong3d5.glb','models/tuong3d6.glb'].forEach(name=>downloadAsset(new URL(name,location.href).href));
     toast('Đã xuất mã và media. Đặt các file tải xuống vào đúng thư mục images, models, videos và resources của dự án.');
   }
   if(t.closest('#resetSample')&&confirm('Khôi phục nội dung mẫu sẽ xoá toàn bộ nội dung hiện tại. Tiếp tục?')){S=norm(clone(DEFAULT));save();ed.id=S.items[0].id;applyMeta();renderEd();toast('Đã khôi phục nội dung mẫu.')}
@@ -1584,8 +1588,8 @@ function walkPointLight(x,y,z,color=0xffc677,intensity=2.2,dist=9){const p=new T
 function walkLabelTexture(title,sub,bg='#321716'){
   const c=document.createElement('canvas');c.width=1024;c.height=256;const g=c.getContext('2d');g.fillStyle=bg;g.fillRect(0,0,1024,256);g.strokeStyle='#d7b56b';g.lineWidth=8;g.strokeRect(12,12,1000,232);g.strokeStyle='#735127';g.lineWidth=2;g.strokeRect(28,28,968,200);g.textAlign='center';g.fillStyle='#f2d890';g.font='bold 48px "Be Vietnam Pro", Arial, sans-serif';g.fillText(title,512,112,930);g.fillStyle='#e5d2ad';g.font='28px "Be Vietnam Pro", Arial, sans-serif';g.fillText(sub||'BẢO TÀNG TƯƠNG TÁC',512,170,940);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t;
 }
-function walkSign(title,sub,x,y,z,yaw,bg){
-  const root=new THREE.Group();root.position.set(x,y,z);root.rotation.y=yaw;const mat=new THREE.MeshBasicMaterial({map:walkLabelTexture(title,sub,bg),side:THREE.DoubleSide});const m=new THREE.Mesh(new THREE.PlaneGeometry(2.65,.66),mat);root.add(m);W.scene.add(root);return root;
+function walkSign(title,sub,x,y,z,yaw,bg,size){
+  const root=new THREE.Group();root.position.set(x,y,z);root.rotation.y=yaw;const mat=new THREE.MeshBasicMaterial({map:walkLabelTexture(title,sub,bg),side:THREE.DoubleSide});const m=new THREE.Mesh(new THREE.PlaneGeometry(size?.w||2.65,size?.h||.66),mat);root.add(m);W.scene.add(root);return root;
 }
 function walkSconce(x,y,z,yaw){
   const g=new THREE.Group();g.position.set(x,y,z);g.rotation.y=yaw;
@@ -2022,7 +2026,7 @@ function walkBuildArtifacts(){
   const allItems=S.items.filter(i=>i.type==='daocu');
   const flagItem=allItems.find(it=>it.art==='co-tay-son'||/lá cờ|la co/i.test(it.title||''));
   if(flagItem){
-    const displayX=15,displayZ=3.55,position=flagItem.position3D||{x:displayX,y:1.63,z:displayZ};
+    const displayX=ARTIFACT_ROW_X[1],displayZ=3.55,position={x:displayX,y:flagItem.position3D?.y??1.63,z:flagItem.position3D?.z??displayZ};
     walkPedestal(displayX,displayZ,flagItem.title,flagItem.date||'THỜI KỲ TÂY SƠN',-1, .25);
     const flag=new THREE.Group();flag.position.set(position.x,position.y,position.z);flag.rotation.y=Math.PI;flag.userData.item=flagItem;walkModelGeneric(flag,flagItem);W.scene.add(flag);W.targets.push(flag);
   }
@@ -2114,43 +2118,37 @@ function walkBuildTaySonDisplays(){
     walkLoadGLB(display.path,statue,2.7,0x765333,.48,.62,()=>walkModelStatue(statue),display.modelOptions);
     W.targets.push(statue);walkPointLight(position.x,position.y+3.07,position.z,0xffd39a,1.0,5.5);
   });
-  // The opposite row holds the flag, cannon and matchlock.
-  walkBox(2.72,.32,1.58,wood,10.5,.2,3.55);
-  walkBox(2.78,.07,1.64,brass,10.5,.395,3.55);
-  walkBox(2.64,.045,1.5,velvet,10.5,.45,3.55);
+  // The opposite row holds the flag, cannon, stakes and boat (see ARTIFACT_ROW_X).
+  const cannonX=ARTIFACT_ROW_X[0];
+  walkBox(2.72,.32,1.58,wood,cannonX,.2,3.55);
+  walkBox(2.78,.07,1.64,brass,cannonX,.395,3.55);
+  walkBox(2.64,.045,1.5,velvet,cannonX,.45,3.55);
   const cannonItem=S.items.find(it=>it.type==='daocu'&&it.art==='phao-tay-son');
-  const cannonPosition=cannonItem?.position3D||{x:10.5,y:.49,z:3.55};
+  const cannonPosition={x:cannonX,y:cannonItem?.position3D?.y??.49,z:cannonItem?.position3D?.z??3.55};
   const cannon=new THREE.Group();cannon.position.set(cannonPosition.x,cannonPosition.y,cannonPosition.z);cannon.rotation.y=-Math.PI/2;
   if(cannonItem)cannon.userData.item=cannonItem;
   W.scene.add(cannon);if(cannonItem)W.targets.push(cannon);
   walkLoadGLB('models/phao.glb',cannon,1.85,0x815840,.16,.92,()=>walkModelCannon(cannon),{fitAxis:'z',rotationX:.24,baseOffset:.12,carriage:true});
-  plaque(10.5,2.55,(cannonItem?.title||'PHÁO THỜI TÂY SƠN').toLocaleUpperCase('vi'),cannonItem?.date||'MÔ HÌNH TÁI DỰNG',1.8,1.04,Math.PI);
+  plaque(cannonX,2.55,(cannonItem?.title||'PHÁO THỜI TÂY SƠN').toLocaleUpperCase('vi'),cannonItem?.date||'MÔ HÌNH TÁI DỰNG',1.8,1.04,Math.PI);
   // Helmet under glass.
   // caseBase(17.1,-3.65,2.35,1.35);
   // const helmetMetal=walkMaterial(0x75634b,.32,.72),helmetDark=walkMaterial(0x3e3024,.5,.42);
   // const dome=new THREE.Mesh(new THREE.SphereGeometry(.42,20,14,0,Math.PI*2,0,Math.PI*.58),helmetMetal);dome.position.set(17.1,1.12,-3.65);dome.scale.set(1,.8,1);W.scene.add(dome);
   // walkBox(.9,.07,.72,helmetDark,17.1,.91,-3.65);walkBox(.08,.34,.08,brass,17.1,1.42,-3.65);
   // plaque(17.1,.0,'MŨ TRẤN THỦ','TRANG BỊ QUÂN ĐỘI',1.7);
-  // The matchlock rests horizontally on the same burgundy display case.
-  caseBase(19.5,3.55,3.5,1.9);
-  const gunItem=S.items.find(it=>it.type==='daocu'&&it.art==='sung-dieu-thuong');
-  const gunPosition=gunItem?.position3D||{x:19.5,y:.79,z:3.55};
-  const gun=new THREE.Group();gun.position.set(gunPosition.x,gunPosition.y,gunPosition.z);gun.rotation.y=Math.PI/2;
-  if(gunItem)gun.userData.item=gunItem;
-  W.scene.add(gun);if(gunItem)W.targets.push(gun);
-  walkLoadGLB('models/sung.glb',gun,0.3,0x684323,0,.86,()=>walkModelGun(gun),{fitAxis:'x',preserveMaterials:true});
-  plaque(19.5,2.48,(gunItem?.title||'SÚNG ĐIỂU THƯƠNG').toLocaleUpperCase('vi'),gunItem?.date||'VŨ KHÍ THỜI TÂY SƠN',2.1,.55,Math.PI);
   const stakeItem=S.items.find(it=>it.type==='daocu'&&it.art==='coc-bach-dang');
   if(stakeItem){
-    walkPedestal(24,3.55,stakeItem.title,stakeItem.date||'MÔ HÌNH MINH HỌA',-1,.25);
-    const stakePosition=stakeItem.position3D||{x:24,y:1.63,z:3.55};
+    const stakeX=ARTIFACT_ROW_X[2];
+    walkPedestal(stakeX,3.55,stakeItem.title,stakeItem.date||'MÔ HÌNH MINH HỌA',-1,.25);
+    const stakePosition={x:stakeX,y:stakeItem.position3D?.y??1.63,z:stakeItem.position3D?.z??3.55};
     const stakes=new THREE.Group();stakes.position.set(stakePosition.x,stakePosition.y,stakePosition.z);stakes.rotation.y=Math.PI;stakes.userData.item=stakeItem;W.scene.add(stakes);W.targets.push(stakes);
     walkLoadGLB('models/coc.glb',stakes,1.8,0x765333,.48,.7,()=>walkModelBachDangStakes(stakes),{preserveMaterials:true});
   }
   const boatItem=S.items.find(it=>it.type==='daocu'&&it.art==='thuyen-chien-xiem');
   if(boatItem){
-    walkPedestal(28.5,3.55,boatItem.title,boatItem.date||'MÔ HÌNH MINH HỌA',-1,.25);
-    const boatPosition=boatItem.position3D||{x:28.5,y:1.63,z:3.55};
+    const boatX=ARTIFACT_ROW_X[3];
+    walkPedestal(boatX,3.55,boatItem.title,boatItem.date||'MÔ HÌNH MINH HỌA',-1,.25);
+    const boatPosition={x:boatX,y:boatItem.position3D?.y??1.63,z:boatItem.position3D?.z??3.55};
     const boat=new THREE.Group();boat.position.set(boatPosition.x,boatPosition.y,boatPosition.z);boat.rotation.y=Math.PI;boat.userData.item=boatItem;W.scene.add(boat);W.targets.push(boat);
     walkLoadGLB('models/thuyenchienxiem.glb',boat,1.05,0x765333,.48,.7,()=>walkModelBoat(boat),{preserveMaterials:true});
   }
@@ -2161,9 +2159,9 @@ function walkBuildTaySonDisplays(){
   walkBox(.12,2.85,.18,frame,30.58,2.75,-2.35);walkBox(.12,2.85,.18,frame,30.58,2.75,2.35);
   const canvas=new THREE.Mesh(new THREE.PlaneGeometry(4.5,2.58),new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.DoubleSide}));
   canvas.position.set(30.57,2.75,0);canvas.rotation.y=-Math.PI/2;W.scene.add(canvas);
-  const refImg=new Image();refImg.onload=()=>{const tex=new THREE.Texture(refImg);tex.colorSpace=THREE.SRGBColorSpace;tex.needsUpdate=true;canvas.material.map=tex;canvas.material.color.set(0xffffff);canvas.material.needsUpdate=true;};refImg.src='images/phong-hien-vat-tay-son.png';
+  const refImg=new Image();refImg.onload=()=>{const tex=new THREE.Texture(refImg);tex.colorSpace=THREE.SRGBColorSpace;tex.needsUpdate=true;canvas.material.map=tex;canvas.material.color.set(0xffffff);canvas.material.needsUpdate=true;};refImg.src='images/phong-hien-vat-tay-son.webp';
   // Warm spotlights and subtle brass posts evoke the museum reference.
-  [[10.5,3.55],[15,3.55],[19.5,3.55],[24,3.55],[28.5,3.55]].forEach(([x,z])=>walkPointLight(x,4.7,z,0xffd39a,1.0,5.5));
+  ARTIFACT_ROW_X.forEach(x=>walkPointLight(x,4.7,3.55,0xffd39a,1.0,5.5));
   const postMat=walkMaterial(0xc49a51,.26,.7);
   [[9.3,-5.55],[13.2,-5.55],[17.1,-5.55],[21,-5.55],[24.9,-5.55],[29.4,-5.55],[9.3,5.55],[13.2,5.55],[17.1,5.55],[21,5.55],[24.9,5.55],[29.4,5.55]].forEach(([x,z])=>{
     walkCylinder(.055,.07,.68,postMat,x,.34,z,{seg:12});walkSphere(.12,postMat,x,.72,z,{x:1,y:1,z:1});
@@ -2476,21 +2474,44 @@ function walkBuildBattle(){
     walkSign(campaign.title,campaign.subtitle,campaign.x,2.55,-19.68,0,campaign.color);
     walkPointLight(campaign.x,3.8,-14,0xffd18a,.85,6);
   });
-  // Four evenly spaced TVs on each side wall.
+  // Bốn TV mỗi bên tường, căn giữa bức tường và xếp theo thời gian sự kiện tăng dần.
+  // Muốn đổi bố cục: chỉnh các hằng số TV_* ngay bên dưới.
+  const TV_PER_WALL=4;          // số TV trên mỗi bức tường bên
+  const TV_SPACING=2.5;         // khoảng cách giữa hai tâm TV (m)
+  const TV_FRAME_WIDTH=2;       // bề rộng khung TV (m) - dùng để tính căn giữa
+  const TV_FRAME_HEIGHT=1.25;   // chiều cao khung TV (m)
+  const TV_CENTER_Y=3.15;       // độ cao tâm TV (m)
+  const TV_WALL_X=5.78;         // tường bên ở x = ±6, TV nhô ra 0.22 m
+  const TV_WALL_Z_BACK=-20;     // mép tường phía cuối phòng
+  const TV_WALL_Z_FRONT=-8;     // mép tường phía cửa vào
   const tvFrame=walkMaterial(0x252a2e,.32,.58);W.tvScreens=[];W.tvVideoElements={};W.tvVideoTextures={};W.tvPreviewsLoaded=false;
-  const videos=(S.videos||[]).filter(video=>video.path);
-  const tvSlots=[-18.35,-15.85,-13.35,-10.85].flatMap(z=>[
-    {x:-5.78,z,yaw:Math.PI/2,campaign:'xiem'},
-    {x:5.78,z,yaw:-Math.PI/2,campaign:'thanh'}
-  ]);
+  // Thứ tự video = năm trong trường "date" của video, tăng dần (938 → 981 → 1077 → … → 1789).
+  // Sửa năm ở mục Quản lý → Video (hoặc trong museum-data.json) là TV tự xếp lại theo thời gian.
+  const videoYear=video=>{const match=String(video.date||'').match(/\d{3,4}/);return match?Number(match[0]):Infinity;};
+  const videos=(S.videos||[]).filter(video=>video.path)
+    .map((video,index)=>({video,index}))
+    .sort((a,b)=>(videoYear(a.video)-videoYear(b.video))||(a.index-b.index))
+    .map(entry=>entry.video);
+  // Căn giữa dãy TV trong bức tường: tổng bề rộng dãy = (số TV - 1) × khoảng cách + bề rộng khung.
+  const tvRun=TV_SPACING*(TV_PER_WALL-1)+TV_FRAME_WIDTH;
+  const tvFirstZ=(TV_WALL_Z_BACK+TV_WALL_Z_FRONT)/2-tvRun/2+TV_FRAME_WIDTH/2;
+  const tvZs=Array.from({length:TV_PER_WALL},(_,i)=>tvFirstZ+i*TV_SPACING); // từ cuối phòng tới cửa
+  // Tường trái: đi từ cửa vào tới cuối phòng; tường phải: từ cuối phòng trở ra cửa,
+  // nên hành trình tham quan đọc liền mạch 938 → 1789.
+  const tvSlots=[
+    ...tvZs.slice().reverse().map(z=>({x:-TV_WALL_X,z,yaw:Math.PI/2,campaign:'xiem'})),
+    ...tvZs.map(z=>({x:TV_WALL_X,z,yaw:-Math.PI/2,campaign:'thanh'}))
+  ];
   tvSlots.forEach((slot,index)=>{
     const video=videos[index]||{id:`video-placeholder-${index}`,title:'Video đang cập nhật',path:'',campaign:slot.campaign};
     const {x,z,yaw}=slot;
-    const root=new THREE.Group();root.position.set(x,3.15,z);root.rotation.y=yaw;
-    const frame=new THREE.Mesh(new THREE.BoxGeometry(2.0,1.25,.13),tvFrame);root.add(frame);
+    const root=new THREE.Group();root.position.set(x,TV_CENTER_Y,z);root.rotation.y=yaw;
+    const frame=new THREE.Mesh(new THREE.BoxGeometry(TV_FRAME_WIDTH,TV_FRAME_HEIGHT,.13),tvFrame);root.add(frame);
     const screenMat=new THREE.MeshBasicMaterial({map:walkTVTexture(video),side:THREE.DoubleSide});
-    const screen=new THREE.Mesh(new THREE.PlaneGeometry(1.82,1.07),screenMat);screen.position.z=.071;root.add(screen);W.tvScreens.push({videoId:video.id,campaign:slot.campaign,mesh:screen});
-    walkSign(video.title||video.name||'VIDEO SA HÌNH',video.date||'VIDEO TƯ LIỆU',x,2.36,z,yaw,slot.campaign==='xiem'?'#4a1718':'#273c32');
+    const screen=new THREE.Mesh(new THREE.PlaneGeometry(TV_FRAME_WIDTH-.18,TV_FRAME_HEIGHT-.18),screenMat);screen.position.z=.071;root.add(screen);W.tvScreens.push({videoId:video.id,campaign:slot.campaign,mesh:screen});
+    // Bảng tên dưới TV: thu nhỏ theo khoảng cách TV để không chồng lên nhau và không bị khung TV che.
+    const signW=Math.min(2.3,TV_SPACING-.2),signH=signW/4,signY=TV_CENTER_Y-TV_FRAME_HEIGHT/2-signH/2-.04;
+    walkSign(video.title||video.name||'VIDEO SA HÌNH',video.date||'VIDEO TƯ LIỆU',x,signY,z,yaw,slot.campaign==='xiem'?'#4a1718':'#273c32',{w:signW,h:signH});
     const hit=new THREE.Mesh(new THREE.PlaneGeometry(2.1,1.38),new THREE.MeshBasicMaterial({transparent:true,opacity:.001,side:THREE.DoubleSide,depthWrite:false}));hit.position.copy(root.position);hit.rotation.y=yaw;hit.userData.item={...video,id:`tv-${index}`,type:'video',campaign:video.campaign||slot.campaign,isVideoScreen:true,videoId:video.id};W.scene.add(hit);W.targets.push(hit);W.scene.add(root);
   });
 }
@@ -2516,7 +2537,19 @@ function walkTVTexture(videoItem){
 function walkPrimeVideoPreviews(){
   if(W.tvPreviewsLoaded)return;
   W.tvPreviewsLoaded=true;
-  Object.values(W.tvVideoElements).forEach(video=>{video.preload='auto';video.load();});
+  // Chỉ tải metadata + khung hình đầu của mỗi video (vài trăm KB) thay vì tải trọn
+  // bộ thư viện video (~190MB) khi vừa bước vào phòng sa hành.
+  Object.values(W.tvVideoElements).forEach(video=>{
+    if(video.preload==='auto')return;
+    video.preload='metadata';
+    const primeFrame=()=>{
+      if(video.readyState>=2)return;
+      try{video.currentTime=Math.min(.08,video.duration||.08);}catch(e){}
+    };
+    if(video.readyState>=1)primeFrame();
+    else video.addEventListener('loadedmetadata',primeFrame,{once:true});
+    video.load();
+  });
 }
 function walkUpdateScreen(t){
   if(!W.screenCanvas||typeof filmFrame!=='function')return;
